@@ -27,7 +27,9 @@ function filterShows(data: any[], type: string): Show[] {
 
 function findGenres(data: any[]): Genre[] {
   const genres = data.map((show) => show.genres).flat()
-  return Array.from(new Set(genres))
+  return genres.map((genre, index) => {
+    return { id: index, name: genre }
+  })
 }
 
 export { normalizeShows, filterShows, findGenres }
