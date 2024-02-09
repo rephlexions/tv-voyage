@@ -1,24 +1,17 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import { showsAPIService } from './data/showsApi'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useShows } from './store/shows'
 import { storeToRefs } from 'pinia'
+import { Button } from '@/components/ui/button'
 
 // const shows = ref<any>([])
 const showsStore = useShows()
 const { shows, isRequestLoading } = storeToRefs(showsStore)
 
 onMounted(() => {
-  // showsAPIService
-  //   .getShows()
-  //   .then((data) => {
-  //     shows.value = data
-  //     console.log(data)
-  //   })
-  //   .catch((error) => {
-  //     console.error(error)
-  //   })
+  showsStore.fetchShows()
+  console.log(shows.value)
 })
 </script>
 
@@ -26,6 +19,7 @@ onMounted(() => {
   <header>
     <div class="wrapper">
       <nav>
+        <Button>Click me</Button>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
@@ -36,4 +30,3 @@ onMounted(() => {
 </template>
 
 <style scoped></style>
-./data/showsApi

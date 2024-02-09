@@ -1,5 +1,4 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
-
 export default class ShowsAPIService {
   private axiosInstance: AxiosInstance
 
@@ -11,9 +10,9 @@ export default class ShowsAPIService {
   private async axiosCall<T>(config: AxiosRequestConfig): Promise<any[]> {
     try {
       const { data } = await this.axiosInstance.request<T>(config)
-      return [data, null]
+      return [data]
     } catch (error) {
-      return [error, null]
+      return [error]
     }
   }
 

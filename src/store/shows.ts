@@ -1,22 +1,12 @@
 import { defineStore } from 'pinia'
-
-type Show = {
-  id: number
-  name: string
-  image: {
-    medium: string
-  }
-}
-
-type ShowsState = {
-  shows: Show[]
-  isRequestLoading: boolean
-}
+import { showsAPIService } from '@/services/showsApi'
+import type { ShowsState } from '@/types/ShowsState'
 
 export const useShows = defineStore('shows', {
   state: (): ShowsState => ({
     shows: [],
-    isRequestLoading: false
+    isRequestLoading: false,
+    hasShows: false
   }),
   getters: {
     activeCustomersCount({ shows }): number {
@@ -24,12 +14,12 @@ export const useShows = defineStore('shows', {
     }
   },
   actions: {
-    async fetchCustomers(): Promise<void> {
-      const promise: Promise<Show[]> = new Promise((resolve) => {
-        resolve([])
-      })
-
-      this.shows = await promise
+    async fetchShows(): Promise<void> {
+      this.isRequestLoading = true
+      const [shows] = await showsAPIService.getShows()
+      this.shows = shows
+      this.isRequestLoading = false
+      this.hasShows = true
     }
   }
 })
