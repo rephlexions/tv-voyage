@@ -7,11 +7,13 @@ import { Button } from '@/components/ui/button'
 
 // const shows = ref<any>([])
 const showsStore = useShows()
-const { shows, isRequestLoading } = storeToRefs(showsStore)
+const { sfShows, actionsShows, isRequestLoading } = storeToRefs(showsStore)
 
 onMounted(() => {
-  showsStore.fetchShows()
-  console.log(shows.value)
+  showsStore.fetchShows().then(() => {
+    showsStore.setSfShows('Science-Fiction')
+    showsStore.setActionShows('Action')
+  })
 })
 </script>
 
