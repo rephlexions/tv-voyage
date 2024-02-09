@@ -23,6 +23,9 @@ export default class ShowsAPIService {
   async getShow(id: number) {
     return this.axiosCall({ method: 'GET', url: `/shows/${id}` })
   }
+  async searchShows(query: string) {
+    return this.axiosCall({ method: 'GET', url: `/search/shows?q=${query}` })
+  }
 }
 
 export const showsAPIService = new ShowsAPIService()
