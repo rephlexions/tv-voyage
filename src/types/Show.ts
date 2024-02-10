@@ -4,9 +4,13 @@ export type Show = {
   image: {
     medium: string
     original: string
+    background?: string
   }
   rating: {
     average: number
   }
   genres: string[]
+  premiered: string
+  status: string
+  summary: string
 }

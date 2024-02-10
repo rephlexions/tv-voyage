@@ -13,7 +13,10 @@ function normalizeShows(data: any[]): Show[] {
       rating: {
         average: obj.rating.average
       },
-      genres: obj.genres
+      genres: obj.genres,
+      premiered: obj.premiered,
+      status: obj.status,
+      summary: obj.summary
     }
   })
 }
@@ -33,4 +36,11 @@ function findGenres(data: any[]): Genre[] {
   })
 }
 
-export { normalizeShows, filterShows, findGenres }
+function filterImages(data: any[]): string {
+  const index = data.findIndex(
+    (image) => image.type === 'background' && image.resolutions.original.width === 1920
+  )
+  return data[index].resolutions.original.url
+}
+
+export { normalizeShows, filterShows, findGenres, filterImages }
