@@ -18,16 +18,17 @@ function normalizeShows(data: any[]): Show[] {
   })
 }
 
-function filterShows(data: any[], type: string): Show[] {
-  data = normalizeShows(data)
-  if (type === 'all') return data
-  data = data.filter((show) => show.genres.includes(type))
+function filterShows(data: Show[], type: Genre): Show[] {
+  const { name } = type
+  if (name === 'all') return data
+  data = data.filter((show) => show.genres.includes(name))
   return data
 }
 
 function findGenres(data: any[]): Genre[] {
   const genres = data.map((show) => show.genres).flat()
-  return genres.map((genre, index) => {
+  const uniqueGenres = [...new Set(genres)]
+  return uniqueGenres.map((genre, index) => {
     return { id: index, name: genre }
   })
 }

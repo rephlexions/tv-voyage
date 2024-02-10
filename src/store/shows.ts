@@ -1,20 +1,22 @@
 import { defineStore } from 'pinia'
 import { showsAPIService } from '@/services/showsApi'
+import { normalizeShows, findGenres, filterShows } from '@/utils/normalizeShows'
 import type { ShowsState } from '@/types/ShowsState'
-import { normalizeShows, findGenres } from '@/utils/normalizeShows'
+import type { Genre } from '@/types/Genre'
 
 export const useShows = defineStore('shows', {
   state: (): ShowsState => ({
     shows: [],
-    sfShows: [],
-    actionsShows: [],
+    firstCarousel: [],
+    secondCarousel: [],
+    thirdCarousel: [],
     genres: [],
     isRequestLoading: false,
     hasShows: false
   }),
   getters: {
-    activeCustomersCount({ shows }): number {
-      return 0
+    isLoading({ isRequestLoading }): boolean {
+      return isRequestLoading
     }
   },
   actions: {
@@ -26,19 +28,18 @@ export const useShows = defineStore('shows', {
       this.isRequestLoading = false
       this.hasShows = true
     },
-    setSfShows(genre: string): void {
-      this.shows.forEach((show) => {
-        if (show.genres.includes(genre)) {
-          this.sfShows.push(show)
-        }
-      })
-    },
-    setActionShows(genre: string): void {
-      this.shows.forEach((show) => {
-        if (show.genres.includes(genre)) {
-          this.actionsShows.push(show)
-        }
-      })
+    setShowsByGenre(genre: Genre, index: number): void {
+      switch (index) {
+        case 0:
+          this.firstCarousel = filterShows(this.shows, genre)
+          break
+        case 1:
+          this.secondCarousel = filterShows(this.shows, genre)
+          break
+        case 2:
+          this.thirdCarousel = filterShows(this.shows, genre)
+          break
+      }
     }
   }
 })
