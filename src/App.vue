@@ -5,11 +5,9 @@ import HomeView from './views/HomeView.vue'
 </script>
 
 <template>
-  <header>
-    <div class="bg-primary">
-      <TopNav></TopNav>
-    </div>
-  </header>
+  <div class="bg-primary">
+    <TopNav></TopNav>
+  </div>
   <HomeView></HomeView>
 </template>
 
