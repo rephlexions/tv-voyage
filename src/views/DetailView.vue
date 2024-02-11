@@ -3,24 +3,32 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { showsAPIService } from '@/services/showsApi'
 import type { Show } from '@/types/Show'
-import { normalizeShows } from '@/utils/normalizeShows'
+import type { Episode } from '@/types/Episode'
+import { normalizeShows, normalizeEpisodes, groupEpisodesBySeason } from '@/utils/normalizeShows'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 const route = useRoute()
 
 const showID = route.params.id as string
 const showCover = ref<string>('')
+const episodesList = ref<Record<string, Episode[]>>({})
 let show = ref<Show | null>(null)
 
 async function getShow() {
-  const [showInfo, images] = await Promise.all([
+  const [showInfo, images, episodes] = await Promise.all([
     showsAPIService.getShowById(showID),
-    showsAPIService.getShowImages(showID)
+    showsAPIService.getShowImages(showID),
+    showsAPIService.getShowEpisodes(showID)
   ])
-  const result: Show[] = normalizeShows(showInfo)
-  show.value = result[0]
+
+  const normalizedShows: Show[] = normalizeShows(showInfo)
+  show.value = normalizedShows[0]
+
   const backgroundObject = images[0].find((obj: { type: string }) => obj.type === 'background')
   showCover.value = backgroundObject ? backgroundObject.resolutions.original.url : ''
+
+  const normalizedEpisodes: Episode[] = normalizeEpisodes(episodes[0])
+  episodesList.value = groupEpisodesBySeason(normalizedEpisodes)
 }
 
 onMounted(() => {

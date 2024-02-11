@@ -1,4 +1,6 @@
+import type { Episode } from '@/types/Episode'
 import type { Genre } from '@/types/Genre'
+import type { GroupedEpisodes } from '@/types/GroupedEpisode'
 import type { Show } from '@/types/Show'
 
 function normalizeShows(data: any[]): Show[] {
@@ -19,6 +21,20 @@ function normalizeShows(data: any[]): Show[] {
       summary: obj.summary,
       language: obj.language,
       officialSite: obj.network ? obj.network?.officialSite : null
+    }
+  })
+}
+function normalizeEpisodes(data: any[]): Episode[] {
+  return data.map((obj) => {
+    return {
+      id: obj.id,
+      name: obj.name,
+      number: obj.number,
+      season: obj.season,
+      airDate: obj.airdate,
+      rating: {
+        average: obj.rating.average
+      }
     }
   })
 }
@@ -53,4 +69,21 @@ function shuffle(array: any[]): any[] {
   return array
 }
 
-export { normalizeShows, filterShows, findGenres, filterImages, shuffle }
+function groupEpisodesBySeason(episodes: Episode[]): GroupedEpisodes {
+  return episodes.reduce((grouped: GroupedEpisodes, episode: Episode) => {
+    const key = String(episode.season)
+    grouped[key] = grouped[key] || []
+    grouped[key].push(episode)
+    return grouped
+  }, {})
+}
+
+export {
+  normalizeShows,
+  normalizeEpisodes,
+  filterShows,
+  findGenres,
+  filterImages,
+  shuffle,
+  groupEpisodesBySeason
+}

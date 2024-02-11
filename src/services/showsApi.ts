@@ -25,6 +25,9 @@ export default class ShowsAPIService {
   async getShowImages(id: string | number) {
     return this.axiosCall({ method: 'GET', url: `/shows/${id}/images` })
   }
+  async getShowEpisodes(id: string | number) {
+    return this.axiosCall({ method: 'GET', url: `/shows/${id}/episodes` })
+  }
   async searchShows(query: string) {
     return this.axiosCall({ method: 'GET', url: `/search/shows?q=${query}` })
   }

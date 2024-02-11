@@ -13,7 +13,6 @@ export type Show = {
   premiered: string
   status: string
   summary: string
-  officialSite: string
   language: string
   officialSite?: string | null
 }
