@@ -7,8 +7,4 @@ import TopNav from './components/TopNav.vue'
   <RouterView> </RouterView>
 </template>
 
-<style scoped>
-* {
-  font-family: 'Inter-Regular';
-}
-</style>
+<style scoped></style>

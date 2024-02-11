@@ -16,7 +16,9 @@ function normalizeShows(data: any[]): Show[] {
       genres: obj.genres,
       premiered: obj.premiered,
       status: obj.status,
-      summary: obj.summary
+      summary: obj.summary,
+      language: obj.language,
+      officialSite: obj.network ? obj.network?.officialSite : null
     }
   })
 }

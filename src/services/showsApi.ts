@@ -19,10 +19,10 @@ export default class ShowsAPIService {
   async getShows() {
     return this.axiosCall({ method: 'GET', url: '/shows' })
   }
-  async getShow(id: number) {
+  async getShowById(id: string | number) {
     return this.axiosCall({ method: 'GET', url: `/shows/${id}` })
   }
-  async getShowImages(id: number) {
+  async getShowImages(id: string | number) {
     return this.axiosCall({ method: 'GET', url: `/shows/${id}/images` })
   }
   async searchShows(query: string) {

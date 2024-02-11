@@ -1,12 +1,160 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-// const showID = this.$route.params.id
-onMounted(() => {})
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { showsAPIService } from '@/services/showsApi'
+import type { Show } from '@/types/Show'
+import { normalizeShows } from '@/utils/normalizeShows'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+
+const route = useRoute()
+
+const showID = route.params.id as string
+const showCover = ref<string>('')
+let show = ref<Show | null>(null)
+
+async function getShow() {
+  const [showInfo, images] = await Promise.all([
+    showsAPIService.getShowById(showID),
+    showsAPIService.getShowImages(showID)
+  ])
+  const result: Show[] = normalizeShows(showInfo)
+  show.value = result[0]
+  const backgroundObject = images[0].find((obj: { type: string }) => obj.type === 'background')
+  showCover.value = backgroundObject ? backgroundObject.resolutions.original.url : ''
+}
+
+onMounted(() => {
+  getShow()
+})
 </script>
 
 })
 
 <template>
-  <main>sdads</main>
+  <main class="bg-primary">
+    <div class="show-header">
+      <div class="show-header__summary">
+        <h1>{{ show?.name }}</h1>
+        <p v-html="show?.summary"></p>
+      </div>
+      <img class="show-header__cover" :src="showCover" alt="Show cover" />
+    </div>
+    <Tabs default-value="show-info" class="show-info dark">
+      <TabsList>
+        <TabsTrigger value="show-info">Show Info</TabsTrigger>
+        <TabsTrigger value="episodes">Episodes</TabsTrigger>
+        <TabsTrigger value="cast">Cast</TabsTrigger>
+        <TabsTrigger value="gallery">Gallery</TabsTrigger>
+      </TabsList>
+      <TabsContent value="show-info">
+        <h2>Show info</h2>
+        <div class="show-info__list">
+          <div class="show-info__list-item">
+            <h5>Rating:</h5>
+            <div class="show-info__rating">
+              <p>{{ show?.rating.average }}</p>
+              <img src="../assets/star.svg" alt="Show rating" />
+            </div>
+          </div>
+          <div class="show-info__list-item">
+            <h5>Genres:</h5>
+            <p>{{ show?.genres.join(', ') }}</p>
+          </div>
+          <div class="show-info__list-item">
+            <h5>Status:</h5>
+            <p>{{ show?.status }}</p>
+          </div>
+          <div class="show-info__list-item">
+            <h5>Language:</h5>
+            <p>{{ show?.language }}</p>
+          </div>
+          <div class="show-info__list-item">
+            <h5>Premiered:</h5>
+            <p>{{ show?.premiered }}</p>
+          </div>
+          <div class="show-info__list-item">
+            <h5>Official Site:</h5>
+            <a v-if="show?.officialSite" :href="show?.officialSite">{{ show?.officialSite }}</a>
+          </div>
+        </div>
+      </TabsContent>
+      <TabsContent value="episodes"> Change your password here. </TabsContent>
+      <TabsContent value="cast"></TabsContent>
+    </Tabs>
+  </main>
 </template>
-<style scoped></style>
+<style scoped>
+.show-header {
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 32px;
+  height: 600px;
+  margin-left: 50px;
+  margin-right: 40px;
+}
+.show-header__summary {
+  flex: 1 0 30%;
+  max-width: 600px;
+  margin-top: 180px;
+}
+.show-header__cover {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  /* mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 50%);
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 50%); */
+}
+
+.show-info {
+  margin-top: 80px;
+  padding-bottom: 100px;
+}
+
+.show-info__list {
+  margin-top: 16px;
+  display: flex;
+  width: 380px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.show-info__list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.show-info__rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+a {
+  color: #fff;
+}
+
+@media screen and (max-width: 1500px) {
+  .show-header {
+    flex-direction: column;
+    gap: 16px;
+    height: auto;
+  }
+  .show-header__summary {
+    margin-top: 0;
+  }
+  .show-header__cover {
+    max-width: 100%;
+    height: auto;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+  .show-info {
+    margin-top: 32px;
+  }
+}
+</style>

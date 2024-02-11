@@ -9,6 +9,7 @@ import {
 import { Card, CardContent } from '@/components/ui/card'
 import type { Show } from '@/types/Show'
 import type { PropType } from 'vue'
+import { useRouter } from 'vue-router'
 
 defineProps({
   shows: {
@@ -16,6 +17,12 @@ defineProps({
     required: true
   }
 })
+
+const router = useRouter()
+
+const openDetailPage = (id: number) => {
+  router.push({ path: `/show/${id}` })
+}
 </script>
 <template>
   <Carousel
@@ -31,7 +38,7 @@ defineProps({
         :key="index"
         class="carousel-item sm:basis-1/2 md:basis-1/3 lg:basis-1/5"
       >
-        <Card class="carousel-card">
+        <Card @click="openDetailPage(show.id)" class="carousel-card">
           <CardContent class="carousel-card__content">
             <img :src="show.image.original" alt="Show cover" />
           </CardContent>
