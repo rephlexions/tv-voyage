@@ -10,9 +10,6 @@ const router = useRouter()
 const setSearch = () => {
   router.push({ path: 'search', query: { show: search.value } })
 }
-const goHome = () => {
-  router.push({ path: '/' })
-}
 </script>
 <template>
   <nav class="topNav bg-primary">

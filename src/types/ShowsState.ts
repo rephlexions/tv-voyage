@@ -9,6 +9,5 @@ export type ShowsState = {
   secondCarousel: Show[]
   thirdCarousel: Show[]
   genres: Genre[]
-  isRequestLoading: boolean
-  hasShows: boolean
+  isSet: boolean
 }

@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { showsAPIService } from '@/services/showsApi'
 import type { Show } from '@/types/Show'
 import type { Episode } from '@/types/Episode'
-import { normalizeShows, normalizeEpisodes, groupEpisodesBySeason } from '@/utils/normalizeShows'
+import { normalizeShows, normalizeEpisodes, groupEpisodesBySeason } from '@/utils/utils'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { ChevronLeft } from 'lucide-vue-next'
+import { Button } from '@/components/ui/button'
 
 const route = useRoute()
+const router = useRouter()
 
 const showID = route.params.id as string
 const showCover = ref<string>('')
@@ -30,6 +33,9 @@ async function getShow() {
   const normalizedEpisodes: Episode[] = normalizeEpisodes(episodes[0])
   episodesList.value = groupEpisodesBySeason(normalizedEpisodes)
 }
+const goHome = () => {
+  router.push({ path: '/' })
+}
 
 onMounted(() => {
   getShow()
@@ -40,6 +46,9 @@ onMounted(() => {
 
 <template>
   <main class="bg-primary">
+    <Button @click="goHome" class="back-button dark">
+      <ChevronLeft class="w-4 h-4" />
+    </Button>
     <div class="show-header">
       <div class="show-header__summary">
         <h1>{{ show?.name }}</h1>
@@ -51,8 +60,6 @@ onMounted(() => {
       <TabsList>
         <TabsTrigger value="show-info">Show Info</TabsTrigger>
         <TabsTrigger value="episodes">Episodes</TabsTrigger>
-        <TabsTrigger value="cast">Cast</TabsTrigger>
-        <TabsTrigger value="gallery">Gallery</TabsTrigger>
       </TabsList>
       <TabsContent value="show-info">
         <h2>Show info</h2>
@@ -86,8 +93,17 @@ onMounted(() => {
           </div>
         </div>
       </TabsContent>
-      <TabsContent value="episodes"> Change your password here. </TabsContent>
-      <TabsContent value="cast"></TabsContent>
+      <TabsContent value="episodes">
+        <h2>Episodes</h2>
+        <template v-for="(season, index) in Object.keys(episodesList)" :key="index">
+          <h3>Season {{ season }}</h3>
+          <ul>
+            <li v-for="episode in episodesList[season]" :key="episode.id">
+              <p>{{ episode.name }}</p>
+            </li>
+          </ul>
+        </template>
+      </TabsContent>
     </Tabs>
   </main>
 </template>
@@ -142,8 +158,16 @@ onMounted(() => {
   gap: 8px;
 }
 
+.back-button {
+  position: relative;
+  top: 20px;
+  left: 50px;
+  z-index: 100;
+}
+
 a {
   color: #fff;
+  text-decoration: underline;
 }
 
 @media screen and (max-width: 1500px) {
@@ -164,5 +188,9 @@ a {
   .show-info {
     margin-top: 32px;
   }
+  .back-button {
+    margin-bottom: 40px;
+  }
 }
 </style>
+@/utils/utils

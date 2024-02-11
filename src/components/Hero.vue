@@ -108,8 +108,6 @@ const openDetailPage = (id: number) => {
 }
 
 .carousel-show__title {
-  font-size: 80px;
-  font-weight: 700;
   margin-bottom: 16px;
 }
 

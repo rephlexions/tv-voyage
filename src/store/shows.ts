@@ -1,12 +1,6 @@
 import { defineStore } from 'pinia'
 import { showsAPIService } from '@/services/showsApi'
-import {
-  normalizeShows,
-  findGenres,
-  filterShows,
-  filterImages,
-  shuffle
-} from '@/utils/normalizeShows'
+import { normalizeShows, findGenres, filterShows, filterImages, shuffle } from '@/utils/utils'
 import type { ShowsState } from '@/types/ShowsState'
 import type { Genre } from '@/types/Genre'
 
@@ -19,22 +13,19 @@ export const useShows = defineStore('shows', {
     secondCarousel: [],
     thirdCarousel: [],
     genres: [],
-    isRequestLoading: false,
-    hasShows: false
+    isSet: false
   }),
   getters: {
-    isLoading({ isRequestLoading }): boolean {
-      return isRequestLoading
+    isLoading({ isSet }): boolean {
+      return isSet
     }
   },
   actions: {
     async fetchShows(): Promise<void> {
-      this.isRequestLoading = true
       const [shows] = await showsAPIService.getShows()
       this.shows = normalizeShows(shows)
       this.genres = findGenres(shows)
-      this.isRequestLoading = false
-      this.hasShows = true
+      this.isSet = true
     },
     setShowsByGenre(genre: Genre, index: number): void {
       switch (index) {

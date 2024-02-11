@@ -7,22 +7,24 @@ import Hero from '@/components/Hero.vue'
 import MoviesCarousel from '@/components/MoviesCarousel.vue'
 
 const showsStore = useShows()
-const { genres, latestShows, firstCarousel, secondCarousel, thirdCarousel, isRequestLoading } =
+const { genres, latestShows, firstCarousel, secondCarousel, thirdCarousel, isSet } =
   storeToRefs(showsStore)
 
 onMounted(() => {
-  showsStore.fetchShows().then(() => {
-    const types = ['Science-Fiction', 'Action', 'Romance']
-    types.forEach((type, index) => {
-      const genreIndex = genres.value.findIndex((genre: Genre) => genre.name === type)
-      if (genreIndex) {
-        const genre: Genre = genres.value[genreIndex]
-        showsStore.setShowsByGenre(genre, index)
-      }
+  if (!isSet.value) {
+    showsStore.fetchShows().then(() => {
+      const types = ['Science-Fiction', 'Action', 'Romance']
+      types.forEach((type, index) => {
+        const genreIndex = genres.value.findIndex((genre: Genre) => genre.name === type)
+        if (genreIndex) {
+          const genre: Genre = genres.value[genreIndex]
+          showsStore.setShowsByGenre(genre, index)
+        }
+      })
+      showsStore.setTopShows(10)
+      showsStore.setLatestShows(8)
     })
-    showsStore.setTopShows(10)
-    showsStore.setLatestShows(8)
-  })
+  }
 })
 </script>
 
