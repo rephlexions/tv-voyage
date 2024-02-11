@@ -4,10 +4,10 @@ import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
 import type { Genre } from '@/types/Genre'
 import Hero from '@/components/Hero.vue'
-import Carousel from '@/components/Carousel.vue'
+import MoviesCarousel from '@/components/MoviesCarousel.vue'
 
 const showsStore = useShows()
-const { genres, latestShows, firstCarousel, secondCarousel, isRequestLoading } =
+const { genres, latestShows, firstCarousel, secondCarousel, thirdCarousel, isRequestLoading } =
   storeToRefs(showsStore)
 
 onMounted(() => {
@@ -21,7 +21,7 @@ onMounted(() => {
       }
     })
     showsStore.setTopShows(10)
-    showsStore.setLatestShows(4)
+    showsStore.setLatestShows(8)
   })
 })
 </script>
@@ -32,12 +32,21 @@ onMounted(() => {
   <main class="bg-primary text-primary-foreground">
     <Hero :shows="latestShows" />
     <div class="shows-list">
-      <div>
-        <h2>Science-Fiction</h2>
-        <Carousel :shows="firstCarousel"></Carousel>
+      <div class="shows-list__item">
+        <h1>Top TV Shows</h1>
+        <MoviesCarousel :shows="latestShows"></MoviesCarousel>
       </div>
-      <div>
+      <div class="shows-list__item">
+        <h1>Science-Fiction</h1>
+        <MoviesCarousel :shows="firstCarousel"></MoviesCarousel>
+      </div>
+      <div class="shows-list__item">
         <h2>Action</h2>
+        <MoviesCarousel :shows="secondCarousel"></MoviesCarousel>
+      </div>
+      <div class="shows-list__item">
+        <h2>Romance</h2>
+        <MoviesCarousel :shows="thirdCarousel"></MoviesCarousel>
       </div>
     </div>
   </main>
@@ -46,7 +55,17 @@ onMounted(() => {
 .shows-list {
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  margin: 100px;
+  gap: 50px;
+  margin-top: 50px;
+  margin-left: 100px;
+  margin-right: 100px;
+  padding-bottom: 100px;
+}
+.shows-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 32px;
+  text-align: left;
 }
 </style>

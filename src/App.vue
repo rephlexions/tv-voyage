@@ -1,18 +1,14 @@
 <script setup lang="ts">
-// import { RouterLink, RouterView } from 'vue-router'
 import TopNav from './components/TopNav.vue'
-import HomeView from './views/HomeView.vue'
 </script>
 
 <template>
-  <div class="bg-primary">
-    <TopNav></TopNav>
-  </div>
-  <HomeView></HomeView>
+  <TopNav></TopNav>
+  <RouterView> </RouterView>
 </template>
 
 <style scoped>
 * {
-  font-family: 'Inter-Regular' !important;
+  font-family: 'Inter-Regular';
 }
 </style>

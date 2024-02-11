@@ -1,6 +1,12 @@
 import { defineStore } from 'pinia'
 import { showsAPIService } from '@/services/showsApi'
-import { normalizeShows, findGenres, filterShows, filterImages } from '@/utils/normalizeShows'
+import {
+  normalizeShows,
+  findGenres,
+  filterShows,
+  filterImages,
+  shuffle
+} from '@/utils/normalizeShows'
 import type { ShowsState } from '@/types/ShowsState'
 import type { Genre } from '@/types/Genre'
 
@@ -33,13 +39,19 @@ export const useShows = defineStore('shows', {
     setShowsByGenre(genre: Genre, index: number): void {
       switch (index) {
         case 0:
-          this.firstCarousel = filterShows(this.shows, genre)
+          // eslint-disable-next-line no-case-declarations
+          const firstGenre = filterShows(this.shows, genre)
+          this.firstCarousel = shuffle(firstGenre)
           break
         case 1:
-          this.secondCarousel = filterShows(this.shows, genre)
+          // eslint-disable-next-line no-case-declarations
+          const secondGenre = filterShows(this.shows, genre)
+          this.secondCarousel = shuffle(secondGenre)
           break
         case 2:
-          this.thirdCarousel = filterShows(this.shows, genre)
+          // eslint-disable-next-line no-case-declarations
+          const thirdGenre = filterShows(this.shows, genre)
+          this.thirdCarousel = shuffle(thirdGenre)
           break
       }
     },

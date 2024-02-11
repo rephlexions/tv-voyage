@@ -7,6 +7,6 @@ onMounted(() => {})
 })
 
 <template>
-  <main></main>
+  <main>sdads</main>
 </template>
 <style scoped></style>

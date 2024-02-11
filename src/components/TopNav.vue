@@ -15,13 +15,12 @@ const goHome = () => {
 }
 </script>
 <template>
-  <nav class="topNav">
+  <nav class="topNav bg-primary">
     <a href="/" class="topNav__logo"> <img src="../assets/logo.svg" alt="TV Voyage logo" /></a>
     <div class="topNav__input-wrapper">
       <Input
-        :class="['dark']"
         v-model="search"
-        class="topNav__input"
+        class="topNav__input dark"
         id="search"
         type="text"
         placeholder="Type your favorite TV show..."
@@ -52,5 +51,6 @@ const goHome = () => {
 }
 .topNav__input {
   width: 250px;
+  color: #fff;
 }
 </style>

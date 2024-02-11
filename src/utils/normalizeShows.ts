@@ -43,4 +43,12 @@ function filterImages(data: any[]): string {
   return data[index].resolutions.original.url
 }
 
-export { normalizeShows, filterShows, findGenres, filterImages }
+function shuffle(array: any[]): any[] {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[array[i], array[j]] = [array[j], array[i]]
+  }
+  return array
+}
+
+export { normalizeShows, filterShows, findGenres, filterImages, shuffle }

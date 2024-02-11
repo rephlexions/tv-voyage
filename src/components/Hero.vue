@@ -6,9 +6,12 @@ import {
   CarouselNext,
   CarouselPrevious
 } from '@/components/ui/carousel'
+import Autoplay from 'embla-carousel-autoplay'
 import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import type { Show } from '@/types/Show'
 import type { PropType } from 'vue'
+import { useRouter } from 'vue-router'
 
 defineProps({
   shows: {
@@ -16,6 +19,12 @@ defineProps({
     required: true
   }
 })
+
+const router = useRouter()
+
+const openDetailPage = (id: number) => {
+  router.push({ path: `/show/${id}` })
+}
 </script>
 <template>
   <Carousel
@@ -23,6 +32,11 @@ defineProps({
     :opts="{
       loop: true
     }"
+    :plugins="[
+      Autoplay({
+        delay: 5000
+      })
+    ]"
   >
     <CarouselContent class="carousel__content">
       <CarouselItem v-for="(item, index) in shows" :key="index">
@@ -35,6 +49,7 @@ defineProps({
               <div class="carousel-show__title-wrapper">
                 <h1 class="carousel-show__title">{{ item.name }}</h1>
                 <div class="carousel-show__description" v-html="item.summary"></div>
+                <Button @click="openDetailPage(item.id)">Find out more</Button>
               </div>
             </div>
           </CardContent>
@@ -89,7 +104,7 @@ defineProps({
   top: 30%;
   margin-left: 10%;
   left: 16px;
-  color: #fff;
+  text-align: left;
 }
 
 .carousel-show__title {
@@ -101,6 +116,7 @@ defineProps({
 .carousel-show__description {
   font-size: 13px;
   width: 600px;
+  margin-bottom: 16px;
 }
 
 .carousel button:first-of-type {
