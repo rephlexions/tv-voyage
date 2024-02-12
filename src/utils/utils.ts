@@ -1,7 +1,6 @@
 import type { Episode } from '@/types/Episode'
 import type { Genre } from '@/types/Genre'
 import type { GroupedEpisodes } from '@/types/GroupedEpisode'
-import type { OriginalShow } from '@/types/OriginalShow'
 import type { Show } from '@/types/Show'
 
 function normalizeShows(data: any[]): Show[] {
