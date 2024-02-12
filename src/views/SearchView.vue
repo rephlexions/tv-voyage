@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { showsAPIService } from '@/services/showsApi'
 import type { Show } from '@/types/Show'
 import { normalizeSearchResults } from '@/utils/utils'
+import { Card, CardContent } from '@/components/ui/card'
 
 const route = useRoute()
 
@@ -27,6 +28,15 @@ onMounted(() => {
 })
 
 <template>
-  <main class="bg-primary">search</main>
+  <main class="bg-primary">
+    <h1>Search results for "{{ query }}"</h1>
+    <div v-if="results" class="search-results">
+      <Card v-for="(show, index) in results" :key="index" class="search-results__card">
+        <CardContent class="search-results__card-content">
+          <img v-if="show.image" :src="show.image.original" alt="Show cover" />
+        </CardContent>
+      </Card>
+    </div>
+  </main>
 </template>
 <style scoped></style>
