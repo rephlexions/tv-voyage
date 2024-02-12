@@ -40,7 +40,7 @@ const openDetailPage = (id: number) => {
       >
         <Card @click="openDetailPage(show.id)" class="carousel-card">
           <CardContent class="carousel-card__content">
-            <img :src="show.image.original" alt="Show cover" />
+            <img v-if="show.image" :src="show.image.original" alt="Show cover" />
           </CardContent>
         </Card>
       </CarouselItem>

@@ -8,7 +8,7 @@ const search = ref('')
 const router = useRouter()
 
 const setSearch = () => {
-  router.push({ path: 'search', query: { show: search.value } })
+  router.push({ path: `/search/${search.value}` })
 }
 </script>
 <template>

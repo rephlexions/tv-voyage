@@ -1,6 +1,7 @@
 import type { Episode } from '@/types/Episode'
 import type { Genre } from '@/types/Genre'
 import type { GroupedEpisodes } from '@/types/GroupedEpisode'
+import type { OriginalShow } from '@/types/OriginalShow'
 import type { Show } from '@/types/Show'
 
 function normalizeShows(data: any[]): Show[] {
@@ -38,11 +39,32 @@ function normalizeEpisodes(data: any[]): Episode[] {
     }
   })
 }
+function normalizeSearchResults(data: any[]): Show[] {
+  console.log(data)
+  const results: any[] = []
+  data[0].forEach((el: { show: any }) => {
+    results.push(el.show)
+  })
+  console.log(results)
+
+  return results.map((obj: Show) => {
+    return {
+      id: obj.id,
+      name: obj.name,
+      image: obj.image
+        ? {
+            medium: obj.image.medium,
+            original: obj.image.original
+          }
+        : null
+    }
+  })
+}
 
 function filterShows(data: Show[], type: Genre): Show[] {
   const { name } = type
   if (name === 'all') return data
-  data = data.filter((show) => show.genres.includes(name))
+  data = data.filter((show) => show.genres!.includes(name))
   return data
 }
 
@@ -85,5 +107,6 @@ export {
   findGenres,
   filterImages,
   shuffle,
-  groupEpisodesBySeason
+  groupEpisodesBySeason,
+  normalizeSearchResults
 }

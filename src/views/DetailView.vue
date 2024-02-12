@@ -67,13 +67,13 @@ onMounted(() => {
           <div class="show-info__list-item">
             <h5>Rating:</h5>
             <div class="show-info__rating">
-              <p>{{ show?.rating.average }}</p>
+              <p v-if="show && show.rating">{{ show?.rating.average }}</p>
               <img src="../assets/star.svg" alt="Show rating" />
             </div>
           </div>
           <div class="show-info__list-item">
             <h5>Genres:</h5>
-            <p>{{ show?.genres.join(', ') }}</p>
+            <p v-if="show && show.genres">{{ show?.genres.join(', ') }}</p>
           </div>
           <div class="show-info__list-item">
             <h5>Status:</h5>
