@@ -40,12 +40,10 @@ function normalizeEpisodes(data: any[]): Episode[] {
   })
 }
 function normalizeSearchResults(data: any[]): Show[] {
-  console.log(data)
   const results: any[] = []
   data[0].forEach((el: { show: any }) => {
     results.push(el.show)
   })
-  console.log(results)
 
   return results.map((obj: Show) => {
     return {
