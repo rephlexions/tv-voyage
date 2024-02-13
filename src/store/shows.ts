@@ -62,6 +62,9 @@ export const useShows = defineStore('shows', {
         show.image!.background = filterImages(images)
       })
       this.latestShows = shows
+    },
+    clearStore(): void {
+      this.shows = []
     }
   }
 })

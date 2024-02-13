@@ -39,7 +39,7 @@ function normalizeEpisodes(data: any[]): Episode[] {
   })
 }
 function normalizeSearchResults(data: any[]): Show[] {
-  const results: any[] = []
+  const results: Show[] = []
   data[0].forEach((el: { show: any }) => {
     results.push(el.show)
   })

@@ -23,6 +23,7 @@ onMounted(() => {
       })
       showsStore.setTopShows(10)
       showsStore.setLatestShows(8)
+      showsStore.clearStore()
     })
   }
 })

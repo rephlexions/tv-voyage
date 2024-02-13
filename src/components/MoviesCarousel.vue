@@ -82,13 +82,8 @@ const openDetailPage = (id: number) => {
   cursor: pointer;
 }
 
-.carousel-item {
-  /* width: 20rem;
-  height: 30rem; */
-}
-
 .carousel button:first-of-type,
 .carousel button:last-of-type {
-  top: 15rem;
+  top: 50%;
 }
 </style>

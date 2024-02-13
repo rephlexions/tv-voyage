@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { showsAPIService } from '@/services/showsApi'
 import type { Show } from '@/types/Show'
@@ -11,11 +11,13 @@ import { Button } from '@/components/ui/button'
 
 const route = useRoute()
 const router = useRouter()
+const searchQuery = ref<string>('')
 
-const query = route.params.query as string
 const results = ref<Show[] | null>(null)
 
 async function searchShows() {
+  const query = route.params.query as string
+  searchQuery.value = query
   const searchResults = await showsAPIService.searchShows(query)
   const normalizedShows: Show[] = normalizeSearchResults(searchResults)
   results.value = normalizedShows
@@ -24,6 +26,11 @@ async function searchShows() {
 onMounted(() => {
   searchShows()
 })
+
+watch(
+  () => route.params.query,
+  () => searchShows()
+)
 
 const openDetailPage = (id: number) => {
   router.push({ path: `/show/${id}` })
@@ -38,7 +45,7 @@ const goBack = () => {
       <Button @click="goBack" class="back-button dark">
         <ChevronLeft class="w-4 h-4" />
       </Button>
-      <h5>Search results for "{{ query }}"</h5>
+      <h5>Search results for "{{ searchQuery }}"</h5>
       <div v-if="results" class="search-results__cards">
         <Card
           v-for="(show, index) in results"

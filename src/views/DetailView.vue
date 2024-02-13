@@ -167,8 +167,6 @@ onMounted(() => {
   height: 600px;
   object-fit: cover;
   border-radius: 10px;
-  /* mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 50%);
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 50%); */
 }
 
 .show-info {
@@ -254,4 +252,3 @@ a {
   }
 }
 </style>
-@/utils/utils
