@@ -18,7 +18,7 @@ export const useShows = defineStore('shows', {
   getters: {},
   actions: {
     async fetchShows(): Promise<void> {
-      const [shows] = await showsAPIService.getShows()
+      const [shows]: any[] = await showsAPIService.getShows()
 
       this.shows = normalizeShows(shows)
       this.genres = findGenres(shows)
