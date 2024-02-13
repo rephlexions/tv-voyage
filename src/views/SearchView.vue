@@ -15,14 +15,14 @@ const router = useRouter()
 const query = route.params.query as string
 const results = ref<Show[] | null>(null)
 
-async function searchShow() {
+async function searchShows() {
   const searchResults = await showsAPIService.searchShows(query)
   const normalizedShows: Show[] = normalizeSearchResults(searchResults)
   results.value = normalizedShows
 }
 
 onMounted(() => {
-  searchShow()
+  searchShows()
 })
 
 const openDetailPage = (id: number) => {
@@ -64,7 +64,8 @@ const goBack = () => {
 }
 .search-results {
   margin: 0px 40px 0 40px;
-  height: 100vh;
+  padding-bottom: 50px;
+  height: auto;
 }
 
 .search-results__cards {

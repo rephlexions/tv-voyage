@@ -119,7 +119,7 @@ onMounted(() => {
                     <TableHead>Number</TableHead>
                     <TableHead>Name</TableHead>
                     <TableHead>Rating</TableHead>
-                    <TableHead class="text-right">Air date</TableHead>
+                    <TableHead>Air date</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -134,7 +134,7 @@ onMounted(() => {
                         {{ episode.rating.average }}
                       </div>
                     </TableCell>
-                    <TableCell class="text-right">
+                    <TableCell>
                       {{ episode.airDate }}
                     </TableCell>
                   </TableRow>
