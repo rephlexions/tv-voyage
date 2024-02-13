@@ -123,4 +123,9 @@ const openDetailPage = (id: number) => {
 .carousel button:last-of-type {
   right: 30px;
 }
+@media screen and (max-width: 600px) {
+  .carousel-show__description {
+    padding-right: 160px;
+  }
+}
 </style>

@@ -77,10 +77,14 @@ const openDetailPage = (id: number) => {
 .carousel-card {
   width: fit-content;
   height: fit-content;
+  transition-property: transform;
+  transition-duration: 0.5s;
+  transition-delay: 0s;
 }
 
 .carousel-card:hover {
   cursor: pointer;
+  transform: scale(1.1);
 }
 
 .carousel button:first-of-type,

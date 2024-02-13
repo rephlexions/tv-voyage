@@ -57,7 +57,7 @@ const goBack = () => {
             <img v-if="show.image" :src="show.image.original" alt="Show cover" />
           </CardContent>
           <CardFooter class="search-results__card-footer">
-            <p>{{ show.name }}</p>
+            <h4>{{ show.name }}</h4>
           </CardFooter>
         </Card>
       </div>
@@ -85,14 +85,18 @@ const goBack = () => {
 .search-results__card {
   width: 100%;
   max-width: 250px;
-  height: 350px;
+  height: 380px;
   margin-bottom: 3rem;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  transition-property: transform;
+  transition-duration: 0.5s;
+  transition-delay: 0s;
 }
 
 .search-results__card:hover {
   cursor: pointer;
+  transform: scale(1.05);
 }
 
 .search-results__card-content {
@@ -118,10 +122,11 @@ const goBack = () => {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-p {
+h4 {
   color: #fff;
   margin-left: auto;
   margin-right: auto;
+  font-weight: 800;
 }
 
 @media screen and (max-width: 600px) {

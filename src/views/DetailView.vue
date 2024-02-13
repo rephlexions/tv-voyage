@@ -127,10 +127,11 @@ onMounted(() => {
                     </TableCell>
                     <TableCell>{{ episode.name }}</TableCell>
                     <TableCell>
-                      <div class="show-info__rating">
+                      <div v-if="episode.rating.average" class="show-info__rating">
                         <img src="../assets/star.svg" alt="Show rating" />
                         {{ episode.rating.average }}
                       </div>
+                      <div v-else>-</div>
                     </TableCell>
                     <TableCell>
                       {{ episode.airDate }}
@@ -210,7 +211,8 @@ a {
 
 .episodes-cards {
   color: #fff;
-  margin: 40px 0px 0px 0px;
+  margin-top: 40px;
+  padding-right: 40px;
   display: grid;
   gap: 20px;
 }
