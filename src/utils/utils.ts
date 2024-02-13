@@ -4,45 +4,39 @@ import type { GroupedEpisodes } from '@/types/GroupedEpisode'
 import type { Show } from '@/types/Show'
 
 function normalizeShows(data: any[]): Show[] {
-  if (Array.isArray(data)) {
-    return data.map((obj) => {
-      return {
-        id: obj.id,
-        name: obj.name,
-        image: {
-          medium: obj.image.medium,
-          original: obj.image.original
-        },
-        rating: {
-          average: obj.rating.average
-        },
-        genres: obj.genres,
-        premiered: obj.premiered,
-        status: obj.status,
-        summary: obj.summary,
-        language: obj.language,
-        officialSite: obj.network ? obj.network?.officialSite : null
-      }
-    })
-  }
-  return data
+  return data.map((obj) => {
+    return {
+      id: obj.id,
+      name: obj.name,
+      image: {
+        medium: obj.image.medium,
+        original: obj.image.original
+      },
+      rating: {
+        average: obj.rating.average
+      },
+      genres: obj.genres,
+      premiered: obj.premiered,
+      status: obj.status,
+      summary: obj.summary,
+      language: obj.language,
+      officialSite: obj.network ? obj.network?.officialSite : null
+    }
+  })
 }
 function normalizeEpisodes(data: any[]): Episode[] {
-  if (Array.isArray(data)) {
-    return data.map((obj) => {
-      return {
-        id: obj.id,
-        name: obj.name,
-        number: obj.number,
-        season: obj.season,
-        airDate: obj.airdate,
-        rating: {
-          average: obj.rating.average
-        }
+  return data.map((obj) => {
+    return {
+      id: obj.id,
+      name: obj.name,
+      number: obj.number,
+      season: obj.season,
+      airDate: obj.airdate,
+      rating: {
+        average: obj.rating.average
       }
-    })
-  }
-  return data
+    }
+  })
 }
 function normalizeSearchResults(data: any[]): Show[] {
   const results: Show[] = []
@@ -75,14 +69,11 @@ function filterShows(data: Show[], type: Genre): Show[] {
 }
 
 function findGenres(data: any[]): Genre[] {
-  if (Array.isArray(data)) {
-    const genres = data.map((show) => show.genres).flat()
-    const uniqueGenres = [...new Set(genres)]
-    return uniqueGenres.map((genre, index) => {
-      return { id: index, name: genre }
-    })
-  }
-  return data
+  const genres = data.map((show) => show.genres).flat()
+  const uniqueGenres = [...new Set(genres)]
+  return uniqueGenres.map((genre, index) => {
+    return { id: index, name: genre }
+  })
 }
 
 function getBackgroundImage(data: any[]): string {

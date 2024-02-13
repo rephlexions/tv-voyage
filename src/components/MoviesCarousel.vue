@@ -65,6 +65,7 @@ const openDetailPage = (id: number) => {
   width: 100%;
   height: auto;
   overflow: hidden;
+  border-radius: 5px;
 }
 .carousel-card__content img {
   width: 100%;
