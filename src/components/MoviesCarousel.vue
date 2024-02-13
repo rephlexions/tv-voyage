@@ -53,24 +53,29 @@ const openDetailPage = (id: number) => {
 .carousel {
   width: 100%;
   height: min-content;
-  margin-left: auto;
-  margin-right: auto;
+}
+
+.carousel div div {
+  gap: 30px;
 }
 .carousel-card__content {
   padding: 0;
   margin: 0;
+  display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+  overflow: hidden;
 }
 .carousel-card__content img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  aspect-ratio: 2/3;
 }
 
 .carousel-card {
   width: fit-content;
-  height: inherit;
+  height: fit-content;
 }
 
 .carousel-card:hover {
@@ -78,8 +83,8 @@ const openDetailPage = (id: number) => {
 }
 
 .carousel-item {
-  width: 20rem;
-  height: 30rem;
+  /* width: 20rem;
+  height: 30rem; */
 }
 
 .carousel button:first-of-type,

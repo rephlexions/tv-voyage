@@ -46,8 +46,8 @@ async function getShow() {
   const normalizedEpisodes: Episode[] = normalizeEpisodes(episodes[0])
   episodesList.value = groupEpisodesBySeason(normalizedEpisodes)
 }
-const goHome = () => {
-  router.push({ path: '/' })
+const goBack = () => {
+  router.back()
 }
 
 onMounted(() => {
@@ -59,7 +59,7 @@ onMounted(() => {
 
 <template>
   <main class="bg-primary">
-    <Button @click="goHome" class="back-button dark">
+    <Button @click="goBack" class="back-button dark">
       <ChevronLeft class="w-4 h-4" />
     </Button>
     <div class="show-header">
@@ -202,8 +202,8 @@ onMounted(() => {
 
 .back-button {
   position: relative;
-  top: 20px;
-  left: 50px;
+  top: 35px;
+  left: 40px;
   z-index: 100;
 }
 
