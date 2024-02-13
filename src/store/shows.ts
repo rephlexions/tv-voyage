@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { showsAPIService } from '@/services/showsApi'
-import { normalizeShows, findGenres, filterShows, filterImages, shuffle } from '@/utils/utils'
+import { normalizeShows, findGenres, filterShows, getBackgroundImage, shuffle } from '@/utils/utils'
 import type { ShowsState } from '@/types/ShowsState'
 import type { Genre } from '@/types/Genre'
 
@@ -15,21 +15,19 @@ export const useShows = defineStore('shows', {
     genres: [],
     isSet: false
   }),
-  getters: {
-    isLoading({ isSet }): boolean {
-      return isSet
-    }
-  },
+  getters: {},
   actions: {
     async fetchShows(): Promise<void> {
       const [shows] = await showsAPIService.getShows()
-      console.log(shows)
 
       this.shows = normalizeShows(shows)
       this.genres = findGenres(shows)
       this.isSet = true
     },
     setShowsByGenre(genre: Genre, index: number): void {
+      if (index > 2 || index < 0) {
+        throw new Error('Index must be between 0 and 2')
+      }
       switch (index) {
         case 0:
           // eslint-disable-next-line no-case-declarations
@@ -49,10 +47,16 @@ export const useShows = defineStore('shows', {
       }
     },
     setTopShows(num: number): void {
+      if (num < 1 || typeof num !== 'number') {
+        throw new Error('You must pass a number greater than 1 to setTopShows')
+      }
       const shows = this.shows.sort((a, b) => b.rating!.average - a.rating!.average).slice(0, num)
       this.topShows = shows
     },
     async setLatestShows(num: number): Promise<void> {
+      if (num < 1 || typeof num !== 'number') {
+        throw new Error('You must pass a number greater than 1 to setTopShows')
+      }
       const shows = this.shows
         .filter((show) => show.status === 'Running')
         .sort((a, b) => {
@@ -61,7 +65,7 @@ export const useShows = defineStore('shows', {
         .slice(0, num)
       shows.forEach(async (show) => {
         const [images] = await showsAPIService.getShowImages(show.id)
-        show.image!.background = filterImages(images)
+        show.image!.background = getBackgroundImage(images)
       })
       this.latestShows = shows
     },

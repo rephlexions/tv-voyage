@@ -73,7 +73,7 @@ function findGenres(data: any[]): Genre[] {
   })
 }
 
-function filterImages(data: any[]): string {
+function getBackgroundImage(data: any[]): string {
   const index = data.findIndex(
     (image) => image.type === 'background' && image.resolutions.original.width === 1920
   )
@@ -81,11 +81,12 @@ function filterImages(data: any[]): string {
 }
 
 function shuffle(array: any[]): any[] {
-  for (let i = array.length - 1; i > 0; i--) {
+  const arrayCopy = [...array]
+  for (let i = arrayCopy.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[array[i], array[j]] = [array[j], array[i]]
+    ;[arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]]
   }
-  return array
+  return arrayCopy
 }
 
 function groupEpisodesBySeason(episodes: Episode[]): GroupedEpisodes {
@@ -102,7 +103,7 @@ export {
   normalizeEpisodes,
   filterShows,
   findGenres,
-  filterImages,
+  getBackgroundImage,
   shuffle,
   groupEpisodesBySeason,
   normalizeSearchResults
