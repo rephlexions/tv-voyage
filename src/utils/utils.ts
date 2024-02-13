@@ -4,25 +4,28 @@ import type { GroupedEpisodes } from '@/types/GroupedEpisode'
 import type { Show } from '@/types/Show'
 
 function normalizeShows(data: any[]): Show[] {
-  return data.map((obj) => {
-    return {
-      id: obj.id,
-      name: obj.name,
-      image: {
-        medium: obj.image.medium,
-        original: obj.image.original
-      },
-      rating: {
-        average: obj.rating.average
-      },
-      genres: obj.genres,
-      premiered: obj.premiered,
-      status: obj.status,
-      summary: obj.summary,
-      language: obj.language,
-      officialSite: obj.network ? obj.network?.officialSite : null
-    }
-  })
+  if (Array.isArray(data)) {
+    return data.map((obj) => {
+      return {
+        id: obj.id,
+        name: obj.name,
+        image: {
+          medium: obj.image.medium,
+          original: obj.image.original
+        },
+        rating: {
+          average: obj.rating.average
+        },
+        genres: obj.genres,
+        premiered: obj.premiered,
+        status: obj.status,
+        summary: obj.summary,
+        language: obj.language,
+        officialSite: obj.network ? obj.network?.officialSite : null
+      }
+    })
+  }
+  return data
 }
 function normalizeEpisodes(data: any[]): Episode[] {
   return data.map((obj) => {
