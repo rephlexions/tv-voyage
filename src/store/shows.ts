@@ -23,6 +23,8 @@ export const useShows = defineStore('shows', {
   actions: {
     async fetchShows(): Promise<void> {
       const [shows] = await showsAPIService.getShows()
+      console.log(shows)
+
       this.shows = normalizeShows(shows)
       this.genres = findGenres(shows)
       this.isSet = true

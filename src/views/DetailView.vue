@@ -55,8 +55,6 @@ onMounted(() => {
 })
 </script>
 
-})
-
 <template>
   <main class="bg-primary">
     <Button @click="goBack" class="back-button dark">
