@@ -43,7 +43,7 @@ const openDetailPage = (id: number) => {
         <Card class="carousel-card">
           <CardContent class="carousel-card__content">
             <div class="carousel-show">
-              <div class="carousel-show__image">
+              <div v-if="item.image" class="carousel-show__image">
                 <img :src="item.image.background" alt="Show cover" />
               </div>
               <div class="carousel-show__title-wrapper">
