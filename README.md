@@ -19,3 +19,8 @@ The nice thing is you dont install it as a dependecy. You only add the component
 
 NodeJS: `21.6.1`
 NPM: `8.15.0`
+
+Install:
+`npm install`
+Run:
+`npm run dev`

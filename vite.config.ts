@@ -6,7 +6,6 @@ import tailwind from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
 
 export default defineConfig({
-  base: '/tv-voyage/',
   plugins: [vue()],
   css: {
     postcss: {
