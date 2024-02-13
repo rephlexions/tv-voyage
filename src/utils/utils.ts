@@ -28,18 +28,21 @@ function normalizeShows(data: any[]): Show[] {
   return data
 }
 function normalizeEpisodes(data: any[]): Episode[] {
-  return data.map((obj) => {
-    return {
-      id: obj.id,
-      name: obj.name,
-      number: obj.number,
-      season: obj.season,
-      airDate: obj.airdate,
-      rating: {
-        average: obj.rating.average
+  if (Array.isArray(data)) {
+    return data.map((obj) => {
+      return {
+        id: obj.id,
+        name: obj.name,
+        number: obj.number,
+        season: obj.season,
+        airDate: obj.airdate,
+        rating: {
+          average: obj.rating.average
+        }
       }
-    }
-  })
+    })
+  }
+  return data
 }
 function normalizeSearchResults(data: any[]): Show[] {
   const results: Show[] = []
@@ -47,18 +50,21 @@ function normalizeSearchResults(data: any[]): Show[] {
     results.push(el.show)
   })
 
-  return results.map((obj: Show) => {
-    return {
-      id: obj.id,
-      name: obj.name,
-      image: obj.image
-        ? {
-            medium: obj.image.medium,
-            original: obj.image.original
-          }
-        : null
-    }
-  })
+  if (Array.isArray(results)) {
+    return results.map((obj: Show) => {
+      return {
+        id: obj.id,
+        name: obj.name,
+        image: obj.image
+          ? {
+              medium: obj.image.medium,
+              original: obj.image.original
+            }
+          : null
+      }
+    })
+  }
+  return results
 }
 
 function filterShows(data: Show[], type: Genre): Show[] {
@@ -69,11 +75,14 @@ function filterShows(data: Show[], type: Genre): Show[] {
 }
 
 function findGenres(data: any[]): Genre[] {
-  const genres = data.map((show) => show.genres).flat()
-  const uniqueGenres = [...new Set(genres)]
-  return uniqueGenres.map((genre, index) => {
-    return { id: index, name: genre }
-  })
+  if (Array.isArray(data)) {
+    const genres = data.map((show) => show.genres).flat()
+    const uniqueGenres = [...new Set(genres)]
+    return uniqueGenres.map((genre, index) => {
+      return { id: index, name: genre }
+    })
+  }
+  return data
 }
 
 function getBackgroundImage(data: any[]): string {
