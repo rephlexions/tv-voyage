@@ -35,11 +35,11 @@ onMounted(() => {
     <Hero :shows="latestShows" />
     <div class="shows-list">
       <div class="shows-list__item">
-        <h1>Top TV Shows</h1>
+        <h2>Top TV Shows</h2>
         <MoviesCarousel :shows="latestShows"></MoviesCarousel>
       </div>
       <div class="shows-list__item">
-        <h1>Science-Fiction</h1>
+        <h2>Science-Fiction</h2>
         <MoviesCarousel :shows="firstCarousel"></MoviesCarousel>
       </div>
       <div class="shows-list__item">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { showsAPIService } from '@/services/showsApi'
 import type { Show } from '@/types/Show'
@@ -8,6 +8,15 @@ import { normalizeShows, normalizeEpisodes, groupEpisodesBySeason } from '@/util
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ChevronLeft } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const route = useRoute()
 const router = useRouter()
@@ -16,6 +25,10 @@ const showID = route.params.id as string
 const showCover = ref<string>('')
 const episodesList = ref<Record<string, Episode[]>>({})
 let show = ref<Show | null>(null)
+
+const totalSeasons = computed(() => {
+  return Object.keys(episodesList.value)
+})
 
 async function getShow() {
   const [showInfo, images, episodes] = await Promise.all([
@@ -66,14 +79,14 @@ onMounted(() => {
         <div class="show-info__list">
           <div class="show-info__list-item">
             <h5>Rating:</h5>
-            <div class="show-info__rating">
-              <p v-if="show && show.rating">{{ show?.rating.average }}</p>
+            <div v-if="show && show.rating" class="show-info__rating">
               <img src="../assets/star.svg" alt="Show rating" />
+              <p>{{ show?.rating.average }}</p>
             </div>
           </div>
-          <div class="show-info__list-item">
+          <div v-if="show && show.genres" class="show-info__list-item">
             <h5>Genres:</h5>
-            <p v-if="show && show.genres">{{ show?.genres.join(', ') }}</p>
+            <p>{{ show?.genres.join(', ') }}</p>
           </div>
           <div class="show-info__list-item">
             <h5>Status:</h5>
@@ -87,22 +100,49 @@ onMounted(() => {
             <h5>Premiered:</h5>
             <p>{{ show?.premiered }}</p>
           </div>
-          <div class="show-info__list-item">
+          <div v-if="show?.officialSite" class="show-info__list-item">
             <h5>Official Site:</h5>
-            <a v-if="show?.officialSite" :href="show?.officialSite">{{ show?.officialSite }}</a>
+            <a :href="show?.officialSite">{{ show?.officialSite }}</a>
           </div>
         </div>
       </TabsContent>
       <TabsContent value="episodes">
-        <h2>Episodes</h2>
-        <template v-for="(season, index) in Object.keys(episodesList)" :key="index">
-          <h3>Season {{ season }}</h3>
-          <ul>
-            <li v-for="episode in episodesList[season]" :key="episode.id">
-              <p>{{ episode.name }}</p>
-            </li>
-          </ul>
-        </template>
+        <div class="episodes-cards">
+          <Card v-for="(season, index) in totalSeasons" :key="index">
+            <CardHeader>
+              <CardTitle>Season {{ season }}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Number</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Rating</TableHead>
+                    <TableHead class="text-right">Air date</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow v-for="episode in episodesList[season]" :key="episode.id">
+                    <TableCell class="font-medium">
+                      {{ episode.number }}
+                    </TableCell>
+                    <TableCell>{{ episode.name }}</TableCell>
+                    <TableCell>
+                      <div class="show-info__rating">
+                        <img src="../assets/star.svg" alt="Show rating" />
+                        {{ episode.rating.average }}
+                      </div>
+                    </TableCell>
+                    <TableCell class="text-right">
+                      {{ episode.airDate }}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </div>
       </TabsContent>
     </Tabs>
   </main>
@@ -156,6 +196,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 8px;
+  justify-content: space-between;
 }
 
 .back-button {
@@ -168,6 +209,25 @@ onMounted(() => {
 a {
   color: #fff;
   text-decoration: underline;
+}
+
+.episodes-cards {
+  color: #fff;
+  margin: 40px 40px 0px 40px;
+  display: grid;
+  gap: 20px;
+}
+
+@media (min-width: 1200px) {
+  .episodes-cards {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .episodes-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media screen and (max-width: 1500px) {
