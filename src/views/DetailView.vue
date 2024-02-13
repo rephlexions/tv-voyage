@@ -160,12 +160,12 @@ onMounted(() => {
 }
 .show-header__summary {
   flex: 1 0 30%;
-  max-width: 600px;
   margin-top: 180px;
 }
 .show-header__cover {
-  max-width: 100%;
-  height: auto;
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
   border-radius: 10px;
   /* mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 50%);
   -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 50%); */
@@ -197,6 +197,7 @@ onMounted(() => {
   align-items: center;
   gap: 8px;
   justify-content: space-between;
+  width: 30px;
 }
 
 .back-button {
@@ -213,7 +214,7 @@ a {
 
 .episodes-cards {
   color: #fff;
-  margin: 40px 40px 0px 40px;
+  margin: 40px 0px 0px 0px;
   display: grid;
   gap: 20px;
 }
