@@ -44,21 +44,23 @@ function normalizeSearchResults(data: any[]): Show[] {
     results.push(el.show)
   })
 
-  if (Array.isArray(results)) {
-    return results.map((obj: Show) => {
-      return {
-        id: obj.id,
-        name: obj.name,
-        image: obj.image
-          ? {
-              medium: obj.image.medium,
-              original: obj.image.original
-            }
-          : null
-      }
-    })
-  }
-  return results
+  return results.map((obj: Show) => {
+    return {
+      id: obj.id,
+      name: obj.name,
+      image: obj.image
+        ? {
+            medium: obj.image.medium,
+            original: obj.image.original
+          }
+        : null
+    }
+  })
+
+  // if (Array.isArray(results)) {
+
+  // }
+  // return results
 }
 
 function filterShows(data: Show[], type: Genre): Show[] {

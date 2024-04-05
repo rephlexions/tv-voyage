@@ -1,10 +1,13 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
+
+const BASE_URL = 'http://api.tvmaze.com'
+
 export default class ShowsAPIService {
   private axiosInstance: AxiosInstance
 
   constructor() {
     this.axiosInstance = axios.create({
-      baseURL: 'http://api.tvmaze.com'
+      baseURL: BASE_URL
     })
   }
   private async axiosCall<T>(config: AxiosRequestConfig): Promise<any[]> {
@@ -19,7 +22,7 @@ export default class ShowsAPIService {
   async getShows() {
     return this.axiosCall({ method: 'GET', url: '/shows' })
   }
-  async getShowById(id: string | number) {
+  async getShow(id: string | number) {
     return this.axiosCall({ method: 'GET', url: `/shows/${id}` })
   }
   async getShowImages(id: string | number) {

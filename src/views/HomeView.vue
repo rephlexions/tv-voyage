@@ -29,8 +29,6 @@ onMounted(() => {
 })
 </script>
 
-})
-
 <template>
   <main class="bg-primary text-primary-foreground">
     <Hero :shows="latestShows" />

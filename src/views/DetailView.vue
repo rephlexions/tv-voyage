@@ -32,7 +32,7 @@ const totalSeasons = computed(() => {
 
 async function getShow() {
   const [showInfo, images, episodes] = await Promise.all([
-    showsAPIService.getShowById(showID),
+    showsAPIService.getShow(showID),
     showsAPIService.getShowImages(showID),
     showsAPIService.getShowEpisodes(showID)
   ])
