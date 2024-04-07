@@ -2,28 +2,17 @@
 import { useShows } from '@/store/shows'
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
-import type { Genre } from '@/types/Genre'
 import Hero from '@/components/Hero.vue'
 import MoviesCarousel from '@/components/MoviesCarousel.vue'
 
 const showsStore = useShows()
-const { genres, latestShows, firstCarousel, secondCarousel, thirdCarousel, isSet } =
-  storeToRefs(showsStore)
+const { latestShows, isSet, sfShows, actionShows, romanceShows } = storeToRefs(showsStore)
 
 onMounted(() => {
   if (!isSet.value) {
     showsStore.fetchShows().then(() => {
-      const types = ['Science-Fiction', 'Action', 'Romance']
-      types.forEach((type, index) => {
-        const genreIndex = genres.value.findIndex((genre: Genre) => genre.name === type)
-        if (genreIndex) {
-          const genre: Genre = genres.value[genreIndex]
-          showsStore.setShowsByGenre(genre, index)
-        }
-      })
-      showsStore.setTopShows(10)
       showsStore.setLatestShows(8)
-      showsStore.clearStore()
+      // showsStore.$reset();
     })
   }
 })
@@ -37,17 +26,17 @@ onMounted(() => {
         <h2>Top TV Shows</h2>
         <MoviesCarousel :shows="latestShows"></MoviesCarousel>
       </div>
-      <div class="shows-list__item">
+      <div v-if="sfShows" class="shows-list__item">
         <h2>Science-Fiction</h2>
-        <MoviesCarousel :shows="firstCarousel"></MoviesCarousel>
+        <MoviesCarousel :shows="sfShows"></MoviesCarousel>
       </div>
       <div class="shows-list__item">
         <h2>Action</h2>
-        <MoviesCarousel :shows="secondCarousel"></MoviesCarousel>
+        <MoviesCarousel :shows="actionShows"></MoviesCarousel>
       </div>
       <div class="shows-list__item">
         <h2>Romance</h2>
-        <MoviesCarousel :shows="thirdCarousel"></MoviesCarousel>
+        <MoviesCarousel :shows="romanceShows"></MoviesCarousel>
       </div>
     </div>
   </main>

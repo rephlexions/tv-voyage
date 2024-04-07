@@ -56,11 +56,6 @@ function normalizeSearchResults(data: any[]): Show[] {
         : null
     }
   })
-
-  // if (Array.isArray(results)) {
-
-  // }
-  // return results
 }
 
 function filterShows(data: Show[], type: Genre): Show[] {
@@ -70,7 +65,7 @@ function filterShows(data: Show[], type: Genre): Show[] {
   return data
 }
 
-function findGenres(data: any[]): Genre[] {
+function normalizeGenres(data: any[]): Genre[] {
   const genres = data.map((show) => show.genres).flat()
   const uniqueGenres = [...new Set(genres)]
   return uniqueGenres.map((genre, index) => {
@@ -107,7 +102,7 @@ export {
   normalizeShows,
   normalizeEpisodes,
   filterShows,
-  findGenres,
+  normalizeGenres,
   getBackgroundImage,
   shuffle,
   groupEpisodesBySeason,
