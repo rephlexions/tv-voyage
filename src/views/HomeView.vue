@@ -3,7 +3,7 @@ import { useShows } from '@/store/shows'
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
 import Hero from '@/components/Hero.vue'
-import MoviesCarousel from '@/components/MoviesCarousel.vue'
+import Carousel from '@/components/Carousel.vue'
 
 const showsStore = useShows()
 const { latestShows, isSet, sfShows, actionShows, romanceShows } = storeToRefs(showsStore)
@@ -24,19 +24,19 @@ onMounted(() => {
     <div class="shows-list">
       <div class="shows-list__item">
         <h2>Top TV Shows</h2>
-        <MoviesCarousel :shows="latestShows"></MoviesCarousel>
+        <Carousel :shows="latestShows"></Carousel>
       </div>
       <div v-if="sfShows" class="shows-list__item">
         <h2>Science-Fiction</h2>
-        <MoviesCarousel :shows="sfShows"></MoviesCarousel>
+        <Carousel :shows="sfShows"></Carousel>
       </div>
       <div class="shows-list__item">
         <h2>Action</h2>
-        <MoviesCarousel :shows="actionShows"></MoviesCarousel>
+        <Carousel :shows="actionShows"></Carousel>
       </div>
       <div class="shows-list__item">
         <h2>Romance</h2>
-        <MoviesCarousel :shows="romanceShows"></MoviesCarousel>
+        <Carousel :shows="romanceShows"></Carousel>
       </div>
     </div>
   </main>
