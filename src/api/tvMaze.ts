@@ -1,4 +1,4 @@
-const BASE_URL = 'http://api.tvmaze.com'
+const BASE_URL = 'https://api.tvmaze.com'
 
 export default class tvMazeApi {
   private baseUrl: string
