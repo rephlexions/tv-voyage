@@ -39,8 +39,6 @@ export const useShows = defineStore('shows', {
       const [shows]: any[] = await tvMaze.getShows()
       this.shows = normalizeShows(shows)
       this.genres = normalizeGenres(shows)
-      console.log(this.genres)
-
       this.isSet = true
     },
     async setLatestShows(num: number): Promise<void> {
