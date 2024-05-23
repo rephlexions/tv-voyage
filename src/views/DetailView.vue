@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { showsAPIService } from '@/services/showsApi'
+import { tvMaze } from '@/api/tvMaze'
 import type { Show, Episode } from '@/types/types'
 import { normalizeShows, normalizeEpisodes, groupEpisodesBySeason } from '@/utils/utils'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -31,9 +31,9 @@ const totalSeasons = computed(() => {
 
 async function getShow() {
   const [showInfo, images, episodes] = await Promise.all([
-    showsAPIService.getShow(showID),
-    showsAPIService.getShowImages(showID),
-    showsAPIService.getShowEpisodes(showID)
+    tvMaze.getShow(showID),
+    tvMaze.getShowImages(showID),
+    tvMaze.getShowEpisodes(showID)
   ])
 
   const normalizedShows: Show[] = normalizeShows(showInfo)

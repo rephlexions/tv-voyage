@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { showsAPIService } from '@/services/showsApi'
+import { tvMaze } from '@/api/tvMaze'
 import type { Show } from '@/types/types'
 import { normalizeSearchResults } from '@/utils/utils'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
@@ -18,7 +18,7 @@ const results = ref<Show[] | null>(null)
 async function searchShows() {
   const query = route.params.query as string
   searchQuery.value = query
-  const searchResults = await showsAPIService.searchShows(query)
+  const searchResults = await tvMaze.searchShows(query)
   const normalizedShows: Show[] = normalizeSearchResults(searchResults)
   results.value = normalizedShows
 }

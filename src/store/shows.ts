@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { showsAPIService } from '@/services/showsApi'
+import { tvMaze } from '@/api/tvMaze'
 import {
   normalizeShows,
   normalizeGenres,
@@ -36,7 +36,7 @@ export const useShows = defineStore('shows', {
   },
   actions: {
     async fetchShows(): Promise<void> {
-      const [shows]: any[] = await showsAPIService.getShows()
+      const [shows]: any[] = await tvMaze.getShows()
       this.shows = normalizeShows(shows)
       this.genres = normalizeGenres(shows)
       console.log(this.genres)
@@ -54,7 +54,7 @@ export const useShows = defineStore('shows', {
         })
         .slice(0, num)
       shows.forEach(async (show) => {
-        const [images] = await showsAPIService.getShowImages(show.id)
+        const [images] = await tvMaze.getShowImages(show.id)
         show.image!.background = getBackgroundImage(images)
       })
       this.latestShows = shows
