@@ -9,7 +9,7 @@ import {
 import Autoplay from 'embla-carousel-autoplay'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import type { Show } from '@/types/Show'
+import type { Show } from '@/types/types'
 import type { PropType } from 'vue'
 import { useRouter } from 'vue-router'
 

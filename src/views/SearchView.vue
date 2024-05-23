@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { showsAPIService } from '@/services/showsApi'
-import type { Show } from '@/types/Show'
+import type { Show } from '@/types/types'
 import { normalizeSearchResults } from '@/utils/utils'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { useRouter } from 'vue-router'

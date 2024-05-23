@@ -1,6 +1,6 @@
 import { shuffle, getBackgroundImage, normalizeShows } from '@/utils/utils'
 import { expect, test, expectTypeOf } from 'vitest'
-import type { Show } from '@/types/Show'
+import type { Show } from '@/types/types'
 
 test('should shuffle an array', () => {
   const array = [1, 2, 3, 4, 5, 6, 7]

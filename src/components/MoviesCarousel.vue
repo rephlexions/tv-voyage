@@ -7,7 +7,7 @@ import {
   CarouselPrevious
 } from '@/components/ui/carousel'
 import { Card, CardContent } from '@/components/ui/card'
-import type { Show } from '@/types/Show'
+import type { Show } from '@/types/types'
 import type { PropType } from 'vue'
 import { useRouter } from 'vue-router'
 

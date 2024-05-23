@@ -7,11 +7,10 @@ import {
   getBackgroundImage,
   shuffle
 } from '@/utils/utils'
-import type { ShowsState } from '@/types/ShowsState'
-import type { Genre } from '@/types/Genre'
+import type { Genre, State } from '@/types/types'
 
 export const useShows = defineStore('shows', {
-  state: (): ShowsState => ({
+  state: (): State => ({
     shows: [],
     topShows: [],
     latestShows: [],

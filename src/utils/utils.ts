@@ -1,7 +1,4 @@
-import type { Episode } from '@/types/Episode'
-import type { Genre } from '@/types/Genre'
-import type { GroupedEpisodes } from '@/types/GroupedEpisode'
-import type { Show } from '@/types/Show'
+import type { Episode, Genre, Season, Show } from '@/types/types'
 
 function normalizeShows(data: any[]): Show[] {
   return data.map((obj) => {
@@ -89,8 +86,8 @@ function shuffle(array: any[]): any[] {
   return arrayCopy
 }
 
-function groupEpisodesBySeason(episodes: Episode[]): GroupedEpisodes {
-  return episodes.reduce((grouped: GroupedEpisodes, episode: Episode) => {
+function groupEpisodesBySeason(episodes: Episode[]): Season {
+  return episodes.reduce((grouped: Season, episode: Episode) => {
     const key = String(episode.season)
     grouped[key] = grouped[key] || []
     grouped[key].push(episode)
