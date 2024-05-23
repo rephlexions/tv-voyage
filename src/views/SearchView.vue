@@ -6,8 +6,6 @@ import type { Show } from '@/types/types'
 import { normalizeSearchResults } from '@/utils/utils'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { useRouter } from 'vue-router'
-import { ChevronLeft } from 'lucide-vue-next'
-import { Button } from '@/components/ui/button'
 
 const route = useRoute()
 const router = useRouter()
@@ -35,16 +33,10 @@ watch(
 const openDetailPage = (id: number) => {
   router.push({ path: `/show/${id}` })
 }
-const goBack = () => {
-  router.back()
-}
 </script>
 <template>
   <main class="bg-primary">
     <div class="search-results">
-      <Button @click="goBack" class="back-button dark">
-        <ChevronLeft class="w-4 h-4" />
-      </Button>
       <h5>Search results for "{{ searchQuery }}"</h5>
       <div v-if="results" class="search-results__cards">
         <Card
@@ -70,8 +62,7 @@ const goBack = () => {
   margin-bottom: 32px;
 }
 .search-results {
-  margin: 0px 40px 0 40px;
-  padding-bottom: 50px;
+  padding: 40px;
   height: auto;
 }
 

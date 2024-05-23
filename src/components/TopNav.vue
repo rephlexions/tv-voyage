@@ -1,19 +1,35 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { ChevronLeft } from 'lucide-vue-next'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const search = ref('')
 const router = useRouter()
+const route = useRoute()
+
+const isDetailPage = computed(() => {
+  return route.params.id || route.params.query ? true : false
+})
 
 const setSearch = () => {
   router.push({ path: `/search/${search.value}` })
 }
+const goBack = () => {
+  router.back()
+}
 </script>
 <template>
   <nav class="topNav bg-primary">
-    <a href="/" class="topNav__logo"> <img src="../assets/logo.svg" alt="TV Voyage logo" /></a>
+    <div class="topNav__left">
+      <a href="/" class="topNav__logo"> <img src="../assets/logo.svg" alt="TV Voyage logo" /></a>
+      <Button v-if="isDetailPage" @click="goBack" class="back-button dark">
+        <ChevronLeft class="w-4 h-4" />
+      </Button>
+    </div>
+
     <div class="topNav__input-wrapper">
       <Input
         v-model="search"
@@ -32,6 +48,13 @@ const setSearch = () => {
   justify-content: space-between;
   align-items: center;
   height: 70px;
+}
+
+.topNav__left {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 16px;
 }
 .topNav__logo {
   margin-left: 40px;

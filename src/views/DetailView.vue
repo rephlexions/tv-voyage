@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { tvMaze } from '@/api/tvMaze'
 import type { Show, Episode } from '@/types/types'
 import { normalizeShows, normalizeEpisodes, groupEpisodesBySeason } from '@/utils/utils'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ChevronLeft } from 'lucide-vue-next'
-import { Button } from '@/components/ui/button'
 import {
   Table,
   TableBody,
@@ -18,7 +16,6 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const route = useRoute()
-const router = useRouter()
 
 const showID = route.params.id as string
 const showCover = ref<string>('')
@@ -45,9 +42,6 @@ async function getShow() {
   const normalizedEpisodes: Episode[] = normalizeEpisodes(episodes[0])
   episodesList.value = groupEpisodesBySeason(normalizedEpisodes)
 }
-const goBack = () => {
-  router.back()
-}
 
 onMounted(() => {
   getShow()
@@ -56,9 +50,6 @@ onMounted(() => {
 
 <template>
   <main class="bg-primary">
-    <Button @click="goBack" class="back-button dark">
-      <ChevronLeft class="w-4 h-4" />
-    </Button>
     <div class="show-header">
       <div class="show-header__summary">
         <h1>{{ show?.name }}</h1>
@@ -152,13 +143,20 @@ onMounted(() => {
   flex-direction: row;
   justify-content: space-between;
   gap: 32px;
-  height: 600px;
-  margin-left: 50px;
-  margin-right: 40px;
+  height: fit-content;
+  padding: 40px;
 }
 .show-header__summary {
   flex: 1 0 30%;
-  margin-top: 180px;
+}
+
+.show-header__summary p {
+  max-height: inherit;
+  height: inherit;
+  overflow-y: auto;
+  border: 1px solid #383838;
+  border-radius: 8px;
+  padding: 16px;
 }
 .show-header__cover {
   width: 100%;
