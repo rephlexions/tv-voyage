@@ -47,7 +47,9 @@ const openDetailPage = (id: number) => {
                 <img :src="item.image.background" alt="Show cover" />
               </div>
               <div class="carousel-show__title-wrapper">
-                <h1 class="carousel-show__title">{{ item.name }}</h1>
+                <h1 class="carousel-show__title">
+                  {{ item.name }}
+                </h1>
                 <div class="carousel-show__description" v-html="item.summary"></div>
                 <Button @click="openDetailPage(item.id)">Find out more</Button>
               </div>
