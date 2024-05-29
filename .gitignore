@@ -30,5 +30,4 @@ npm-debug.log
 yarn-error.log
 .DS_Store
 .env
-
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,vuejs
+*storybook.log
