@@ -23,7 +23,7 @@ const Template = (args) => ({
     return { args }
   },
   // And then the `args` are bound to your component with `v-bind="args"`
-  template: '<TopNav  v-bind="args">Click me</TopNav>'
+  template: '<TopNav v-bind="args"></TopNav>'
 })
 
 export const Disabled = Template.bind({})

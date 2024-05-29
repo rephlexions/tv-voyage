@@ -1,10 +1,12 @@
-const BASE_URL = 'https://api.tvmaze.com'
+const config = {
+  BASE_URL: 'https://api.tvmaze.com'
+}
 
 export default class tvMazeApi {
   private baseUrl: string
 
   constructor() {
-    this.baseUrl = BASE_URL
+    this.baseUrl = config.BASE_URL
   }
 
   private async fetchCall(endpoint: string, options?: RequestInit): Promise<any[]> {

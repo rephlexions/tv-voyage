@@ -31,4 +31,7 @@ yarn-error.log
 .DS_Store
 .env
 *storybook.log
+
 storybook-static/
+
+.storybook-static/*

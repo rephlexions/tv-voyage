@@ -1,18 +1,24 @@
 <script setup lang="ts">
 import { useShows } from '@/store/shows'
 import { storeToRefs } from 'pinia'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import Hero from '@/components/Hero.vue'
 import Carousel from '@/components/Carousel.vue'
+import { discoverMovie } from '@/api/tmdb'
+// import Skeleton from '@/components/ui/skeleton/Skeleton.vue'
 
 const showsStore = useShows()
+let isLoading = ref(false)
 const { latestShows, isSet, sfShows, actionShows, romanceShows } = storeToRefs(showsStore)
 
 onMounted(() => {
+  discoverMovie()
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err))
   if (!isSet.value) {
+    isLoading.value = true
     showsStore.fetchShows().then(() => {
       showsStore.setLatestShows(8)
-      // showsStore.$reset();
     })
   }
 })
@@ -20,6 +26,7 @@ onMounted(() => {
 
 <template>
   <main class="bg-primary text-primary-foreground">
+    <!-- <Skeleton v-if="isLoading" class="w-[100%] h-[80vh] rounded-full" /> -->
     <Hero :shows="latestShows" />
     <div class="shows-list">
       <div class="shows-list__item">

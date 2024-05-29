@@ -3,6 +3,22 @@ type JSONObject = { [key: string]: JSONValue }
 type JSONArray = JSONValue[]
 type JSONValue = JSONArray | JSONObject | JSONPrimitive
 
+type HttpMethod = 'GET' | 'POST'
+interface FetchOptions {
+  method?: HttpMethod
+  headers?: HeadersInit
+  body?: BodyInit | null
+  mode?: RequestMode
+  credentials?: RequestCredentials
+  cache?: RequestCache
+  redirect?: RequestRedirect
+  referrer?: string
+  referrerPolicy?: ReferrerPolicy
+  integrity?: string
+  keepalive?: boolean
+  signal?: AbortSignal | null
+}
+
 type Episode = {
   id: number
   name: string
@@ -50,4 +66,4 @@ type State = {
   isSet: boolean
 }
 
-export type { JSONValue, Episode, Genre, Season, Show, State }
+export type { JSONValue, FetchOptions, HttpMethod, Episode, Genre, Season, Show, State }
