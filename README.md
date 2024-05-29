@@ -12,12 +12,9 @@ Built with:
 - Typescript
 - Pinia
 - Vitest
-- Vite.
-
-Due to the API not allowing to filter by genre all the filtering is done in the front-end. On first load, then it is then cached using Pinia. So when the user returns to the homepage the data is retrieved from the store.
-
-I used Shadcn Vue for some UI components to speed up development. It's a collection of components with a focus on accessibility and ease of customization with CSS.
-The nice thing is you dont install it as a dependecy. You only add the components you need into the project. This keeps the size low.
+- Vite
+- Storybook
+- shadcn-vue
 
 NodeJS: `21.6.1`
 NPM: `8.15.0`
