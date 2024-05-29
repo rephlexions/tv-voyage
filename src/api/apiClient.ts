@@ -26,7 +26,7 @@ export default class ApiClient {
     this.options = options
   }
 
-  async fetchCall(endpoint: string, options?: FetchOptions): Promise<JSONValue | Error> {
+  async fetch(endpoint: string, options?: FetchOptions): Promise<JSONValue | Error> {
     try {
       const response: Awaited<Response> = await fetch(`${this.baseUrl}${endpoint}`, {
         ...this.options,
