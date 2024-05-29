@@ -26,11 +26,11 @@ export default class ApiClient {
     this.options = options
   }
 
-  async fetchCall(endpoint: string, options?: RequestInit): Promise<JSONValue | Error> {
+  async fetchCall(endpoint: string, options?: FetchOptions): Promise<JSONValue | Error> {
     try {
       const response: Awaited<Response> = await fetch(`${this.baseUrl}${endpoint}`, {
-        ...options,
-        ...this.options
+        ...this.options,
+        ...options
       })
       if (!response.ok) {
         throw new ServerError(response.status, `Server response was not ok: ${response.status}`)

@@ -17,13 +17,13 @@ const options: FetchOptions = {
 const tmdbApiClient = new ApiClient(config.BASE_URL, options)
 
 export async function discoverMovie(): Promise<JSONValue | Error> {
-  return tmdbApiClient.fetchCall('discover/movie')
+  return tmdbApiClient.fetchCall('discover/movie', { method: 'POST' })
 }
 
 export async function getUpcomingMovies(): Promise<JSONValue | Error> {
   return tmdbApiClient.fetchCall('movie/upcoming')
 }
 
-export async function findByExternalId(externalId: string): Promise<JSONValue | Error> {
-  return tmdbApiClient.fetchCall(`find/${externalId}?external_source=`)
+export async function findByExternalId(id: number): Promise<JSONValue | Error> {
+  return tmdbApiClient.fetchCall(`find/${id}?external_source=`)
 }

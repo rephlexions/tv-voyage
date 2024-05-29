@@ -3,8 +3,8 @@ type JSONObject = { [key: string]: JSONValue }
 type JSONArray = JSONValue[]
 type JSONValue = JSONArray | JSONObject | JSONPrimitive
 
-type HttpMethod = 'GET' | 'POST'
-interface FetchOptions {
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
+interface FetchOptions extends RequestInit {
   method?: HttpMethod
   headers?: HeadersInit
   body?: BodyInit | null
