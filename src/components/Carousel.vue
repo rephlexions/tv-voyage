@@ -7,13 +7,13 @@ import {
   CarouselPrevious
 } from '@/components/ui/carousel'
 import { Card, CardContent } from '@/components/ui/card'
-import type { Show } from '@/types/types'
-import type { PropType } from 'vue'
 import { useRouter } from 'vue-router'
+import type { Movie } from '@/types/types'
+import type { PropType } from 'vue'
 
 defineProps({
   shows: {
-    type: Array as PropType<Show[]>,
+    type: Array as PropType<Movie[]>,
     required: true
   }
 })
@@ -26,7 +26,7 @@ const openDetailPage = (id: number) => {
 </script>
 <template>
   <Carousel
-    class="carousel dark"
+    class="carousel"
     :opts="{
       align: 'start',
       loop: true
@@ -50,7 +50,7 @@ const openDetailPage = (id: number) => {
   </Carousel>
 </template>
 <style scoped>
-.carousel {
+/* .carousel {
   width: 100%;
   height: min-content;
 }
@@ -90,5 +90,5 @@ const openDetailPage = (id: number) => {
 .carousel button:first-of-type,
 .carousel button:last-of-type {
   top: 50%;
-}
+} */
 </style>

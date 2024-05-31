@@ -9,13 +9,13 @@ import {
 import Autoplay from 'embla-carousel-autoplay'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import type { Show } from '@/types/types'
+import type { Movie } from '@/types/types'
 import type { PropType } from 'vue'
 import { useRouter } from 'vue-router'
 
 defineProps({
   shows: {
-    type: Array as PropType<Show[]>,
+    type: Array as PropType<Movie[]>,
     required: true
   }
 })
@@ -43,14 +43,17 @@ const openDetailPage = (id: number) => {
         <Card class="carousel-card">
           <CardContent class="carousel-card__content">
             <div class="carousel-show">
-              <div v-if="item.image" class="carousel-show__image">
-                <img :src="item.image.background" alt="Show cover" />
+              <div v-if="item.backdrop_path" class="carousel-show__image">
+                <img
+                  :src="`https://image.tmdb.org/t/p/original/${item.backdrop_path}`"
+                  alt="Show cover"
+                />
               </div>
               <div class="carousel-show__title-wrapper">
                 <h1 class="carousel-show__title">
-                  {{ item.name }}
+                  {{ item.title }}
                 </h1>
-                <div class="carousel-show__description" v-html="item.summary"></div>
+                <div class="carousel-show__description" v-html="item.tagline"></div>
                 <Button @click="openDetailPage(item.id)">Find out more</Button>
               </div>
             </div>
@@ -65,7 +68,7 @@ const openDetailPage = (id: number) => {
 <style scoped>
 .carousel {
   width: 100%;
-  height: 80vh;
+  height: 70vh;
   margin-left: auto;
   margin-right: auto;
 }

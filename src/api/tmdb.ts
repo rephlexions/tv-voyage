@@ -14,16 +14,23 @@ const options: FetchOptions = {
   }
 }
 
-const tmdbApiClient = new ApiClient(config.BASE_URL, options)
-
-export async function discoverMovie(): Promise<JSONValue | Error> {
-  return tmdbApiClient.fetch('discover/movie', { method: 'POST' })
+export default class TmdbApi extends ApiClient {
+  private apiClient: ApiClient
+  constructor(baseUrl: string, options: FetchOptions) {
+    super(baseUrl, options)
+    this.apiClient = new ApiClient(baseUrl, options)
+  }
+  async discover(): Promise<JSONValue | Error> {
+    return this.apiClient.fetch('discover/movie')
+  }
+  async popular(): Promise<JSONValue | Error> {
+    return this.apiClient.fetch('movie/popular')
+  }
+  async upcoming(): Promise<JSONValue | Error> {
+    return this.apiClient.fetch('movie/upcoming')
+  }
+  async images(id: number): Promise<JSONValue | Error> {
+    return this.apiClient.fetch(`movie/${id}/images`)
+  }
 }
-
-export async function getUpcomingMovies(): Promise<JSONValue | Error> {
-  return tmdbApiClient.fetch('movie/upcoming')
-}
-
-export async function findByExternalId(id: number): Promise<JSONValue | Error> {
-  return tmdbApiClient.fetch(`find/${id}?external_source=`)
-}
+export const tmdb = new TmdbApi(config.BASE_URL, options)

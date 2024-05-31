@@ -86,37 +86,6 @@
   font-family: 'Inter-Regular';
 }
 
-h1 {
-  font-size: 40px;
-  font-style: normal;
-  font-weight: 800;
-  letter-spacing: -0.96px;
-}
-h2 {
-  font-size: 30px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 36px;
-  letter-spacing: -0.225px;
-}
-h5 {
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 28px;
-}
-p {
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 28px;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  color: #fff;
+main {
+  padding:0 30px 0 30px
 }
