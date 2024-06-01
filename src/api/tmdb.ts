@@ -23,6 +23,12 @@ export default class TmdbApi extends ApiClient {
   async discover(): Promise<JSONValue | Error> {
     return this.apiClient.fetch('discover/movie')
   }
+  async nowPlaying(): Promise<JSONValue | Error> {
+    return this.apiClient.fetch('movie/now_playing')
+  }
+  async topRated(): Promise<JSONValue | Error> {
+    return this.apiClient.fetch('movie/top_rated')
+  }
   async popular(): Promise<JSONValue | Error> {
     return this.apiClient.fetch('movie/popular')
   }
