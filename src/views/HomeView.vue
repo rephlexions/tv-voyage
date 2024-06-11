@@ -6,7 +6,6 @@ import type { MovieCollection, Movie } from '@/types/types'
 import { useToast } from '@/components/ui/toast/use-toast'
 import HeroCarousel from '@/components/HeroCarousel.vue'
 import PosterCard from '@/components/PosterCard.vue'
-import { Icon } from '@iconify/vue'
 import {
   Carousel,
   CarouselContent,
@@ -14,16 +13,24 @@ import {
   CarouselNext,
   CarouselPrevious
 } from '@/components/ui/carousel'
+import { Button } from '@/components/ui/button'
 
 const { toast } = useToast()
 
 const nowPlaying: Ref<Movie[]> = ref([])
+const upcoming: Ref<Movie[]> = ref([])
 const topRated: Ref<Movie[]> = ref([])
 onMounted(async () => {
-  Promise.all([tmdb.nowPlaying(), tmdb.topRated()])
+  Promise.all([
+    tmdb.nowPlaying(),
+    tmdb.topRated(),
+    tmdb.upcoming(),
+    tmdb.trendingMovies({ language: 'en-US' })
+  ])
     .then((results) => {
       nowPlaying.value = (results[0] as MovieCollection).results.slice(0, 5)
       topRated.value = (results[1] as MovieCollection).results.slice(0, 15)
+      upcoming.value = (results[2] as MovieCollection).results.slice(0, 5)
     })
     .catch((error) => {
       toast({
@@ -37,10 +44,12 @@ onMounted(async () => {
 
 <template>
   <main class="bg-primary text-primary-foreground">
-    <HeroCarousel :shows="nowPlaying"></HeroCarousel>
+    <HeroCarousel :shows="[...nowPlaying, ...upcoming]"></HeroCarousel>
     <div class="p-16">
-      <h2 class="mb-4 text-3xl font-semibold">Top rated movies</h2>
-      <a href="">View more</a>
+      <div class="flex gap-1">
+        <h2 class="mb-4 text-3xl font-semibold">Top rated movies</h2>
+        <Button class="dark" variant="link">View more</Button>
+      </div>
       <Carousel
         class="w-full"
         :opts="{
@@ -60,6 +69,7 @@ onMounted(async () => {
               :path="item.poster_path"
               :release-date="item.release_date"
               :title="item.title"
+              :vote-average="item.vote_average"
             ></PosterCard>
           </CarouselItem>
         </CarouselContent>
@@ -67,32 +77,6 @@ onMounted(async () => {
         <CarouselNext />
       </Carousel>
     </div>
-
-    <!-- <div class="flex w-full gap-2 overflow-x-auto min-h-max">
-      <PosterCard
-        v-for="item in topRated"
-        :key="item.id"
-        :path="item.poster_path"
-        :release-date="item.release_date"
-        :title="item.title"
-      ></PosterCard>
-
-      <Icon icon="iconamoon:arrow-right-2" class="text-3xl" />
-    </div>
-    <div
-      class="grid grid-flow-col auto-cols-min overflow-x-auto scroll-smooth snap-mandatory gap-4"
-    >
-      <PosterCard
-        v-for="item in topRated"
-        class="snap-start w[183px]"
-        :key="item.id"
-        :path="item.poster_path"
-        :release-date="item.release_date"
-        :title="item.title"
-      ></PosterCard>
-
-      <Icon icon="iconamoon:arrow-right-2" class="text-3xl" />
-    </div> -->
   </main>
 </template>
 <style scoped></style>

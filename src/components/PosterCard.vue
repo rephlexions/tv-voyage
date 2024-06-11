@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Icon } from '@iconify/vue'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import dayjs from 'dayjs'
 
@@ -11,6 +12,9 @@ defineProps({
   },
   title: {
     type: String
+  },
+  voteAverage: {
+    type: Number
   }
 })
 </script>
@@ -18,14 +22,22 @@ defineProps({
   <Card class="hover:cursor-pointer">
     <CardContent class="w-full p-0">
       <img
-        class="rounded-lg object-cover aspect-2/3"
+        class="rounded-lg rounded-b-none object-cover aspect-2/3"
         :src="`https://image.tmdb.org/t/p/original/${path}`"
       />
     </CardContent>
-    <CardFooter class="flex flex-col p-1 w-auto h-[80px] align-middle justify-center">
-      <p v-if="title" class="text-slate-300 text-center">{{ title }}</p>
-      <p v-if="releaseDate" class="text-slate-400 text-left">
-        {{ dayjs(releaseDate, 'YYYY MMMM DD').year() }}
+    <CardFooter class="flex flex-col gap-1 p-2 w-auto h-[80px] items-start text-sm">
+      <div class="flex">
+        <div v-if="voteAverage" class="flex items-center gap-1">
+          <Icon icon="openmoji:star" class="text-xl" />
+          <span class="text-slate-500">{{ voteAverage.toFixed(2) }}</span>
+        </div>
+        <!-- <div v-if="releaseDate" class="text-slate-500 ml-auto">
+          {{ dayjs(releaseDate, 'YYYY MMMM DD').year() }}
+        </div> -->
+      </div>
+      <p v-if="title" class="text-slate-800">
+        {{ title }} ({{ dayjs(releaseDate, 'YYYY MMMM DD').year() }})
       </p>
     </CardFooter>
   </Card>

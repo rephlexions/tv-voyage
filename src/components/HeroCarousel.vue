@@ -28,8 +28,8 @@ const openDetailPage = (id: number) => {
 }
 </script>
 <template>
-  <h1 class="scroll-m-20 p-4 text-3xl font-extrabold tracking-tight lg:text-4xl">
-    Now playing in theaters
+  <h1 class="scroll-m-20 px-16 py-4 text-2xl font-extrabold tracking-tight lg:text-2xl uppercase">
+    New & Upcoming Movies In Theaters
   </h1>
   <Carousel
     class="carousel"
@@ -62,7 +62,7 @@ const openDetailPage = (id: number) => {
             <h2
               class="scroll-m-20 pb-2 text-xl font-semibold tracking-tight text-white transition-colors first:mt-0 md:text-3xl"
             >
-              {{ item.title }}
+              {{ item.title }} ({{ item.release_date?.split('-')[0] }})
             </h2>
             <div class="flex items-center gap-1 pb-4">
               <Icon icon="openmoji:star" class="text-3xl" />
