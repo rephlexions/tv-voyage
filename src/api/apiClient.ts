@@ -1,29 +1,29 @@
-import type { FetchOptions, JSONValue, QueryObject } from '@/types/types'
+import type { FetchOptions, JSONValue, QueryObject } from '@/types/types';
 
 class NetworkError extends Error {
   constructor(message: string) {
-    super(message)
-    this.name = 'network_error'
+    super(message);
+    this.name = 'network_error';
   }
 }
 
 class ServerError extends Error {
-  status: number
+  status: number;
 
   constructor(status: number, message: string) {
-    super(message)
-    this.name = 'server_error'
-    this.status = status
+    super(message);
+    this.name = 'server_error';
+    this.status = status;
   }
 }
 
 export default class ApiClient {
-  private baseUrl: string
-  private options: FetchOptions
+  private baseUrl: string;
+  private options: FetchOptions;
 
   constructor(baseUrl: string, options: FetchOptions) {
-    this.baseUrl = baseUrl
-    this.options = options
+    this.baseUrl = baseUrl;
+    this.options = options;
   }
 
   async fetch({
@@ -31,31 +31,31 @@ export default class ApiClient {
     options,
     queryParams
   }: {
-    endpoint: string
-    options?: FetchOptions
-    queryParams?: QueryObject
+    endpoint: string;
+    options?: FetchOptions;
+    queryParams?: QueryObject;
   }): Promise<JSONValue | Error> {
     try {
       if (queryParams) {
-        const query = new URLSearchParams(queryParams).toString()
-        endpoint = `${endpoint}?${query}`
+        const query = new URLSearchParams(queryParams).toString();
+        endpoint = `${endpoint}?${query}`;
       }
       const response: Awaited<Response> = await fetch(`${this.baseUrl}${endpoint}`, {
         ...this.options,
         ...options
-      })
+      });
       if (!response.ok) {
-        throw new ServerError(response.status, `Server response was not ok: ${response.status}`)
+        throw new ServerError(response.status, `Server response was not ok: ${response.status}`);
       }
-      const data: JSONValue = await response.json()
-      return data
+      const data: JSONValue = await response.json();
+      return data;
     } catch (error) {
       if (error instanceof ServerError) {
-        throw error
+        throw error;
       } else if (error instanceof TypeError) {
-        throw new NetworkError(`Network error: ${error.message}`)
+        throw new NetworkError(`Network error: ${error.message}`);
       } else {
-        throw new Error(`An unknown error occurred: ${error}`)
+        throw new Error(`An unknown error occurred: ${error}`);
       }
     }
   }
