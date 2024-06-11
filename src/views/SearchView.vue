@@ -24,10 +24,10 @@ onMounted(() => {
   // searchShows()
 })
 
-watch(
-  () => route.params.query,
-  () => searchShows()
-)
+// watch(
+//   () => route.params.query,
+//   () => searchShows()
+// )
 
 const openDetailPage = (id: number) => {
   router.push({ path: `/show/${id}` })
