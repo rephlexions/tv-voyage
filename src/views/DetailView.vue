@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { tvMaze } from '@/api/tvMaze'
 import type { Show, Episode } from '@/types/types'
 import { normalizeShows, normalizeEpisodes, groupEpisodesBySeason } from '@/utils/utils'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -27,24 +26,21 @@ const totalSeasons = computed(() => {
 })
 
 async function getShow() {
-  const [showInfo, images, episodes] = await Promise.all([
-    tvMaze.getShow(showID),
-    tvMaze.getShowImages(showID),
-    tvMaze.getShowEpisodes(showID)
-  ])
-
-  const normalizedShows: Show[] = normalizeShows(showInfo)
-  show.value = normalizedShows[0]
-
-  const backgroundObject = images[0].find((obj: { type: string }) => obj.type === 'background')
-  showCover.value = backgroundObject ? backgroundObject.resolutions.original.url : ''
-
-  const normalizedEpisodes: Episode[] = normalizeEpisodes(episodes[0])
-  episodesList.value = groupEpisodesBySeason(normalizedEpisodes)
+  // const [showInfo, images, episodes] = await Promise.all([
+  //   tvMaze.getShow(showID),
+  //   tvMaze.getShowImages(showID),
+  //   tvMaze.getShowEpisodes(showID)
+  // ])
+  // const normalizedShows: Show[] = normalizeShows(showInfo)
+  // show.value = normalizedShows[0]
+  // const backgroundObject = images[0].find((obj: { type: string }) => obj.type === 'background')
+  // showCover.value = backgroundObject ? backgroundObject.resolutions.original.url : ''
+  // const normalizedEpisodes: Episode[] = normalizeEpisodes(episodes[0])
+  // episodesList.value = groupEpisodesBySeason(normalizedEpisodes)
 }
 
 onMounted(() => {
-  getShow()
+  // getShow()
 })
 </script>
 
