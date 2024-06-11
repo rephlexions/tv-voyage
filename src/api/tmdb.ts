@@ -1,5 +1,5 @@
 import ApiClient from './apiClient'
-import type { HttpMethod, FetchOptions, JSONValue } from '@/types/types'
+import type { HttpMethod, FetchOptions, JSONValue, QueryObject } from '@/types/types'
 
 const config = {
   BASE_URL: 'https://api.themoviedb.org/3/',
@@ -24,7 +24,11 @@ export default class TmdbApi extends ApiClient {
 
   async discover(): Promise<JSONValue | Error> {
     try {
-      const response = await this.apiClient.fetch('discover/movie', options)
+      const config = {
+        endpoint: 'discover/movie',
+        options: options
+      }
+      const response = await this.apiClient.fetch(config)
       if (response instanceof Error) {
         throw response
       }
@@ -36,7 +40,11 @@ export default class TmdbApi extends ApiClient {
 
   async topRated(): Promise<JSONValue | Error> {
     try {
-      const response = await this.apiClient.fetch('movie/top_rated', options)
+      const config = {
+        endpoint: 'movie/top_rated',
+        options: options
+      }
+      const response = await this.apiClient.fetch(config)
       if (response instanceof Error) {
         throw response
       }
@@ -48,7 +56,11 @@ export default class TmdbApi extends ApiClient {
 
   async nowPlaying(): Promise<JSONValue | Error> {
     try {
-      const response = await this.apiClient.fetch('movie/now_playing', options)
+      const config = {
+        endpoint: 'movie/now_playing',
+        options: options
+      }
+      const response = await this.apiClient.fetch(config)
       if (response instanceof Error) {
         throw response
       }
@@ -60,7 +72,11 @@ export default class TmdbApi extends ApiClient {
 
   async popular(): Promise<JSONValue | Error> {
     try {
-      const response = await this.apiClient.fetch('movie/popular', options)
+      const config = {
+        endpoint: 'movie/popular',
+        options: options
+      }
+      const response = await this.apiClient.fetch(config)
       if (response instanceof Error) {
         throw response
       }
@@ -72,7 +88,11 @@ export default class TmdbApi extends ApiClient {
 
   async upcoming(): Promise<JSONValue | Error> {
     try {
-      const response = await this.apiClient.fetch('movie/upcoming', options)
+      const config = {
+        endpoint: 'movie/upcoming',
+        options: options
+      }
+      const response = await this.apiClient.fetch(config)
       if (response instanceof Error) {
         throw response
       }
@@ -84,7 +104,28 @@ export default class TmdbApi extends ApiClient {
 
   async images(id: number): Promise<JSONValue | Error> {
     try {
-      const response = await this.apiClient.fetch(`movie/${id}/images`, options)
+      const config = {
+        endpoint: `movie/${id}/images`,
+        options: options
+      }
+      const response = await this.apiClient.fetch(config)
+      if (response instanceof Error) {
+        throw response
+      }
+      return response
+    } catch (error) {
+      return error as Error
+    }
+  }
+
+  async trendingMovies(query?: QueryObject): Promise<JSONValue | Error> {
+    try {
+      const config = {
+        endpoint: 'trending/movie/week',
+        options: options,
+        queryParams: query
+      }
+      const response = await this.apiClient.fetch(config)
       if (response instanceof Error) {
         throw response
       }

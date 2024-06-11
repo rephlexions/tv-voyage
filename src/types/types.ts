@@ -19,6 +19,10 @@ interface FetchOptions extends RequestInit {
   signal?: AbortSignal | null
 }
 
+type QueryObject = {
+  [key: string]: string
+}
+
 type BelongsToCollection = {
   id: number
   name: string
@@ -137,5 +141,6 @@ export type {
   Show,
   State,
   Movie,
-  MovieCollection
+  MovieCollection,
+  QueryObject
 }

@@ -1,4 +1,4 @@
-import type { FetchOptions, JSONValue } from '@/types/types'
+import type { FetchOptions, JSONValue, QueryObject } from '@/types/types'
 
 class NetworkError extends Error {
   constructor(message: string) {
@@ -26,8 +26,20 @@ export default class ApiClient {
     this.options = options
   }
 
-  async fetch(endpoint: string, options?: FetchOptions): Promise<JSONValue | Error> {
+  async fetch({
+    endpoint,
+    options,
+    queryParams
+  }: {
+    endpoint: string
+    options?: FetchOptions
+    queryParams?: QueryObject
+  }): Promise<JSONValue | Error> {
     try {
+      if (queryParams) {
+        const query = new URLSearchParams(queryParams).toString()
+        endpoint = `${endpoint}?${query}`
+      }
       const response: Awaited<Response> = await fetch(`${this.baseUrl}${endpoint}`, {
         ...this.options,
         ...options
