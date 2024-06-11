@@ -28,6 +28,9 @@ const openDetailPage = (id: number) => {
 }
 </script>
 <template>
+  <h1 class="scroll-m-20 p-4 text-3xl font-extrabold tracking-tight lg:text-4xl">
+    Now playing in theaters
+  </h1>
   <Carousel
     class="carousel"
     :opts="{
@@ -47,10 +50,8 @@ const openDetailPage = (id: number) => {
           alt="Movie cover"
         />
         <div class="absolute left-24 right-24 top-8 flex h-3/4 gap-4 sm:top-16">
-          <Card
-            class="aspect-2/3 h-full w-auto hover:cursor-pointer md:max-h-[375px] md:max-w-[264px]"
-          >
-            <CardContent class="h-full w-full p-0.5">
+          <Card class="aspect-2/3 min-h-[275px] w-auto hover:cursor-pointer md:max-w-[264px]">
+            <CardContent class="w-full p-0">
               <img
                 class="h-full w-full rounded-lg object-cover"
                 :src="`https://image.tmdb.org/t/p/original/${item.poster_path}`"

@@ -16,27 +16,82 @@ const options: FetchOptions = {
 
 export default class TmdbApi extends ApiClient {
   private apiClient: ApiClient
+
   constructor(baseUrl: string, options: FetchOptions) {
     super(baseUrl, options)
     this.apiClient = new ApiClient(baseUrl, options)
   }
+
   async discover(): Promise<JSONValue | Error> {
-    return this.apiClient.fetch('discover/movie')
+    try {
+      const response = await this.apiClient.fetch('discover/movie', options)
+      if (response instanceof Error) {
+        throw response
+      }
+      return response
+    } catch (error) {
+      return error as Error
+    }
   }
-  async nowPlaying(): Promise<JSONValue | Error> {
-    return this.apiClient.fetch('movie/now_playing')
-  }
+
   async topRated(): Promise<JSONValue | Error> {
-    return this.apiClient.fetch('movie/top_rated')
+    try {
+      const response = await this.apiClient.fetch('movie/top_rated', options)
+      if (response instanceof Error) {
+        throw response
+      }
+      return response
+    } catch (error) {
+      return error as Error
+    }
   }
+
+  async nowPlaying(): Promise<JSONValue | Error> {
+    try {
+      const response = await this.apiClient.fetch('movie/now_playing', options)
+      if (response instanceof Error) {
+        throw response
+      }
+      return response
+    } catch (error) {
+      return error as Error
+    }
+  }
+
   async popular(): Promise<JSONValue | Error> {
-    return this.apiClient.fetch('movie/popular')
+    try {
+      const response = await this.apiClient.fetch('movie/popular', options)
+      if (response instanceof Error) {
+        throw response
+      }
+      return response
+    } catch (error) {
+      return error as Error
+    }
   }
+
   async upcoming(): Promise<JSONValue | Error> {
-    return this.apiClient.fetch('movie/upcoming')
+    try {
+      const response = await this.apiClient.fetch('movie/upcoming', options)
+      if (response instanceof Error) {
+        throw response
+      }
+      return response
+    } catch (error) {
+      return error as Error
+    }
   }
+
   async images(id: number): Promise<JSONValue | Error> {
-    return this.apiClient.fetch(`movie/${id}/images`)
+    try {
+      const response = await this.apiClient.fetch(`movie/${id}/images`, options)
+      if (response instanceof Error) {
+        throw response
+      }
+      return response
+    } catch (error) {
+      return error as Error
+    }
   }
 }
 export const tmdb = new TmdbApi(config.BASE_URL, options)
