@@ -59,6 +59,7 @@ type Movie = {
   belongs_to_collection?: BelongsToCollection
   budget?: number
   genres?: Genre[]
+  genre_ids?: number[]
   homepage?: string
   id: number
   imdb_id?: string
@@ -124,11 +125,7 @@ type Show = {
 }
 
 type State = {
-  shows: Show[]
-  topShows: Show[]
-  latestShows: Show[]
   genres: Genre[]
-  isSet: boolean
 }
 
 export type {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import dayjs from 'dayjs'
+import MovieRating from '@/components/MovieRating.vue';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import dayjs from 'dayjs';
 
 defineProps({
   path: {
@@ -16,7 +16,7 @@ defineProps({
   voteAverage: {
     type: Number
   }
-})
+});
 </script>
 <template>
   <Card class="hover:cursor-pointer">
@@ -28,10 +28,7 @@ defineProps({
     </CardContent>
     <CardFooter class="flex flex-col gap-1 p-2 w-auto h-[80px] items-start text-sm">
       <div class="flex">
-        <div v-if="voteAverage" class="flex items-center gap-1">
-          <Icon icon="openmoji:star" class="text-xl" />
-          <span class="text-slate-500">{{ voteAverage.toFixed(2) }}</span>
-        </div>
+        <MovieRating v-if="voteAverage" :rating="voteAverage" />
         <!-- <div v-if="releaseDate" class="text-slate-500 ml-auto">
           {{ dayjs(releaseDate, 'YYYY MMMM DD').year() }}
         </div> -->

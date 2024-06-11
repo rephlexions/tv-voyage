@@ -5,27 +5,27 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious
-} from '@/components/ui/carousel'
-import Autoplay from 'embla-carousel-autoplay'
-import { Icon } from '@iconify/vue'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import type { Movie } from '@/types/types'
-import type { PropType } from 'vue'
-import { useRouter } from 'vue-router'
+} from '@/components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import type { Movie } from '@/types/types';
+import type { PropType } from 'vue';
+import { useRouter } from 'vue-router';
+import MovieRating from './MovieRating.vue';
 
 defineProps({
   shows: {
     type: Array as PropType<Movie[]>,
     required: true
   }
-})
+});
 
-const router = useRouter()
+const router = useRouter();
 
 const openDetailPage = (id: number) => {
-  router.push({ path: `/show/${id}` })
-}
+  router.push({ path: `/show/${id}` });
+};
 </script>
 <template>
   <h1 class="scroll-m-20 px-16 py-4 text-2xl font-extrabold tracking-tight lg:text-2xl uppercase">
@@ -64,11 +64,7 @@ const openDetailPage = (id: number) => {
             >
               {{ item.title }} ({{ item.release_date?.split('-')[0] }})
             </h2>
-            <div class="flex items-center gap-1 pb-4">
-              <Icon icon="openmoji:star" class="text-3xl" />
-              <span class="text-white">{{ item.vote_average?.toFixed(2) }}</span>
-            </div>
-
+            <MovieRating v-if="item.vote_average" :rating="item.vote_average" />
             <Button @click="openDetailPage(item.id)">Find out more</Button>
           </div>
         </div>

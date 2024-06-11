@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { ChevronLeft } from 'lucide-vue-next'
-import { ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { computed } from 'vue';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft } from 'lucide-vue-next';
+import { ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
-const search = ref('')
-const router = useRouter()
-const route = useRoute()
+const search = ref('');
+const router = useRouter();
+const route = useRoute();
 
 const isDetailPage = computed(() => {
-  return route.params.id || route.params.query ? true : false
-})
+  return route.params.id || route.params.query ? true : false;
+});
 
 const setSearch = () => {
-  router.push({ path: `/search/${search.value}` })
-}
+  router.push({ path: `/search/${search.value}` });
+};
 const goBack = () => {
-  router.back()
-}
+  router.back();
+};
 </script>
 <template>
   <nav class="topNav bg-primary">
