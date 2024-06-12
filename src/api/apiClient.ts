@@ -45,7 +45,7 @@ export default class ApiClient {
         ...options
       });
       if (!response.ok) {
-        throw new ServerError(response.status, `Server response was not ok: ${response.status}`);
+        throw new ServerError(response.status, `Server response: ${response.status}`);
       }
       const data: JSONValue = await response.json();
       return data;

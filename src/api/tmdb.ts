@@ -135,7 +135,24 @@ export default class TmdbApi extends ApiClient {
     }
   }
 
-  async genres(type: string = 'movie'): Promise<JSONValue | Error> {
+  async trendingTv(query?: QueryObject): Promise<JSONValue | Error> {
+    try {
+      const config = {
+        endpoint: 'trending/tv/week',
+        options: options,
+        queryParams: query
+      };
+      const response = await this.apiClient.fetch(config);
+      if (response instanceof Error) {
+        throw response;
+      }
+      return response;
+    } catch (error) {
+      return error as Error;
+    }
+  }
+
+  async genres(type: 'movie' | 'tv' = 'movie'): Promise<JSONValue | Error> {
     try {
       const config = {
         endpoint: `genre/${type}/list`,

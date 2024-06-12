@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
-import type { Show, Episode } from '@/types/types'
-import { normalizeShows, normalizeEpisodes, groupEpisodesBySeason } from '@/utils/utils'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { onMounted, ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import type { Show, Episode } from '@/types/types';
+import { normalizeShows, normalizeEpisodes, groupEpisodesBySeason } from '@/utils/utils';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Table,
   TableBody,
@@ -11,19 +11,19 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui/table'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+} from '@/components/ui/table';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const route = useRoute()
+const route = useRoute();
 
-const showID = route.params.id as string
-const showCover = ref<string>('')
-const episodesList = ref<Record<string, Episode[]>>({})
-let show = ref<Show | null>(null)
+const showID = route.params.id as string;
+const showCover = ref<string>('');
+const episodesList = ref<Record<string, Episode[]>>({});
+let show = ref<Show | null>(null);
 
 const totalSeasons = computed(() => {
-  return Object.keys(episodesList.value)
-})
+  return Object.keys(episodesList.value);
+});
 
 async function getShow() {
   // const [showInfo, images, episodes] = await Promise.all([
@@ -41,7 +41,7 @@ async function getShow() {
 
 onMounted(() => {
   // getShow()
-})
+});
 </script>
 
 <template>

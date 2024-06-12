@@ -15,7 +15,7 @@ import { useRouter } from 'vue-router';
 import MovieRating from './MovieRating.vue';
 
 defineProps({
-  shows: {
+  movies: {
     type: Array as PropType<Movie[]>,
     required: true
   }
@@ -43,7 +43,7 @@ const openDetailPage = (id: number) => {
     ]"
   >
     <CarouselContent>
-      <CarouselItem class="relative max-h-[500px]" v-for="(item, index) in shows" :key="index">
+      <CarouselItem class="relative max-h-[500px]" v-for="(item, index) in movies" :key="index">
         <img
           class="h-full w-full object-cover object-center brightness-50"
           :src="`https://image.tmdb.org/t/p/original/${item.backdrop_path}`"
