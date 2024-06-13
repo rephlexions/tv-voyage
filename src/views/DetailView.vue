@@ -20,7 +20,7 @@ import { tmdb } from '@/api/tmdb';
 import { storeToRefs } from 'pinia';
 import { useGenresStore } from '@/store/genres';
 import { useToast } from '@/components/ui/toast/use-toast';
-import type { JSONValue, VideoResults } from '@/types/types';
+import type { VideoResults } from '@/types/types';
 
 const route = useRoute();
 const { toast } = useToast();
@@ -97,6 +97,7 @@ onMounted(() => {
           </h2>
           <div class="flex gap-1 flex-row flex-nowrap">
             <Badge v-for="(item, index) in movie.genres" :key="index" :variant="'secondary'">
+              <!-- TODO: make it computed? -->
               {{ allGenres.find((genre) => genre.id === item.id)?.name }}
             </Badge>
           </div>
