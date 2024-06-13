@@ -46,7 +46,11 @@ const openDetailPage = (id: number) => {
       <CarouselItem class="relative max-h-[500px]" v-for="(item, index) in movies" :key="index">
         <img
           class="h-full w-full object-cover object-center brightness-50"
-          :src="`https://image.tmdb.org/t/p/original/${item.backdrop_path}`"
+          :srcset="
+            `https://image.tmdb.org/t/p/original/${item.backdrop_path} 1080w` +
+            ', ' +
+            `https://image.tmdb.org/t/p/w780/${item.backdrop_path} 768w`
+          "
           alt="Movie cover"
         />
         <div class="absolute left-24 right-24 top-8 flex h-3/4 gap-4 sm:top-16">
@@ -54,7 +58,7 @@ const openDetailPage = (id: number) => {
             <CardContent class="w-full p-0">
               <img
                 class="h-full w-full rounded-lg object-cover"
-                :src="`https://image.tmdb.org/t/p/original/${item.poster_path}`"
+                :src="`https://image.tmdb.org/t/p/w342/${item.poster_path}`"
               />
             </CardContent>
           </Card>

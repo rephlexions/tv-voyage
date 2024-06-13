@@ -23,7 +23,7 @@ defineProps({
     <CardContent class="w-full p-0">
       <img
         class="rounded-lg rounded-b-none object-cover aspect-2/3"
-        :src="`https://image.tmdb.org/t/p/original/${path}`"
+        :src="`https://image.tmdb.org/t/p/w342/${path}`"
       />
     </CardContent>
     <CardFooter class="flex flex-col gap-1 p-2 w-auto h-[80px] items-start text-sm">
