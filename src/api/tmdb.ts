@@ -1,5 +1,6 @@
 import ApiClient from './apiClient';
 import type { HttpMethod, FetchOptions, JSONValue, QueryObject } from '@/types/types';
+import type { MediaType } from '@/types/types';
 
 const config = {
   BASE_URL: 'https://api.themoviedb.org/3/',
@@ -118,10 +119,10 @@ export default class TmdbApi extends ApiClient {
     }
   }
 
-  async trendingMovies(query?: QueryObject): Promise<JSONValue | Error> {
+  async trending(mediaType: MediaType, query?: QueryObject): Promise<JSONValue | Error> {
     try {
       const config = {
-        endpoint: 'trending/movie/week',
+        endpoint: `trending/${mediaType}/week`,
         options: options,
         queryParams: query
       };
@@ -135,12 +136,11 @@ export default class TmdbApi extends ApiClient {
     }
   }
 
-  async trendingTv(query?: QueryObject): Promise<JSONValue | Error> {
+  async genres(mediaType: MediaType): Promise<JSONValue | Error> {
     try {
       const config = {
-        endpoint: 'trending/tv/week',
-        options: options,
-        queryParams: query
+        endpoint: `genre/${mediaType}/list`,
+        options: options
       };
       const response = await this.apiClient.fetch(config);
       if (response instanceof Error) {
@@ -152,10 +152,10 @@ export default class TmdbApi extends ApiClient {
     }
   }
 
-  async genres(type: 'movie' | 'tv' = 'movie'): Promise<JSONValue | Error> {
+  async getDetails(mediaType: MediaType, id: string) {
     try {
       const config = {
-        endpoint: `genre/${type}/list`,
+        endpoint: `${mediaType}/${id}`,
         options: options
       };
       const response = await this.apiClient.fetch(config);

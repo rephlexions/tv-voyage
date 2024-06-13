@@ -23,12 +23,11 @@ type QueryObject = {
   [key: string]: string;
 };
 
-type BelongsToCollection = {
-  id: number;
-  name: string;
-  poster_path: string;
-  backdrop_path: string;
+type State = {
+  genres: Genre[];
 };
+
+type MediaType = 'movie' | 'tv' | 'person';
 
 type Genre = {
   id: number;
@@ -53,44 +52,28 @@ type SpokenLanguage = {
   name: string;
 };
 
-type Movie = {
-  adult?: boolean;
-  backdrop_path?: string;
-  belongs_to_collection?: BelongsToCollection;
-  budget?: number;
-  genres?: Genre[];
-  genre_ids?: number[];
-  homepage?: string;
+type Media = {
+  adult: boolean;
+  backdrop_path: string;
+  genres: Genre[];
+  homepage: string;
   id: number;
-  imdb_id?: string;
-  origin_country?: string[];
-  original_language?: string;
-  original_title?: string;
-  name?: string;
-  overview?: string;
-  popularity?: number;
-  poster_path?: string;
-  production_companies?: ProductionCompany[];
-  production_countries?: ProductionCountry[];
-  release_date: string;
-  revenue?: number;
-  runtime?: number;
-  spoken_languages?: SpokenLanguage[];
-  status?: string;
-  tagline?: string;
-  title?: string;
-  video?: boolean;
-  vote_average?: number;
-  vote_count?: number;
+  origin_country: string[];
+  original_language: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  production_companies: ProductionCompany[];
+  production_countries: ProductionCountry[];
+  spoken_languages: SpokenLanguage[];
+  status: string;
+  tagline: string;
+  vote_average: number;
+  vote_count: number;
+  media_type: string;
 };
 
-type MovieCollection = {
-  results: Movie[];
-  page: number;
-  total_pages: number;
-  total_results: number;
-};
-
+// old
 type Episode = {
   id: number;
   name: string;
@@ -102,10 +85,12 @@ type Episode = {
   };
 };
 
+// old
 type Season = {
   [key: string]: Episode[];
 };
 
+// old
 type Show = {
   id: number;
   name: string;
@@ -125,10 +110,6 @@ type Show = {
   officialSite?: string | null;
 };
 
-type State = {
-  genres: Genre[];
-};
-
 export type {
   JSONValue,
   FetchOptions,
@@ -138,8 +119,11 @@ export type {
   Season,
   Show,
   State,
-  Movie,
-  MovieCollection,
   QueryObject,
-  JSONObject
+  JSONObject,
+  MediaType,
+  ProductionCompany,
+  ProductionCountry,
+  SpokenLanguage,
+  Media
 };
