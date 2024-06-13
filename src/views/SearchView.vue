@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import type { Show } from '@/types/types'
-import { normalizeSearchResults } from '@/utils/utils'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { useRouter } from 'vue-router'
+// import { onMounted, ref, watch } from 'vue'
+// import { useRoute } from 'vue-router'
+// import type { Show } from '@/types/types'
+// import { normalizeSearchResults } from '@/utils/utils'
+// import { Card, CardContent, CardFooter } from '@/components/ui/card'
+// import { useRouter } from 'vue-router'
 
-const route = useRoute()
-const router = useRouter()
-const searchQuery = ref<string>('')
+// const route = useRoute()
+// const router = useRouter()
+// const searchQuery = ref<string>('')
 
-const results = ref<Show[] | null>(null)
+// const results = ref<Show[] | null>(null)
 
 // async function searchShows() {
 //   const query = route.params.query as string
@@ -20,21 +20,22 @@ const results = ref<Show[] | null>(null)
 //   results.value = normalizedShows
 // }
 
-onMounted(() => {
-  // searchShows()
-})
+// onMounted(() => {
+//   // searchShows()
+// })
 
-// watch(
-//   () => route.params.query,
-//   () => searchShows()
-// )
+// // watch(
+// //   () => route.params.query,
+// //   () => searchShows()
+// // )
 
-const openDetailPage = (id: number) => {
-  router.push({ path: `/show/${id}` })
-}
+// const openDetailPage = (id: number) => {
+//   router.push({ path: `/show/${id}` })
+// }
 </script>
 <template>
-  <main class="bg-primary">
+  <div></div>
+  <!-- <main class="bg-primary">
     <div class="search-results">
       <h5>Search results for "{{ searchQuery }}"</h5>
       <div v-if="results" class="search-results__cards">
@@ -53,10 +54,10 @@ const openDetailPage = (id: number) => {
         </Card>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 <style scoped>
-.back-button {
+/*.back-button {
   margin-top: 32px;
   margin-bottom: 32px;
 }
@@ -124,4 +125,5 @@ h4 {
     justify-content: center;
   }
 }
+  */
 </style>

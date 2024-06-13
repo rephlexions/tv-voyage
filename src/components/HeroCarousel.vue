@@ -9,7 +9,7 @@ import {
 import Autoplay from 'embla-carousel-autoplay';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import type { Movie } from '@/types/types';
+import type { Movie } from '@/types/movie';
 import type { PropType } from 'vue';
 import { useRouter } from 'vue-router';
 import MovieRating from './MovieRating.vue';
@@ -24,7 +24,7 @@ defineProps({
 const router = useRouter();
 
 const openDetailPage = (id: number) => {
-  router.push({ path: `/show/${id}` });
+  router.push({ path: `/view/${id}` });
 };
 </script>
 <template>

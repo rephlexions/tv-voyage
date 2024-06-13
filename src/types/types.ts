@@ -73,6 +73,24 @@ type Media = {
   media_type: string;
 };
 
+type Video = {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string;
+  id: string;
+};
+
+type VideoResults = {
+  id: number;
+  results: Video[];
+};
+
 // old
 type Episode = {
   id: number;
@@ -125,5 +143,7 @@ export type {
   ProductionCompany,
   ProductionCountry,
   SpokenLanguage,
-  Media
+  Media,
+  Video,
+  VideoResults
 };

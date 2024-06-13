@@ -6,7 +6,7 @@ import Toaster from '@/components/ui/toast/Toaster.vue';
 <template>
   <TopNav></TopNav>
   <Toaster />
-  <RouterView> </RouterView>
+  <RouterView></RouterView>
 </template>
 
 <style scoped></style>

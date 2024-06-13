@@ -24,6 +24,8 @@ type Movie = Media & {
   title: string;
   video: boolean;
   media_type: 'movie';
+  genre_ids: number[];
+  name: string;
 };
 
 export type { Movie, MovieCollection };

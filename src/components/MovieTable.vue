@@ -2,7 +2,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -10,7 +9,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import type { PropType } from 'vue';
-import type { Movie } from '@/types/types';
+import type { Movie } from '@/types/movie';
 import MovieRating from './MovieRating.vue';
 import dayjs from 'dayjs';
 import { storeToRefs } from 'pinia';
@@ -25,7 +24,6 @@ defineProps({
     type: String
   }
 });
-
 const genresStore = useGenresStore();
 const { allGenres } = storeToRefs(genresStore);
 </script>
@@ -44,7 +42,9 @@ const { allGenres } = storeToRefs(genresStore);
       <TableBody>
         <TableRow v-for="(movie, index) in movies" :key="index">
           <TableCell class="font-bold w-min text-nowrap cursor-pointer hover:underline">
-            {{ movie.title || movie.name }}
+            <RouterLink :to="{ name: 'view', params: { id: movie.id } }">{{
+              movie.title || movie.name
+            }}</RouterLink>
           </TableCell>
           <TableCell class="flex gap-1 flex-nowrap">
             <Badge v-for="genreId in movie.genre_ids" :key="genreId" :variant="'secondary'">

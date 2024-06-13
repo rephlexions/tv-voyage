@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import type { Show, Episode } from '@/types/types';
-import { normalizeShows, normalizeEpisodes, groupEpisodesBySeason } from '@/utils/utils';
+import type { Movie } from '@/types/movie';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Table,
@@ -12,124 +11,114 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import MovieRating from '@/components/MovieRating.vue';
+import { tmdb } from '@/api/tmdb';
+import { storeToRefs } from 'pinia';
+import { useGenresStore } from '@/store/genres';
+import { useToast } from '@/components/ui/toast/use-toast';
+import type { JSONValue, VideoResults } from '@/types/types';
 
 const route = useRoute();
+const { toast } = useToast();
 
-const showID = route.params.id as string;
-const showCover = ref<string>('');
-const episodesList = ref<Record<string, Episode[]>>({});
-let show = ref<Show | null>(null);
+const mediaID = route.params.id as string;
+let movie = ref<Movie | null>(null);
+let videos = ref<VideoResults | null>(null);
+const genresStore = useGenresStore();
+const { allGenres } = storeToRefs(genresStore);
 
-const totalSeasons = computed(() => {
-  return Object.keys(episodesList.value);
-});
-
-async function getShow() {
-  // const [showInfo, images, episodes] = await Promise.all([
-  //   tvMaze.getShow(showID),
-  //   tvMaze.getShowImages(showID),
-  //   tvMaze.getShowEpisodes(showID)
-  // ])
-  // const normalizedShows: Show[] = normalizeShows(showInfo)
-  // show.value = normalizedShows[0]
-  // const backgroundObject = images[0].find((obj: { type: string }) => obj.type === 'background')
-  // showCover.value = backgroundObject ? backgroundObject.resolutions.original.url : ''
-  // const normalizedEpisodes: Episode[] = normalizeEpisodes(episodes[0])
-  // episodesList.value = groupEpisodesBySeason(normalizedEpisodes)
+function isError(value: any): value is Error {
+  return value instanceof Error;
 }
 
+async function getDetails() {
+  Promise.allSettled([tmdb.getDetails('movie', mediaID), tmdb.getVideos('movie', mediaID)])
+    .then((results) => {
+      results.forEach((result, index) => {
+        if (result.status === 'fulfilled') {
+          const value = result.value;
+          if (isError(value)) {
+            throw new Error(value.message);
+          } else {
+            if (index === 0) {
+              movie.value = value as Movie;
+            } else {
+              videos.value = value as VideoResults;
+            }
+          }
+        } else if (result.status === 'rejected') {
+          throw new Error(result.reason);
+        }
+      });
+    })
+    .catch((error) => {
+      toast({
+        title: 'An error occurred',
+        description: `${error}`,
+        variant: 'destructive'
+      });
+    });
+}
 onMounted(() => {
-  // getShow()
+  getDetails();
 });
 </script>
 
 <template>
   <main class="bg-primary">
-    <div class="show-header">
-      <div class="show-header__summary">
-        <h1>{{ show?.name }}</h1>
-        <p v-html="show?.summary"></p>
+    <div v-if="movie" class="relative h-[500px]">
+      <img
+        class="h-full w-full object-cover object-center brightness-50"
+        :srcset="
+          `https://image.tmdb.org/t/p/original${movie.backdrop_path} 1080w` +
+          ', ' +
+          `https://image.tmdb.org/t/p/w780${movie.backdrop_path} 768w`
+        "
+        alt="Movie cover"
+      />
+      <div class="absolute left-24 right-24 top-8 flex h-3/4 gap-4 sm:top-16">
+        <Card class="aspect-2/3 min-h-[275px] w-auto md:max-w-[264px]">
+          <CardContent class="w-full p-0">
+            <img
+              class="h-full w-full rounded-lg object-cover"
+              :src="`https://image.tmdb.org/t/p/w342/${movie.poster_path}`"
+            />
+          </CardContent>
+        </Card>
+        <div class="flex flex-col gap-3">
+          <h2
+            class="scroll-m-20 text-xl font-semibold tracking-tight text-white transition-colors first:mt-0 md:text-3xl"
+          >
+            {{ movie.title }} ({{ movie.release_date?.split('-')[0] }})
+          </h2>
+          <div class="flex gap-1 flex-row flex-nowrap">
+            <Badge v-for="(item, index) in movie.genres" :key="index" :variant="'secondary'">
+              {{ allGenres.find((genre) => genre.id === item.id)?.name }}
+            </Badge>
+          </div>
+          <MovieRating v-if="movie.vote_average" :rating="movie.vote_average" />
+          <Dialog>
+            <DialogTrigger as-child>
+              <Button class="max-w-fit" variant="secondary">View trailer</Button>
+            </DialogTrigger>
+            <DialogContent class="sm:max-w-[80vw] h-[80vh] p-8">
+              <iframe
+                class="w-full h-full"
+                :src="`https://www.youtube.com/embed/${videos?.results.find((video) => video.type === 'Trailer')?.key}`"
+                frameborder="0"
+                allowfullscreen
+              ></iframe>
+            </DialogContent>
+          </Dialog>
+          <h4 class="text-md italic text-slate-300">{{ movie.tagline }}</h4>
+          <p class="text-white text-sm max-w-lg overflow-scroll">{{ movie.overview }}</p>
+        </div>
       </div>
-      <img class="show-header__cover" :src="showCover" alt="Show cover" />
     </div>
-    <Tabs default-value="show-info" class="show-info dark">
-      <TabsList>
-        <TabsTrigger value="show-info">Show Info</TabsTrigger>
-        <TabsTrigger value="episodes">Episodes</TabsTrigger>
-      </TabsList>
-      <TabsContent value="show-info">
-        <h2>Show info</h2>
-        <div class="show-info__list">
-          <div class="show-info__list-item">
-            <h5>Rating:</h5>
-            <div v-if="show && show.rating" class="show-info__rating">
-              <img src="../assets/star.svg" alt="Show rating" />
-              <p>{{ show?.rating.average }}</p>
-            </div>
-          </div>
-          <div v-if="show && show.genres" class="show-info__list-item">
-            <h5>Genres:</h5>
-            <p>{{ show?.genres.join(', ') }}</p>
-          </div>
-          <div class="show-info__list-item">
-            <h5>Status:</h5>
-            <p>{{ show?.status }}</p>
-          </div>
-          <div class="show-info__list-item">
-            <h5>Language:</h5>
-            <p>{{ show?.language }}</p>
-          </div>
-          <div class="show-info__list-item">
-            <h5>Premiered:</h5>
-            <p>{{ show?.premiered }}</p>
-          </div>
-          <div v-if="show?.officialSite" class="show-info__list-item">
-            <h5>Official Site:</h5>
-            <a :href="show?.officialSite">{{ show?.officialSite }}</a>
-          </div>
-        </div>
-      </TabsContent>
-      <TabsContent value="episodes">
-        <div class="episodes-cards">
-          <Card v-for="(season, index) in totalSeasons" :key="index">
-            <CardHeader>
-              <CardTitle>Season {{ season }}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Number</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Rating</TableHead>
-                    <TableHead>Air date</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow v-for="episode in episodesList[season]" :key="episode.id">
-                    <TableCell class="font-medium">
-                      {{ episode.number }}
-                    </TableCell>
-                    <TableCell>{{ episode.name }}</TableCell>
-                    <TableCell>
-                      <div v-if="episode.rating.average" class="show-info__rating">
-                        <img src="../assets/star.svg" alt="Show rating" />
-                        {{ episode.rating.average }}
-                      </div>
-                      <div v-else>-</div>
-                    </TableCell>
-                    <TableCell>
-                      {{ episode.airDate }}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </div>
-      </TabsContent>
-    </Tabs>
   </main>
 </template>
 <style scoped>
@@ -171,20 +160,20 @@ onMounted(() => {
   display: flex;
   width: 380px;
   flex-direction: column;
-  align-items: flex-start;
+  align-movies: flex-start;
   gap: 8px;
 }
 
-.show-info__list-item {
+.show-info__list-movie {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-movies: center;
   gap: 16px;
 }
 
 .show-info__rating {
   display: flex;
-  align-items: center;
+  align-movies: center;
   gap: 8px;
   justify-content: space-between;
   width: 30px;

@@ -11,7 +11,7 @@ defineProps({
 <template>
   <div class="flex items-center gap-1 max-w-fit">
     <Icon icon="openmoji:star" class="text-xl" />
-    <span class="text-slate-500">{{ rating.toFixed(2) }}</span>
+    <span class="text-slate-100">{{ rating.toFixed(2) }}</span>
   </div>
 </template>
 <style scoped></style>

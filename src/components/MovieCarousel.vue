@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import type { PropType } from 'vue';
-import type { Movie } from '@/types/types';
+import type { Movie } from '@/types/movie';
 import MovieCard from './MovieCard.vue';
 import {
   Carousel,
