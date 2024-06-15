@@ -42,7 +42,7 @@ const { allGenres } = storeToRefs(genresStore);
       <TableBody>
         <TableRow v-for="(movie, index) in movies" :key="index">
           <TableCell class="font-bold w-min text-nowrap cursor-pointer hover:underline">
-            <RouterLink :to="{ name: 'view', params: { id: movie.id } }">{{
+            <RouterLink :to="{ name: 'view', params: { id: movie.id, type: movie.media_type } }">{{
               movie.title || movie.name
             }}</RouterLink>
           </TableCell>

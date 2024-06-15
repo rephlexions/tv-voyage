@@ -13,6 +13,7 @@ import type { Movie } from '@/types/movie';
 import type { PropType } from 'vue';
 import { useRouter } from 'vue-router';
 import MovieRating from './MovieRating.vue';
+import type { MediaType } from '@/types/types';
 
 defineProps({
   movies: {
@@ -23,9 +24,12 @@ defineProps({
 
 const router = useRouter();
 
-const openDetailPage = (id: number) => {
-  router.push({ path: `/view/${id}` });
-};
+function openDetailView(id: number, mediaType: MediaType = 'movie') {
+  router.push({
+    name: 'view',
+    params: { id: id.toString(), type: mediaType }
+  });
+}
 </script>
 <template>
   <h1 class="scroll-m-20 px-16 py-4 text-2xl font-extrabold tracking-tight lg:text-2xl uppercase">
@@ -57,7 +61,7 @@ const openDetailPage = (id: number) => {
           <Card class="aspect-2/3 min-h-[275px] w-auto hover:cursor-pointer md:max-w-[264px]">
             <CardContent class="w-full p-0">
               <img
-                class="h-full w-full rounded-lg object-cover"
+                class="h-full w-full rounded-lg object-cover hover:brightness-75 transition-all duration-300 ease-in-out"
                 :src="`https://image.tmdb.org/t/p/w342/${item.poster_path}`"
               />
             </CardContent>
@@ -69,7 +73,7 @@ const openDetailPage = (id: number) => {
               {{ item.title }} ({{ item.release_date?.split('-')[0] }})
             </h2>
             <MovieRating v-if="item.vote_average" :rating="item.vote_average" />
-            <Button @click="openDetailPage(item.id)">Find out more</Button>
+            <Button @click="openDetailView(item.id, item.media_type)">Find out more</Button>
           </div>
         </div>
       </CarouselItem>
