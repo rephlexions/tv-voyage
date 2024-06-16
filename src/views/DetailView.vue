@@ -1,16 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import type { Movie } from '@/types/media';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table';
+import type { Movie } from '@/types/movie';
+import type { MediaType, VideoResults } from '@/types/types';
+import type { TVShow } from '@/types/tvShow';
 import { Icon } from '@iconify/vue';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
@@ -21,8 +14,16 @@ import { tmdb } from '@/api/tmdb';
 import { storeToRefs } from 'pinia';
 import { useGenresStore } from '@/store/genres';
 import { useToast } from '@/components/ui/toast/use-toast';
-import type { MediaType, VideoResults } from '@/types/types';
-import type { TVShow } from '@/types/tvShow';
+import dayjs from 'dayjs';
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow
+// } from '@/components/ui/table';
 
 const route = useRoute();
 const { toast } = useToast();
@@ -30,7 +31,7 @@ const { toast } = useToast();
 const mediaID = route.params.id as string;
 const mediaType: MediaType = route.params.type as MediaType;
 
-let media = ref<Movie | null>(null);
+let media = ref<Movie | TVShow | null>(null);
 let videos = ref<VideoResults | null>(null);
 const genresStore = useGenresStore();
 const { allGenres } = storeToRefs(genresStore);
@@ -43,6 +44,23 @@ const trailer = computed(() => {
 const genres = computed(() => {
   if (!media.value) return;
   return media.value.genres.map((genre) => allGenres.value.find((g) => g.id === genre.id)?.name);
+});
+
+function isMovie(value: any): value is Movie {
+  return value && typeof value === 'object' && 'title' in value;
+}
+
+function isTVShow(value: any): value is TVShow {
+  return value && typeof value === 'object' && 'name' in value;
+}
+
+const mediaTitle = computed(() => {
+  if (isMovie(media.value)) {
+    return `${media.value.title} (${dayjs(media.value.release_date).format('YYYY')})`;
+  } else if (isTVShow(media.value)) {
+    return `${media.value.name} (${dayjs(media.value.first_air_date).format('YYYY')})`;
+  }
+  return '';
 });
 
 function isError(value: any): value is Error {
@@ -77,6 +95,7 @@ async function getDetails() {
       });
     });
 }
+
 onMounted(() => {
   getDetails();
 });
@@ -110,7 +129,7 @@ onMounted(() => {
           <h2
             class="scroll-m-20 text-xl font-semibold tracking-tight text-white transition-colors first:mt-0 md:text-3xl"
           >
-            {{ media.title }} ({{ media.release_date?.split('-')[0] }})
+            {{ mediaTitle }}
           </h2>
           <div class="flex gap-1 flex-row flex-nowrap">
             <Badge v-for="(genre, index) in genres" :key="index" :variant="'secondary'">
