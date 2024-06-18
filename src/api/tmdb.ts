@@ -183,5 +183,20 @@ export default class TmdbApi extends ApiClient {
       return error as Error;
     }
   }
+  async credits(mediaType: MediaType, id: string) {
+    try {
+      const config = {
+        endpoint: `${mediaType}/${id}/credits`,
+        options: options
+      };
+      const response = await this.apiClient.fetch(config);
+      if (response instanceof Error) {
+        throw response;
+      }
+      return response;
+    } catch (error) {
+      return error as Error;
+    }
+  }
 }
 export const tmdb = new TmdbApi(config.BASE_URL, options);

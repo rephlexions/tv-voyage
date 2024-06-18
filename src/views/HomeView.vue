@@ -22,6 +22,7 @@ const nowPlaying: Ref<Movie[]> = ref([]);
 const upcoming: Ref<Movie[]> = ref([]);
 const topRated: Ref<Movie[]> = ref([]);
 const trendingMovies: Ref<Movie[]> = ref([]);
+// TODO: change type to TVShow[]
 const trendingTv: Ref<Movie[]> = ref([]);
 
 onMounted(async () => {
@@ -80,7 +81,7 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
           </CarouselItem>
         </template>
       </MovieCarousel>
-      <div class="flex">
+      <div class="flex justify-between lg:flex-row md:flex-col">
         <MovieTable :movies="trendingMovies" :label="'Trending movies this week'"></MovieTable>
         <MovieTable :movies="trendingTv" :label="'Trending TV shows this week'"></MovieTable>
       </div>

@@ -91,51 +91,32 @@ type VideoResults = {
   results: Video[];
 };
 
-// old
-type Episode = {
+type CastMember = {
+  adult: boolean;
+  gender: number;
   id: number;
+  known_for_department: string;
   name: string;
-  number: number;
-  season: number;
-  airDate: string;
-  rating: {
-    average: number;
-  };
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  cast_id: number;
+  character: string;
+  credit_id: string;
+  order: number;
 };
 
-// old
-type Season = {
-  [key: string]: Episode[];
-};
-
-// old
-type Show = {
+type Credits = {
   id: number;
-  name: string;
-  image: {
-    medium: string;
-    original: string;
-    background?: string;
-  } | null;
-  rating?: {
-    average: number;
-  };
-  genres?: string[];
-  premiered?: string;
-  status?: string;
-  summary?: string;
-  language?: string;
-  officialSite?: string | null;
+  cast: CastMember[];
+  crew: CastMember[];
 };
 
 export type {
   JSONValue,
   FetchOptions,
   HttpMethod,
-  Episode,
   Genre,
-  Season,
-  Show,
   State,
   QueryObject,
   JSONObject,
@@ -145,5 +126,7 @@ export type {
   SpokenLanguage,
   Media,
   Video,
-  VideoResults
+  VideoResults,
+  CastMember,
+  Credits
 };

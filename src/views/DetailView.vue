@@ -2,7 +2,7 @@
 import { onMounted, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Movie } from '@/types/movie';
-import type { MediaType, VideoResults } from '@/types/types';
+import type { Credits, MediaType, VideoResults } from '@/types/types';
 import type { TVShow } from '@/types/tvShow';
 import { Icon } from '@iconify/vue';
 import { Badge } from '@/components/ui/badge';
@@ -33,6 +33,7 @@ const mediaType: MediaType = route.params.type as MediaType;
 
 let media = ref<Movie | TVShow | null>(null);
 let videos = ref<VideoResults | null>(null);
+let credits = ref<Credits | null>(null);
 const genresStore = useGenresStore();
 const { allGenres } = storeToRefs(genresStore);
 
@@ -68,7 +69,11 @@ function isError(value: any): value is Error {
 }
 
 async function getDetails() {
-  Promise.allSettled([tmdb.getDetails(mediaType, mediaID), tmdb.getVideos(mediaType, mediaID)])
+  Promise.allSettled([
+    tmdb.getDetails(mediaType, mediaID),
+    tmdb.getVideos(mediaType, mediaID),
+    tmdb.credits(mediaType, mediaID)
+  ])
     .then((results) => {
       results.forEach((result, index) => {
         if (result.status === 'fulfilled') {
@@ -78,8 +83,11 @@ async function getDetails() {
           } else {
             if (index === 0) {
               media.value = mediaType === 'movie' ? (value as Movie) : (value as TVShow);
-            } else {
+            }
+            if (index === 1) {
               videos.value = value as VideoResults;
+            } else {
+              credits.value = value as Credits;
             }
           }
         } else if (result.status === 'rejected') {

@@ -13,7 +13,6 @@ const routes = [
   {
     path: '/view/:type/:id',
     name: 'view',
-    props: true,
     component: lazyLoad('DetailView')
   },
   {
