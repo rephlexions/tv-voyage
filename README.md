@@ -7,7 +7,7 @@ You can search for TV shows and open a detail page with basic stats and a list o
 
 Built with:
 
-- TV Maze API
+- TMDB API
 - VueJS 3 (Composition API)
 - Typescript
 - Pinia
