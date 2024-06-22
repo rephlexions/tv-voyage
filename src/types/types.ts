@@ -168,8 +168,7 @@ type Recommendation = {
   video: boolean;
   vote_average: number;
   vote_count: number;
-
-}
+};
 
 type RecommendationsResults = {
   page: number;
@@ -177,7 +176,6 @@ type RecommendationsResults = {
   total_pages: number;
   total_results: number;
 };
-}
 
 export type {
   JSONValue,
@@ -200,5 +198,5 @@ export type {
   Review,
   ReviewResults,
   RecommendationsResults,
-  Recommendation,
+  Recommendation
 };
