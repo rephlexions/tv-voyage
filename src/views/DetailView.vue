@@ -8,22 +8,25 @@ import { Icon } from '@iconify/vue';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import MovieRating from '@/components/MovieRating.vue';
 import { tmdb } from '@/api/tmdb';
 import { storeToRefs } from 'pinia';
 import { useGenresStore } from '@/store/genres';
 import { useToast } from '@/components/ui/toast/use-toast';
 import dayjs from 'dayjs';
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableHead,
-//   TableHeader,
-//   TableRow
-// } from '@/components/ui/table';
+import { isError } from '@/utils/utils';
+import MediaCarousel from '@/components/MediaCarousel.vue';
+import CarouselItem from '@/components/ui/carousel/CarouselItem.vue';
+import MediaCard from '@/components/MediaCard.vue';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card';
+import Separator from '@/components/ui/separator/Separator.vue';
 
 const route = useRoute();
 const { toast } = useToast();
@@ -47,6 +50,11 @@ const genres = computed(() => {
   return media.value.genres.map((genre) => allGenres.value.find((g) => g.id === genre.id)?.name);
 });
 
+const directors = computed(() => {
+  if (!credits.value) return;
+  return credits.value.crew.filter((person) => person.job === 'Director');
+});
+
 function isMovie(value: any): value is Movie {
   return value && typeof value === 'object' && 'title' in value;
 }
@@ -64,10 +72,6 @@ const mediaTitle = computed(() => {
   return '';
 });
 
-function isError(value: any): value is Error {
-  return value instanceof Error;
-}
-
 async function getDetails() {
   Promise.allSettled([
     tmdb.getDetails(mediaType, mediaID),
@@ -81,13 +85,16 @@ async function getDetails() {
           if (isError(value)) {
             throw new Error(value.message);
           } else {
-            if (index === 0) {
-              media.value = mediaType === 'movie' ? (value as Movie) : (value as TVShow);
-            }
-            if (index === 1) {
-              videos.value = value as VideoResults;
-            } else {
-              credits.value = value as Credits;
+            switch (index) {
+              case 0:
+                media.value = mediaType === 'movie' ? (value as Movie) : (value as TVShow);
+                break;
+              case 1:
+                videos.value = value as VideoResults;
+                break;
+              case 2:
+                credits.value = value as Credits;
+                break;
             }
           }
         } else if (result.status === 'rejected') {
@@ -160,6 +167,78 @@ onMounted(() => {
           </Dialog>
           <h4 class="text-md italic text-slate-300">{{ media.tagline }}</h4>
           <p class="text-white text-sm max-w-lg overflow-scroll">{{ media.overview }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="p-16">
+      <MediaCarousel>
+        <template v-slot:carousel-title>
+          <h2 class="mb-4 text-3xl font-semibold text-slate-100">Cast</h2>
+        </template>
+        <template v-slot:carousel-item>
+          <CarouselItem
+            v-for="item in credits?.cast.slice(0, 15)"
+            :key="item.id"
+            class="basis-1/10"
+          >
+            <MediaCard :path="item.profile_path" class="max-w-[120px]">
+              <template v-slot:card-footer>
+                <p class="text-slate-800 font-semibold">{{ item.name }}</p>
+                <p class="text-slate-500">{{ item.character }}</p>
+              </template>
+            </MediaCard>
+          </CarouselItem>
+        </template>
+      </MediaCarousel>
+      <div v-if="media" class="py-16">
+        <h3 class="text-3xl font-semibold text-slate-100 p-4 pl-0">Details</h3>
+        <Separator />
+        <div v-if="directors" class="flex gap-2 items-center">
+          <h6 class="text-md font-semibold text-slate-200 p-4">Director</h6>
+          <div class="flex flex-row gap-1 h-min">
+            <p v-for="(director, index) in directors" :key="index">
+              {{ director.name }}{{ index < directors.length - 1 ? ', ' : '' }}
+            </p>
+          </div>
+        </div>
+        <Separator />
+        <div class="flex gap-2 items-center">
+          <h6 class="text-md font-semibold text-slate-200 p-4">Genres</h6>
+          <div class="flex flex-row gap-1 h-min">
+            <Badge v-for="(genre, index) in genres" :key="index" :variant="'secondary'">
+              {{ genre }}
+            </Badge>
+          </div>
+        </div>
+        <Separator />
+        <div class="flex gap-2 items-center">
+          <h6 class="text-md font-semibold text-slate-200 p-4">Status</h6>
+          <div class="flex flex-row gap-1 h-min">
+            {{ media.status }}
+          </div>
+        </div>
+        <Separator />
+        <div class="flex gap-2 items-center">
+          <h6 class="text-md font-semibold text-slate-200 p-4">
+            {{ isMovie(media) ? 'Release date' : 'First air date' }}
+          </h6>
+          <div class="flex flex-row gap-1 h-min">
+            {{
+              isMovie(media)
+                ? dayjs(media.release_date).format('MMMM DD, YYYY')
+                : dayjs(media.first_air_date).format('MMMM DD, YYYY')
+            }}
+          </div>
+        </div>
+        <Separator />
+        <div v-if="isMovie(media)" class="flex gap-2 items-center">
+          <h6 class="text-md font-semibold text-slate-200 p-4">Runtime</h6>
+          <div class="flex flex-row gap-1 h-min">{{ media.runtime }} mins</div>
+        </div>
+        <Separator />
+        <div v-if="isMovie(media)" class="flex gap-2 items-center">
+          <h6 class="text-md font-semibold text-slate-200 p-4">Budget</h6>
+          <div class="flex flex-row gap-1 h-min">{{ media.budget }} mins</div>
         </div>
       </div>
     </div>

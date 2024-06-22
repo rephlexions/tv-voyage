@@ -1,11 +1,5 @@
 import type { Media } from './types';
 
-type BelongsToCollection = {
-  id: number;
-  name: string;
-  poster_path: string;
-  backdrop_path: string;
-};
 type MovieCollection = {
   results: Movie[];
   page: number;
@@ -13,8 +7,14 @@ type MovieCollection = {
   total_results: number;
 };
 
+type BelongsToCollection = {
+  id: number;
+  name: string;
+  poster_path: string;
+  backdrop_path: string;
+};
+
 type Movie = Media & {
-  belongs_to_collection: BelongsToCollection;
   budget: number;
   imdb_id: string;
   original_title: string;
@@ -26,6 +26,7 @@ type Movie = Media & {
   media_type: 'movie';
   genre_ids: number[];
   name: string;
+  belongs_to_collection: BelongsToCollection;
 };
 
 export type { Movie, MovieCollection };

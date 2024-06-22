@@ -4,15 +4,6 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 defineProps({
   path: {
     type: String
-  },
-  releaseDate: {
-    type: String
-  },
-  title: {
-    type: String
-  },
-  voteAverage: {
-    type: Number
   }
 });
 </script>

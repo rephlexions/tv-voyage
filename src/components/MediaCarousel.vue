@@ -1,7 +1,6 @@
 <template>
   <div class="flex gap-1">
-    <h2 class="mb-4 text-3xl font-semibold">Top rated movies</h2>
-    <Button class="dark" variant="link">View more</Button>
+    <slot name="carousel-title"></slot>
   </div>
   <Carousel
     class="w-full"
@@ -11,7 +10,7 @@
     }"
   >
     <CarouselContent>
-      <slot name="carousel-item"> </slot>
+      <slot name="carousel-item"></slot>
     </CarouselContent>
     <CarouselPrevious />
     <CarouselNext />
@@ -25,14 +24,6 @@ import {
   CarouselNext,
   CarouselPrevious
 } from '@/components/ui/carousel';
-import { Button } from '@/components/ui/button';
-
-defineProps({
-  label: {
-    type: String,
-    required: true
-  }
-});
 </script>
 
 <style scoped></style>

@@ -8,7 +8,7 @@ import { useToast } from '@/components/ui/toast/use-toast';
 import HeroCarousel from '@/components/HeroCarousel.vue';
 import MediaCarousel from '@/components/MediaCarousel.vue';
 import MediaTable from '@/components/MediaTable.vue';
-import vCard from '@/components/vCard.vue';
+import MediaCard from '@/components/MediaCard.vue';
 import CarouselItem from '@/components/ui/carousel/CarouselItem.vue';
 import MovieRating from '@/components/MovieRating.vue';
 import dayjs from 'dayjs';
@@ -61,23 +61,20 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
   <main class="bg-primary text-primary-foreground">
     <HeroCarousel :movies="[...nowPlaying, ...upcoming]"></HeroCarousel>
     <div class="p-16">
-      <MediaCarousel :movies="topRated" label="Top rated movies">
+      <MediaCarousel>
+        <template v-slot:carousel-title>
+          <h2 class="mb-4 text-3xl font-semibold text-slate-100">Top rated movies</h2>
+        </template>
         <template v-slot:carousel-item>
           <CarouselItem v-for="item in topRated" :key="item.id" class="md:basis-1/4 lg:basis-1/6">
-            <vCard
-              @click="openDetailView(item.id, item.media_type)"
-              :path="item.poster_path"
-              :release-date="item.release_date"
-              :title="item.title"
-              :vote-average="item.vote_average"
-            >
+            <MediaCard @click="openDetailView(item.id, item.media_type)" :path="item.poster_path">
               <template v-slot:card-footer>
                 <MovieRating :rating="item.vote_average" />
                 <p class="text-slate-800">
                   {{ item.title }} ({{ dayjs(item.release_date, 'YYYY MMMM DD').year() }})
                 </p>
               </template>
-            </vCard>
+            </MediaCard>
           </CarouselItem>
         </template>
       </MediaCarousel>
