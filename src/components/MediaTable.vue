@@ -9,15 +9,15 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import type { PropType } from 'vue';
-import type { Movie } from '@/types/movie';
-import MovieRating from './MovieRating.vue';
-import dayjs from 'dayjs';
 import { storeToRefs } from 'pinia';
 import { useGenresStore } from '@/store/genres';
+import type { TVShow } from '@/types/tvShow';
+import type { Movie } from '@/types/movie';
+import MovieRating from './MovieRating.vue';
 
 defineProps({
-  movies: {
-    type: Array as PropType<Movie[]>,
+  media: {
+    type: Array as PropType<Movie[] | TVShow[]>,
     required: true
   },
   label: {
@@ -40,15 +40,15 @@ const { allGenres } = storeToRefs(genresStore);
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow v-for="(movie, index) in movies" :key="index">
+        <TableRow v-for="item in media" :key="item.id">
           <TableCell class="font-bold w-min text-nowrap cursor-pointer hover:underline">
-            <RouterLink :to="{ name: 'view', params: { id: movie.id, type: movie.media_type } }">{{
-              movie.title || movie.name
+            <RouterLink :to="{ name: 'view', params: { id: item.id, type: item.media_type } }">{{
+              item.name || item.title
             }}</RouterLink>
           </TableCell>
           <TableCell class="flex gap-1 flex-nowrap">
             <Badge
-              v-for="genreId in movie.genre_ids.slice(0, 1)"
+              v-for="genreId in item.genre_ids.slice(0, 1)"
               :key="genreId"
               :variant="'secondary'"
             >
@@ -56,13 +56,13 @@ const { allGenres } = storeToRefs(genresStore);
             </Badge>
           </TableCell>
           <!-- <TableCell>
-          {{ dayjs(movie.release_date).format('DD-MM-YYYY') }}
+          {{ dayjs(item.release_date).format('DD-MM-YYYY') }}
         </TableCell> -->
           <TableCell>
             <MovieRating
               class="ml-auto"
-              v-if="movie.vote_average"
-              :rating="movie.vote_average"
+              v-if="item.vote_average"
+              :rating="item.vote_average"
             ></MovieRating>
           </TableCell>
         </TableRow>

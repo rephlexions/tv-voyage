@@ -59,6 +59,14 @@ type TVShow = Media & {
   seasons: Season[];
   type: string;
   media_type: 'tv';
+  genre_ids: number[];
 };
 
-export type { TVShow };
+type TvCollection = {
+  results: TVShow[];
+  page: number;
+  total_pages: number;
+  total_results: number;
+};
+
+export type { TVShow, TvCollection };

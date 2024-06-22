@@ -6,14 +6,15 @@ import type { Movie } from '@/types/movie';
 import type { MovieCollection } from '@/types/movie';
 import { useToast } from '@/components/ui/toast/use-toast';
 import HeroCarousel from '@/components/HeroCarousel.vue';
-import MovieCarousel from '@/components/MovieCarousel.vue';
-import MovieTable from '@/components/MovieTable.vue';
+import MediaCarousel from '@/components/MediaCarousel.vue';
+import MediaTable from '@/components/MediaTable.vue';
 import vCard from '@/components/vCard.vue';
 import CarouselItem from '@/components/ui/carousel/CarouselItem.vue';
 import MovieRating from '@/components/MovieRating.vue';
 import dayjs from 'dayjs';
 import { useRouter } from 'vue-router';
 import type { MediaType } from '@/types/types';
+import type { TVShow, TvCollection } from '@/types/tvShow';
 
 const { toast } = useToast();
 const router = useRouter();
@@ -22,8 +23,7 @@ const nowPlaying: Ref<Movie[]> = ref([]);
 const upcoming: Ref<Movie[]> = ref([]);
 const topRated: Ref<Movie[]> = ref([]);
 const trendingMovies: Ref<Movie[]> = ref([]);
-// TODO: change type to TVShow[]
-const trendingTv: Ref<Movie[]> = ref([]);
+const trendingTv: Ref<TVShow[]> = ref([]);
 
 onMounted(async () => {
   Promise.all([
@@ -38,7 +38,7 @@ onMounted(async () => {
       topRated.value = (results[1] as MovieCollection).results.slice(0, 15);
       upcoming.value = (results[2] as MovieCollection).results.slice(0, 5);
       trendingMovies.value = (results[3] as MovieCollection).results.slice(0, 10);
-      trendingTv.value = (results[4] as MovieCollection).results.slice(0, 10);
+      trendingTv.value = (results[4] as TvCollection).results.slice(0, 10);
     })
     .catch((error) => {
       toast({
@@ -61,7 +61,7 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
   <main class="bg-primary text-primary-foreground">
     <HeroCarousel :movies="[...nowPlaying, ...upcoming]"></HeroCarousel>
     <div class="p-16">
-      <MovieCarousel :movies="topRated" label="Top rated movies">
+      <MediaCarousel :movies="topRated" label="Top rated movies">
         <template v-slot:carousel-item>
           <CarouselItem v-for="item in topRated" :key="item.id" class="md:basis-1/4 lg:basis-1/6">
             <vCard
@@ -80,10 +80,10 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
             </vCard>
           </CarouselItem>
         </template>
-      </MovieCarousel>
-      <div class="flex justify-between lg:flex-row md:flex-col">
-        <MovieTable :movies="trendingMovies" :label="'Trending movies this week'"></MovieTable>
-        <MovieTable :movies="trendingTv" :label="'Trending TV shows this week'"></MovieTable>
+      </MediaCarousel>
+      <div class="flex justify-between lg:flex-row md:flex-col pt-16">
+        <MediaTable :media="trendingMovies" :label="'Trending movies this week'"></MediaTable>
+        <MediaTable :media="trendingTv" :label="'Trending TV shows this week'"></MediaTable>
       </div>
     </div>
   </main>
