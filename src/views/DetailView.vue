@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { watch } from 'vue';
 import type { Movie } from '@/types/movie';
-import type { Credits, CrewMember, MediaType, VideoResults } from '@/types/types';
+import type {
+  CreditsResults,
+  MediaType,
+  RecommendationsResults,
+  ReviewResults,
+  VideoResults
+} from '@/types/types';
 import type { TVShow } from '@/types/tvShow';
 import { Icon } from '@iconify/vue';
 import { Badge } from '@/components/ui/badge';
@@ -18,27 +25,38 @@ import { isError } from '@/utils/utils';
 import MediaCarousel from '@/components/MediaCarousel.vue';
 import CarouselItem from '@/components/ui/carousel/CarouselItem.vue';
 import MediaCard from '@/components/MediaCard.vue';
+import { Card, CardContent } from '@/components/ui/card';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from '@/components/ui/accordion';
 import Separator from '@/components/ui/separator/Separator.vue';
+import { useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
 const { toast } = useToast();
 const genresStore = useGenresStore();
 const { allGenres } = storeToRefs(genresStore);
 
-const mediaID = route.params.id as string;
-const mediaType: MediaType = route.params.type as MediaType;
+let mediaID = route.params.id as string;
+let mediaType: MediaType = route.params.type as MediaType;
 
 let media = ref<Movie | TVShow | null>(null);
 let videos = ref<VideoResults | null>(null);
-let credits = ref<Credits | null>(null);
+let credits = ref<CreditsResults | null>(null);
+let reviews = ref<ReviewResults | null>(null);
+let recommendations = ref<RecommendationsResults | null>();
+
+const accordionList = computed(() => {
+  return reviews.value?.results.map((review) => ({
+    value: review.id,
+    title: review.author,
+    content: review.content
+  }));
+});
 
 const trailer = computed(() => {
   if (!videos.value) return;
@@ -72,11 +90,20 @@ function isTVShow(value: any): value is TVShow {
   return value && typeof value === 'object' && 'name' in value;
 }
 
+function openDetailView(id: number, mediaType: MediaType = 'movie') {
+  router.push({
+    name: 'view',
+    params: { id: id.toString(), type: mediaType }
+  });
+}
+
 async function getDetails() {
   Promise.allSettled([
     tmdb.getDetails(mediaType, mediaID),
     tmdb.getVideos(mediaType, mediaID),
-    tmdb.credits(mediaType, mediaID)
+    tmdb.credits(mediaType, mediaID),
+    tmdb.reviews(mediaType, mediaID),
+    tmdb.recommendations(mediaType, mediaID)
   ])
     .then((results) => {
       results.forEach((result, index) => {
@@ -85,6 +112,7 @@ async function getDetails() {
           if (isError(value)) {
             throw new Error(value.message);
           } else {
+            console.log(value, index);
             switch (index) {
               case 0:
                 media.value = mediaType === 'movie' ? (value as Movie) : (value as TVShow);
@@ -93,7 +121,13 @@ async function getDetails() {
                 videos.value = value as VideoResults;
                 break;
               case 2:
-                credits.value = value as Credits;
+                credits.value = value as CreditsResults;
+                break;
+              case 3:
+                reviews.value = value as ReviewResults;
+                break;
+              case 4:
+                recommendations.value = value as RecommendationsResults;
                 break;
             }
           }
@@ -114,6 +148,15 @@ async function getDetails() {
 onMounted(() => {
   getDetails();
 });
+
+watch(
+  () => route.params.id,
+  (newId) => {
+    mediaID = newId as string;
+    mediaType = route.params.type as MediaType;
+    getDetails();
+  }
+);
 </script>
 
 <template>
@@ -190,7 +233,50 @@ onMounted(() => {
           </CarouselItem>
         </template>
       </MediaCarousel>
-      <div v-if="media" class="py-16">
+    </div>
+    <div class="flex md:flex-row flex-col px-16 gap-16">
+      <div class="basis-2/3 flex flex-col gap-16">
+        <div>
+          <h3 class="text-3xl font-semibold text-slate-100 p-4 pl-0">Reviews</h3>
+          <Accordion type="single" class="w-full" collapsible>
+            <AccordionItem
+              v-for="item in accordionList?.slice(0, 6)"
+              :key="item.value"
+              :value="item.value"
+            >
+              <AccordionTrigger class="text-foreground">{{ item.title }}</AccordionTrigger>
+              <AccordionContent>
+                {{ item.content }}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+        <div>
+          <MediaCarousel>
+            <template v-slot:carousel-title>
+              <h2 class="mb-4 text-3xl font-semibold text-slate-100">Recommendations</h2>
+            </template>
+            <template v-slot:carousel-item>
+              <CarouselItem
+                v-for="item in recommendations?.results.slice(0, 10)"
+                :key="item.id"
+                class="basis-1/10"
+              >
+                <MediaCard
+                  @click="openDetailView(item.id, item.media_type as MediaType)"
+                  :path="item.backdrop_path"
+                  class="max-w-[120px]"
+                >
+                  <template v-slot:card-footer>
+                    <p class="text-slate-800 font-semibold">{{ item.title }}</p>
+                  </template>
+                </MediaCard>
+              </CarouselItem>
+            </template>
+          </MediaCarousel>
+        </div>
+      </div>
+      <div v-if="media" class="basis-1/3">
         <h3 class="text-3xl font-semibold text-slate-100 p-4 pl-0">Details</h3>
         <Separator />
         <div v-if="directors" class="flex gap-2 items-center">
@@ -233,7 +319,7 @@ onMounted(() => {
         <Separator />
         <div v-if="isMovie(media)" class="flex gap-2 items-center">
           <h6 class="text-md font-semibold text-slate-200 p-4">Runtime</h6>
-          <div class="flex flex-row gap-1 h-min">{{ media.runtime }} mins</div>
+          <div class="flex flex-row gap-1 h-min">{{ media.runtime.toFixed(0) }} mins</div>
         </div>
         <Separator />
         <div v-if="isMovie(media)" class="flex gap-2 items-center">

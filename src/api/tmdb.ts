@@ -198,5 +198,37 @@ export default class TmdbApi extends ApiClient {
       return error as Error;
     }
   }
+
+  async reviews(mediaType: MediaType, id: string) {
+    try {
+      const config = {
+        endpoint: `${mediaType}/${id}/reviews`,
+        options: options
+      };
+      const response = await this.apiClient.fetch(config);
+      if (response instanceof Error) {
+        throw response;
+      }
+      return response;
+    } catch (error) {
+      return error as Error;
+    }
+  }
+
+  async recommendations(mediaType: MediaType, id: string) {
+    try {
+      const config = {
+        endpoint: `${mediaType}/${id}/recommendations`,
+        options: options
+      };
+      const response = await this.apiClient.fetch(config);
+      if (response instanceof Error) {
+        throw response;
+      }
+      return response;
+    } catch (error) {
+      return error as Error;
+    }
+  }
 }
 export const tmdb = new TmdbApi(config.BASE_URL, options);

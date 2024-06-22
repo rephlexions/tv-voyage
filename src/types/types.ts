@@ -4,6 +4,7 @@ type JSONArray = JSONValue[];
 type JSONValue = JSONArray | JSONObject | JSONPrimitive;
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
 interface FetchOptions extends RequestInit {
   method?: HttpMethod;
   headers?: HeadersInit;
@@ -120,11 +121,63 @@ type CrewMember = {
   job: string;
 };
 
-type Credits = {
+type CreditsResults = {
   id: number;
   cast: CastMember[];
   crew: CrewMember[];
 };
+
+type Review = {
+  author: string;
+  author_details: AuthorDetails;
+  content: string;
+  created_at: string;
+  id: string;
+  updated_at: string;
+  url: string;
+};
+
+type AuthorDetails = {
+  name: string;
+  username: string;
+  avatar_path: string | null;
+  rating: number;
+};
+
+type ReviewResults = {
+  id: number;
+  page: number;
+  results: Review[];
+  total_pages: number;
+  total_results: number;
+};
+
+type Recommendation = {
+  backdrop_path: string;
+  id: number;
+  original_title: string;
+  overview: string;
+  poster_path: string;
+  media_type: string;
+  adult: boolean;
+  title: string;
+  original_language: string;
+  genre_ids: number[];
+  popularity: number;
+  release_date: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+
+}
+
+type RecommendationsResults = {
+  page: number;
+  results: Recommendation[];
+  total_pages: number;
+  total_results: number;
+};
+}
 
 export type {
   JSONValue,
@@ -142,6 +195,10 @@ export type {
   Video,
   VideoResults,
   CastMember,
-  Credits,
-  CrewMember
+  CreditsResults,
+  CrewMember,
+  Review,
+  ReviewResults,
+  RecommendationsResults,
+  Recommendation,
 };
