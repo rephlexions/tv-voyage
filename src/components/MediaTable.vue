@@ -43,7 +43,7 @@ const { allGenres } = storeToRefs(genresStore);
         <TableRow v-for="item in media" :key="item.id">
           <TableCell class="font-bold w-min text-nowrap cursor-pointer hover:underline">
             <RouterLink :to="{ name: 'view', params: { id: item.id, type: item.media_type } }">{{
-              item.name || item.title
+              (item as Movie).title || item.name
             }}</RouterLink>
           </TableCell>
           <TableCell class="flex gap-1 flex-nowrap">
