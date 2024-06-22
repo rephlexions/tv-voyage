@@ -2,7 +2,7 @@
 import { onMounted, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Movie } from '@/types/movie';
-import type { Credits, MediaType, VideoResults } from '@/types/types';
+import type { Credits, CrewMember, MediaType, VideoResults } from '@/types/types';
 import type { TVShow } from '@/types/tvShow';
 import { Icon } from '@iconify/vue';
 import { Badge } from '@/components/ui/badge';
@@ -30,6 +30,8 @@ import Separator from '@/components/ui/separator/Separator.vue';
 
 const route = useRoute();
 const { toast } = useToast();
+const genresStore = useGenresStore();
+const { allGenres } = storeToRefs(genresStore);
 
 const mediaID = route.params.id as string;
 const mediaType: MediaType = route.params.type as MediaType;
@@ -37,8 +39,6 @@ const mediaType: MediaType = route.params.type as MediaType;
 let media = ref<Movie | TVShow | null>(null);
 let videos = ref<VideoResults | null>(null);
 let credits = ref<Credits | null>(null);
-const genresStore = useGenresStore();
-const { allGenres } = storeToRefs(genresStore);
 
 const trailer = computed(() => {
   if (!videos.value) return;
@@ -55,14 +55,6 @@ const directors = computed(() => {
   return credits.value.crew.filter((person) => person.job === 'Director');
 });
 
-function isMovie(value: any): value is Movie {
-  return value && typeof value === 'object' && 'title' in value;
-}
-
-function isTVShow(value: any): value is TVShow {
-  return value && typeof value === 'object' && 'name' in value;
-}
-
 const mediaTitle = computed(() => {
   if (isMovie(media.value)) {
     return `${media.value.title} (${dayjs(media.value.release_date).format('YYYY')})`;
@@ -71,6 +63,14 @@ const mediaTitle = computed(() => {
   }
   return '';
 });
+
+function isMovie(value: any): value is Movie {
+  return value && typeof value === 'object' && 'title' in value;
+}
+
+function isTVShow(value: any): value is TVShow {
+  return value && typeof value === 'object' && 'name' in value;
+}
 
 async function getDetails() {
   Promise.allSettled([
@@ -239,6 +239,15 @@ onMounted(() => {
         <div v-if="isMovie(media)" class="flex gap-2 items-center">
           <h6 class="text-md font-semibold text-slate-200 p-4">Budget</h6>
           <div class="flex flex-row gap-1 h-min">{{ media.budget }} mins</div>
+        </div>
+        <Separator />
+        <div class="flex gap-2 items-center">
+          <h6 class="text-md font-semibold text-slate-200 p-4">Spoken languages</h6>
+          <div class="flex flex-row gap-1 h-min">
+            <p v-for="(language, index) in media.spoken_languages" :key="index">
+              {{ language.english_name }}{{ index < media.spoken_languages.length - 1 ? ', ' : '' }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
