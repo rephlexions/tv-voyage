@@ -42,7 +42,7 @@ type Season = {
   vote_average: number;
 };
 
-type TVShow = Media & {
+type TvShow = Media & {
   created_by: CreatedBy[];
   episode_run_time: number[];
   first_air_date: string;
@@ -62,11 +62,11 @@ type TVShow = Media & {
   genre_ids: number[];
 };
 
-type TvCollection = {
-  results: TVShow[];
+type TvShowResults = {
+  results: TvShow[];
   page: number;
   total_pages: number;
   total_results: number;
 };
 
-export type { TVShow, TvCollection };
+export type { TvShow, TvShowResults };

@@ -10,7 +10,7 @@ import type {
   ReviewResults,
   VideoResults
 } from '@/types/types';
-import type { TVShow } from '@/types/tvShow';
+import type { TvShow } from '@/types/tvShow';
 import { Icon } from '@iconify/vue';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
@@ -44,7 +44,7 @@ const { allGenres } = storeToRefs(genresStore);
 let mediaID = route.params.id as string;
 let mediaType: MediaType = route.params.type as MediaType;
 
-let media = ref<Movie | TVShow | null>(null);
+let media = ref<Movie | TvShow | null>(null);
 let videos = ref<VideoResults | null>(null);
 let credits = ref<CreditsResults | null>(null);
 let reviews = ref<ReviewResults | null>(null);
@@ -65,7 +65,9 @@ const trailer = computed(() => {
 
 const genres = computed(() => {
   if (!media.value) return;
-  return media.value.genres.map((genre) => allGenres.value.find((g) => g.id === genre.id)?.name);
+  return media.value.genres.map(
+    (genre: { id: number }) => allGenres.value.find((g) => g.id === genre.id)?.name
+  );
 });
 
 const directors = computed(() => {
@@ -86,7 +88,7 @@ function isMovie(value: any): value is Movie {
   return value && typeof value === 'object' && 'title' in value;
 }
 
-function isTVShow(value: any): value is TVShow {
+function isTVShow(value: any): value is TvShow {
   return value && typeof value === 'object' && 'name' in value;
 }
 
@@ -115,7 +117,7 @@ async function getDetails() {
             console.log(value, index);
             switch (index) {
               case 0:
-                media.value = mediaType === 'movie' ? (value as Movie) : (value as TVShow);
+                media.value = mediaType === 'movie' ? (value as Movie) : (value as TvShow);
                 break;
               case 1:
                 videos.value = value as VideoResults;

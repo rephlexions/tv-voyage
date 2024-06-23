@@ -1,6 +1,6 @@
 import type { Media } from './types';
 
-type MovieCollection = {
+type MovieResults = {
   results: Movie[];
   page: number;
   total_pages: number;
@@ -29,4 +29,4 @@ type Movie = Media & {
   belongs_to_collection: BelongsToCollection;
 };
 
-export type { Movie, MovieCollection };
+export type { Movie, MovieResults };
