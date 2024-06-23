@@ -15,7 +15,7 @@ defineProps({
         :src="`https://image.tmdb.org/t/p/w342/${path}`"
       />
     </CardContent>
-    <CardFooter class="flex flex-col gap-1 p-2 w-auto h-[80px] items-start text-sm">
+    <CardFooter class="flex flex-col gap-0.5 p-2 w-auto items-start text-sm">
       <slot name="card-footer"></slot>
     </CardFooter>
   </Card>

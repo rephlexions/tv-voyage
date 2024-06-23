@@ -194,7 +194,9 @@ watch(
               {{ genre }}
             </Badge>
           </div>
-          <MovieRating v-if="media.vote_average" :rating="media.vote_average" />
+          <Badge :variant="'secondary'" class="max-w-fit">
+            <MovieRating v-if="media.vote_average" :rating="media.vote_average" />
+          </Badge>
           <Dialog>
             <DialogTrigger as-child>
               <Button class="max-w-fit" variant="secondary">View trailer</Button>
@@ -226,8 +228,10 @@ watch(
           >
             <MediaCard :path="item.profile_path" class="max-w-[120px]">
               <template v-slot:card-footer>
-                <p class="text-slate-800 font-semibold">{{ item.name }}</p>
-                <p class="text-slate-500">{{ item.character }}</p>
+                <div class="h-[80px]">
+                  <p class="text-slate-800 font-semibold">{{ item.name }}</p>
+                  <p class="text-slate-500">{{ item.character }}</p>
+                </div>
               </template>
             </MediaCard>
           </CarouselItem>
@@ -236,17 +240,17 @@ watch(
     </div>
     <div class="flex md:flex-row flex-col px-16 gap-16">
       <div class="basis-2/3 flex flex-col gap-16">
-        <div>
-          <h3 class="text-3xl font-semibold text-slate-100 p-4 pl-0">Reviews</h3>
+        <div v-if="accordionList?.length">
+          <h3 class="text-3xl font-semibold text-slate-100 p-4 pl-0">User Reviews</h3>
           <Accordion type="single" class="w-full" collapsible>
             <AccordionItem
               v-for="item in accordionList?.slice(0, 6)"
               :key="item.value"
               :value="item.value"
             >
-              <AccordionTrigger class="text-foreground">{{ item.title }}</AccordionTrigger>
+              <AccordionTrigger class="text-foreground">{{ item.title }} </AccordionTrigger>
               <AccordionContent>
-                {{ item.content }}
+                <span v-html="item.content"></span>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -265,10 +269,13 @@ watch(
                 <MediaCard
                   @click="openDetailView(item.id, item.media_type as MediaType)"
                   :path="item.backdrop_path"
-                  class="max-w-[120px]"
+                  class="max-w-[200px]"
                 >
                   <template v-slot:card-footer>
-                    <p class="text-slate-800 font-semibold">{{ item.title }}</p>
+                    <span class="text-slate-800 font-semibold h-[40px]">
+                      {{ item.name || item.title }}
+                    </span>
+                    <MovieRating v-if="item.vote_average" :rating="item.vote_average" />
                   </template>
                 </MediaCard>
               </CarouselItem>
@@ -324,7 +331,14 @@ watch(
         <Separator />
         <div v-if="isMovie(media)" class="flex gap-2 items-center">
           <h6 class="text-md font-semibold text-slate-200 p-4">Budget</h6>
-          <div class="flex flex-row gap-1 h-min">{{ media.budget }} mins</div>
+          <div class="flex flex-row gap-1 h-min">
+            {{
+              new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+              }).format(media.budget)
+            }}
+          </div>
         </div>
         <Separator />
         <div class="flex gap-2 items-center">
