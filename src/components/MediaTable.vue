@@ -11,13 +11,13 @@ import { Badge } from '@/components/ui/badge';
 import type { PropType } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGenresStore } from '@/store/genres';
-import type { TVShow } from '@/types/tvShow';
+import type { TvShow } from '@/types/tvShow';
 import type { Movie } from '@/types/movie';
 import MovieRating from './MovieRating.vue';
 
 defineProps({
   media: {
-    type: Array as PropType<Movie[] | TVShow[]>,
+    type: Array as PropType<Movie[] | TvShow[]>,
     required: true
   },
   label: {
