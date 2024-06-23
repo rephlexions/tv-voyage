@@ -99,7 +99,7 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
   });
 }
 
-async function getDetails() {
+function getDetails() {
   Promise.allSettled([
     tmdb.getDetails(mediaType, mediaID),
     tmdb.getVideos(mediaType, mediaID),
@@ -114,7 +114,6 @@ async function getDetails() {
           if (isError(value)) {
             throw new Error(value.message);
           } else {
-            console.log(value, index);
             switch (index) {
               case 0:
                 media.value = mediaType === 'movie' ? (value as Movie) : (value as TvShow);

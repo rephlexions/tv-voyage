@@ -14,6 +14,7 @@ import type { PropType } from 'vue';
 import { useRouter } from 'vue-router';
 import MovieRating from './MovieRating.vue';
 import type { MediaType } from '@/types/types';
+import { Badge } from './ui/badge';
 
 defineProps({
   movies: {
@@ -66,14 +67,18 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
               />
             </CardContent>
           </Card>
-          <div>
+          <div class="flex flex-col gap-3">
             <h2
-              class="scroll-m-20 pb-2 text-xl font-semibold tracking-tight text-white transition-colors first:mt-0 md:text-3xl"
+              class="scroll-m-20 text-xl font-semibold tracking-tight text-white transition-colors first:mt-0 md:text-3xl"
             >
               {{ item.title }} ({{ item.release_date?.split('-')[0] }})
             </h2>
-            <MovieRating v-if="item.vote_average" :rating="item.vote_average" />
-            <Button @click="openDetailView(item.id, item.media_type)">Find out more</Button>
+            <Badge variant="secondary" class="max-w-fit">
+              <MovieRating v-if="item.vote_average" :rating="item.vote_average" />
+            </Badge>
+            <Button @click="openDetailView(item.id, item.media_type)" class="max-w-fit"
+              >Find out more</Button
+            >
           </div>
         </div>
       </CarouselItem>

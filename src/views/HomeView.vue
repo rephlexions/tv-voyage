@@ -14,6 +14,8 @@ import dayjs from 'dayjs';
 import { useRouter } from 'vue-router';
 import type { MediaType } from '@/types/types';
 import type { TvShowResults } from '@/types/tvShow';
+import { isError } from '@/utils/utils';
+import { log } from 'console';
 
 const { toast } = useToast();
 const router = useRouter();
@@ -39,7 +41,7 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
 }
 
 function getMedia() {
-  Promise.all([
+  Promise.allSettled([
     tmdb.nowPlaying(),
     tmdb.topRated(),
     tmdb.upcoming(),
@@ -47,11 +49,33 @@ function getMedia() {
     tmdb.trending('tv')
   ])
     .then((results) => {
-      nowPlaying.value = results[0] as MovieResults;
-      topRated.value = results[1] as MovieResults;
-      upcoming.value = results[2] as MovieResults;
-      trendingMovies.value = results[3] as MovieResults;
-      trendingTv.value = results[4] as TvShowResults;
+      results.forEach((result, index) => {
+        if (result.status === 'fulfilled') {
+          const value = result.value;
+          if (isError(value)) {
+            throw new Error(value.message);
+          }
+          switch (index) {
+            case 0:
+              nowPlaying.value = result.value as MovieResults;
+              break;
+            case 1:
+              topRated.value = result.value as MovieResults;
+              break;
+            case 2:
+              upcoming.value = result.value as MovieResults;
+              break;
+            case 3:
+              trendingMovies.value = result.value as MovieResults;
+              break;
+            case 4:
+              trendingTv.value = result.value as TvShowResults;
+              break;
+          }
+        } else if (result.status === 'rejected') {
+          throw new Error(result.reason);
+        }
+      });
     })
     .catch((error) => {
       toast({
