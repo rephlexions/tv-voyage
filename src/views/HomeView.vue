@@ -15,7 +15,6 @@ import { useRouter } from 'vue-router';
 import type { MediaType } from '@/types/types';
 import type { TvShowResults } from '@/types/tvShow';
 import { isError } from '@/utils/utils';
-import { log } from 'console';
 
 const { toast } = useToast();
 const router = useRouter();
