@@ -10,18 +10,15 @@ import Autoplay from 'embla-carousel-autoplay';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import type { Movie } from '@/types/movie';
-import type { PropType } from 'vue';
 import { useRouter } from 'vue-router';
 import MovieRating from './MovieRating.vue';
 import type { MediaType } from '@/types/types';
 import { Badge } from './ui/badge';
 
-defineProps({
-  movies: {
-    type: Array as PropType<Movie[]>,
-    required: true
-  }
-});
+interface HeroCarouselProps {
+  movies: Movie[];
+}
+defineProps<HeroCarouselProps>();
 
 const router = useRouter();
 

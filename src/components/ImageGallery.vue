@@ -4,15 +4,12 @@ import { watchOnce } from '@vueuse/core';
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from './ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import { Card, CardContent } from './ui/card';
-import type { PropType } from 'vue';
 import type { Image } from '../types/types';
 
-defineProps({
-  images: {
-    type: Array as PropType<Image[]>,
-    required: true
-  }
-});
+interface ImageGalleryProps {
+  images: Image[];
+}
+defineProps<ImageGalleryProps>();
 
 const emblaMainApi = ref<CarouselApi>();
 const emblaThumbnailApi = ref<CarouselApi>();

@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
 
-defineProps({
-  rating: {
-    type: Number,
-    required: true
-  }
-});
+interface MovieRatingProps {
+  rating: number;
+}
+defineProps<MovieRatingProps>();
 </script>
 <template>
   <div class="flex items-center gap-1 max-w-fit">

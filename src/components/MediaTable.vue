@@ -8,22 +8,18 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import type { PropType } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGenresStore } from '@/store/genres';
 import type { TvShow } from '@/types/tvShow';
 import type { Movie } from '@/types/movie';
 import MovieRating from './MovieRating.vue';
 
-defineProps({
-  media: {
-    type: Array as PropType<Movie[] | TvShow[]>,
-    required: true
-  },
-  label: {
-    type: String
-  }
-});
+interface MediaTableProps {
+  media: Movie[] | TvShow[];
+  label?: string;
+}
+defineProps<MediaTableProps>();
+
 const genresStore = useGenresStore();
 const { allGenres } = storeToRefs(genresStore);
 </script>

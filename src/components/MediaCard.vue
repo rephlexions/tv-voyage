@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 
-defineProps({
-  path: {
-    type: String
-  }
-});
+interface MediaCardProps {
+  path: string;
+}
+defineProps<MediaCardProps>();
 </script>
 <template>
   <Card class="hover:cursor-pointer">

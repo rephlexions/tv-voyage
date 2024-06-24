@@ -42,6 +42,7 @@ const router = useRouter();
 const { toast } = useToast();
 const genresStore = useGenresStore();
 const { allGenres } = storeToRefs(genresStore);
+const showBackButton = ref(false);
 
 let mediaID = route.params.id as string;
 let mediaType: MediaType = route.params.type as MediaType;
@@ -102,6 +103,10 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
   });
 }
 
+function goBack() {
+  console.log(route);
+}
+
 function getDetails() {
   Promise.allSettled([
     tmdb.getDetails(mediaType, mediaID),
@@ -154,6 +159,9 @@ function getDetails() {
 }
 
 onMounted(() => {
+  if (route.meta.fromWithinApp) {
+    showBackButton.value = true;
+  }
   getDetails();
 });
 
@@ -169,7 +177,7 @@ watch(
 
 <template>
   <main class="bg-primary pb-16 pt-4">
-    <Button @click="$router.back()" class="mx-16 mb-4 dark">
+    <Button v-if="showBackButton" @click="goBack" class="mx-16 mb-4 dark">
       <Icon icon="akar-icons:arrow-left" />
     </Button>
     <div v-if="media" class="relative h-[500px]">

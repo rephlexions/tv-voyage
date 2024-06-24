@@ -27,4 +27,13 @@ const router = createRouter({
   routes
 });
 
+router.beforeEach((to, from, next) => {
+  if (from.name) {
+    to.meta.fromWithinApp = true;
+  } else {
+    to.meta.fromWithinApp = false;
+  }
+  next();
+});
+
 export default router;
