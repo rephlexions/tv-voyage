@@ -43,7 +43,7 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
     }"
     :plugins="[
       Autoplay({
-        delay: 5000
+        delay: 3000
       })
     ]"
   >
@@ -58,7 +58,7 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
           "
           alt="Movie cover"
         />
-        <div class="absolute left-24 right-24 top-8 flex h-3/4 gap-4 sm:top-16">
+        <div class="absolute left-24 right-24 flex h-3/4 gap-4 sm:top-16 top-4">
           <Card class="aspect-2/3 min-h-[275px] w-auto hover:cursor-pointer md:max-w-[264px]">
             <CardContent class="w-full p-0">
               <img

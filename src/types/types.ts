@@ -178,6 +178,22 @@ type RecommendationsResults = {
   total_results: number;
 };
 
+type Image = {
+  aspect_ratio: number;
+  file_path: string;
+  height: number;
+  iso_639_1: string | null;
+  vote_average: number;
+  vote_count: number;
+  width: number;
+};
+
+type ImageResults = {
+  backdrops: Image[];
+  logos: Image[];
+  posters: Image[];
+};
+
 export type {
   JSONValue,
   FetchOptions,
@@ -199,5 +215,7 @@ export type {
   Review,
   ReviewResults,
   RecommendationsResults,
-  Recommendation
+  Recommendation,
+  Image,
+  ImageResults
 };

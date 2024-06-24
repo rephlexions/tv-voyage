@@ -103,10 +103,10 @@ export default class TmdbApi extends ApiClient {
     }
   }
 
-  async images(id: number): Promise<JSONValue | Error> {
+  async images(mediaType: MediaType, id: string): Promise<JSONValue | Error> {
     try {
       const config = {
-        endpoint: `movie/${id}/images`,
+        endpoint: `${mediaType}/${id}/images`,
         options: options
       };
       const response = await this.apiClient.fetch(config);

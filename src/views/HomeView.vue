@@ -100,7 +100,7 @@ onMounted(() => {
           <CarouselItem
             v-for="item in topRated?.results.slice(0, 15)"
             :key="item.id"
-            class="md:basis-1/4 lg:basis-1/6"
+            class="sm:basis-1/4 lg:basis-1/6"
           >
             <MediaCard @click="openDetailView(item.id, item.media_type)" :path="item.poster_path">
               <template v-slot:card-footer>
@@ -115,7 +115,7 @@ onMounted(() => {
           </CarouselItem>
         </template>
       </MediaCarousel>
-      <div class="flex justify-between lg:flex-row md:flex-col pt-16">
+      <div class="flex justify-between lg:flex-row sm:flex-col pt-16">
         <MediaTable
           v-if="trendingMovies"
           :media="trendingMovies?.results.slice(0, 10)"

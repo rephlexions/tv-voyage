@@ -35,7 +35,6 @@ const { allGenres } = storeToRefs(genresStore);
         <TableRow>
           <TableHead class="w-min"> Title </TableHead>
           <TableHead class="w-[350px]">Genres</TableHead>
-          <!-- <TableHead class="w-[200px]">Release date</TableHead> -->
           <TableHead class="text-right"> Score </TableHead>
         </TableRow>
       </TableHeader>
@@ -55,15 +54,14 @@ const { allGenres } = storeToRefs(genresStore);
               {{ allGenres.find((genre) => genre.id === genreId)?.name }}
             </Badge>
           </TableCell>
-          <!-- <TableCell>
-          {{ dayjs(item.release_date).format('DD-MM-YYYY') }}
-        </TableCell> -->
           <TableCell>
-            <MovieRating
-              class="ml-auto"
-              v-if="item.vote_average"
-              :rating="item.vote_average"
-            ></MovieRating>
+            <Badge variant="secondary">
+              <MovieRating
+                class="ml-auto"
+                v-if="item.vote_average"
+                :rating="item.vote_average"
+              ></MovieRating>
+            </Badge>
           </TableCell>
         </TableRow>
       </TableBody>

@@ -8,7 +8,8 @@ import type {
   MediaType,
   RecommendationsResults,
   ReviewResults,
-  VideoResults
+  VideoResults,
+  ImageResults
 } from '@/types/types';
 import type { TvShow } from '@/types/tvShow';
 import { Icon } from '@iconify/vue';
@@ -16,6 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import MovieRating from '@/components/MovieRating.vue';
+import ImageGallery from '@/components/ImageGallery.vue';
 import { tmdb } from '@/api/tmdb';
 import { storeToRefs } from 'pinia';
 import { useGenresStore } from '@/store/genres';
@@ -49,6 +51,7 @@ let videos = ref<VideoResults | null>(null);
 let credits = ref<CreditsResults | null>(null);
 let reviews = ref<ReviewResults | null>(null);
 let recommendations = ref<RecommendationsResults | null>();
+let images = ref<ImageResults | null>(null);
 
 const accordionList = computed(() => {
   return reviews.value?.results.map((review) => ({
@@ -105,7 +108,8 @@ function getDetails() {
     tmdb.getVideos(mediaType, mediaID),
     tmdb.credits(mediaType, mediaID),
     tmdb.reviews(mediaType, mediaID),
-    tmdb.recommendations(mediaType, mediaID)
+    tmdb.recommendations(mediaType, mediaID),
+    tmdb.images(mediaType, mediaID)
   ])
     .then((results) => {
       results.forEach((result, index) => {
@@ -129,6 +133,9 @@ function getDetails() {
                 break;
               case 4:
                 recommendations.value = value as RecommendationsResults;
+                break;
+              case 5:
+                images.value = value as ImageResults;
                 break;
             }
           }
@@ -161,8 +168,8 @@ watch(
 </script>
 
 <template>
-  <main class="bg-primary">
-    <Button @click="$router.back()" class="mx-16 my-4 dark">
+  <main class="bg-primary pb-16 pt-4">
+    <Button @click="$router.back()" class="mx-16 mb-4 dark">
       <Icon icon="akar-icons:arrow-left" />
     </Button>
     <div v-if="media" class="relative h-[500px]">
@@ -176,8 +183,8 @@ watch(
         alt="Movie cover"
       />
       <div class="absolute left-24 right-24 top-8 flex h-3/4 gap-4 sm:top-16">
-        <Card class="aspect-2/3 min-h-[275px] w-auto md:max-w-[264px]">
-          <CardContent class="w-full p-0">
+        <Card class="w-auto md:max-w-[264px] aspect-2/3 h-auto min-h-[373px]">
+          <CardContent class="w-full h-full p-0">
             <img
               class="h-full w-full rounded-lg object-cover"
               :src="`https://image.tmdb.org/t/p/w342/${media.poster_path}`"
@@ -241,6 +248,7 @@ watch(
     </div>
     <div class="flex md:flex-row flex-col px-16 gap-16">
       <div class="basis-2/3 flex flex-col gap-16">
+        <ImageGallery v-if="images" :images="images?.backdrops.slice(0, 10)" />
         <div v-if="accordionList?.length">
           <h3 class="text-3xl font-semibold text-slate-100 p-4 pl-0">User Reviews</h3>
           <Accordion type="single" class="w-full" collapsible>
