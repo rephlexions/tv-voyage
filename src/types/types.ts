@@ -21,7 +21,7 @@ interface FetchOptions extends RequestInit {
 }
 
 type QueryObject = {
-  [key: string]: string | number | boolean | undefined | null;
+  [key: string]: string;
 };
 
 type State = {

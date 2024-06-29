@@ -52,7 +52,7 @@ function openDetailView(id: number, mediaType: MediaType) {
 }
 
 async function searchMedia() {
-  const query: QueryObject = { query: searchQuery.value, page: currentPage.value };
+  const query: QueryObject = { query: searchQuery.value, page: currentPage.value.toString() };
 
   try {
     tmdb.searchMulti(query).then((results) => {
