@@ -1,9 +1,4 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import type { Ref } from 'vue';
-import { tmdb } from '@/api/tmdb';
-import type { MovieResults } from '@/types/movie';
-import { useToast } from '@/components/ui/toast/use-toast';
 import HeroCarousel from '@/components/HeroCarousel.vue';
 import MediaCarousel from '@/components/MediaCarousel.vue';
 import MediaTable from '@/components/MediaTable.vue';
@@ -13,24 +8,12 @@ import MovieRating from '@/components/MovieRating.vue';
 import dayjs from 'dayjs';
 import { useRouter } from 'vue-router';
 import type { MediaType } from '@/types/types';
-import type { TvShowResults } from '@/types/tvShow';
-import { isError } from '@/utils/utils';
+import { storeToRefs } from 'pinia';
+import { useMediaStore } from '@/store/media';
 
-const { toast } = useToast();
 const router = useRouter();
-
-const nowPlaying: Ref<MovieResults | null> = ref(null);
-const upcoming: Ref<MovieResults | null> = ref(null);
-const topRated: Ref<MovieResults | null> = ref(null);
-const trendingMovies: Ref<MovieResults | null> = ref(null);
-const trendingTv: Ref<TvShowResults | null> = ref(null);
-
-const heroMovies = computed(() => {
-  if (!nowPlaying.value || !upcoming.value) {
-    return [];
-  }
-  return [...nowPlaying.value.results.slice(0, 5), ...upcoming.value.results.slice(0, 5)];
-});
+const mediaStore = useMediaStore();
+const { heroMedia, topRatedMovies, trendingTv, trendingMovies } = storeToRefs(mediaStore);
 
 function openDetailView(id: number, mediaType: MediaType = 'movie') {
   router.push({
@@ -38,59 +21,10 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
     params: { id: id.toString(), type: mediaType }
   });
 }
-
-function getMedia() {
-  Promise.allSettled([
-    tmdb.nowPlaying(),
-    tmdb.topRated(),
-    tmdb.upcoming(),
-    tmdb.trending('movie'),
-    tmdb.trending('tv')
-  ])
-    .then((results) => {
-      results.forEach((result, index) => {
-        if (result.status === 'fulfilled') {
-          const value = result.value;
-          if (isError(value)) {
-            throw new Error(value.message);
-          }
-          switch (index) {
-            case 0:
-              nowPlaying.value = result.value as MovieResults;
-              break;
-            case 1:
-              topRated.value = result.value as MovieResults;
-              break;
-            case 2:
-              upcoming.value = result.value as MovieResults;
-              break;
-            case 3:
-              trendingMovies.value = result.value as MovieResults;
-              break;
-            case 4:
-              trendingTv.value = result.value as TvShowResults;
-              break;
-          }
-        } else if (result.status === 'rejected') {
-          throw new Error(result.reason);
-        }
-      });
-    })
-    .catch((error) => {
-      toast({
-        title: 'An error occurred',
-        description: `${error}`,
-        variant: 'destructive'
-      });
-    });
-}
-onMounted(() => {
-  getMedia();
-});
 </script>
 <template>
   <main class="bg-primary text-primary-foreground">
-    <HeroCarousel :movies="heroMovies"></HeroCarousel>
+    <HeroCarousel :movies="heroMedia"></HeroCarousel>
     <div class="p-16">
       <MediaCarousel>
         <template v-slot:carousel-title>
@@ -98,7 +32,7 @@ onMounted(() => {
         </template>
         <template v-slot:carousel-item>
           <CarouselItem
-            v-for="item in topRated?.results.slice(0, 15)"
+            v-for="item in topRatedMovies"
             :key="item.id"
             class="sm:basis-1/4 lg:basis-1/6"
           >
@@ -114,7 +48,7 @@ onMounted(() => {
           </CarouselItem>
         </template>
       </MediaCarousel>
-      <div class="flex justify-between lg:flex-row sm:flex-col pt-16">
+      <div class="flex justify-between md:flex-row flex-col pt-16">
         <MediaTable
           v-if="trendingMovies"
           :media="trendingMovies?.results.slice(0, 10)"

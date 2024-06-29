@@ -7,14 +7,16 @@ interface MediaCardProps {
 defineProps<MediaCardProps>();
 </script>
 <template>
-  <Card class="hover:cursor-pointer max-w-[221px] border-0">
+  <Card
+    class="hover:cursor-pointer max-w-[221px] border-0 hover:brightness-75 transition-all duration-300 ease-in-out"
+  >
     <CardContent class="w-full p-0">
       <img
-        class="max-h-[332px] rounded-lg rounded-b-none object-cover aspect-2/3 hover:brightness-75 transition-all duration-300 ease-in-out"
+        class="max-h-[332px] rounded-lg rounded-b-none object-cover aspect-2/3"
         :src="`https://image.tmdb.org/t/p/w780/${path}`"
       />
     </CardContent>
-    <CardFooter class="flex flex-col gap-0.5 p-1 items-start text-sm">
+    <CardFooter class="flex flex-col gap-0.5 p-3 items-start text-sm">
       <slot name="card-footer"></slot>
     </CardFooter>
   </Card>

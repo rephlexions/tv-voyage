@@ -56,7 +56,10 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
           alt="Movie cover"
         />
         <div class="absolute left-24 right-24 flex h-3/4 gap-4 sm:top-16 top-4">
-          <Card class="aspect-2/3 min-h-[275px] w-auto hover:cursor-pointer md:max-w-[264px]">
+          <Card
+            @click="openDetailView(item.id, item.media_type)"
+            class="aspect-2/3 min-h-[275px] w-auto hover:cursor-pointer md:max-w-[264px]"
+          >
             <CardContent class="w-full p-0">
               <img
                 class="h-full w-full rounded-lg object-cover hover:brightness-75 transition-all duration-300 ease-in-out"

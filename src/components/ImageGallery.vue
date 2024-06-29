@@ -56,7 +56,7 @@ watchOnce(emblaMainApi, (emblaMainApi) => {
               <CardContent class="p-0">
                 <img
                   class="rounded-lg rounded-b-none object-cover w-full"
-                  :src="`https://image.tmdb.org/t/p/w780/${image.file_path}`"
+                  :src="`https://image.tmdb.org/t/p/w1280/${image.file_path}`"
                 />
               </CardContent>
             </Card>

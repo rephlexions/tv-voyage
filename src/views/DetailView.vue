@@ -46,7 +46,6 @@ const showBackButton = ref(false);
 
 let mediaID = route.params.id as string;
 let mediaType: MediaType = route.params.type as MediaType;
-
 let media = ref<Movie | TvShow | null>(null);
 let videos = ref<VideoResults | null>(null);
 let credits = ref<CreditsResults | null>(null);
@@ -312,8 +311,13 @@ watch(
         <Separator />
         <div class="flex gap-2 items-center">
           <h6 class="text-md font-semibold text-slate-200 p-4">Genres</h6>
-          <div class="flex flex-row gap-1 h-min">
-            <Badge v-for="(genre, index) in genres" :key="index" :variant="'secondary'">
+          <div class="flex flex-row gap-1 h-min flex-wrap p-4">
+            <Badge
+              v-for="(genre, index) in genres"
+              :key="index"
+              class="whitespace-nowrap"
+              :variant="'secondary'"
+            >
               {{ genre }}
             </Badge>
           </div>
@@ -358,7 +362,7 @@ watch(
         <Separator />
         <div class="flex gap-2 items-center">
           <h6 class="text-md font-semibold text-slate-200 p-4">Spoken languages</h6>
-          <div class="flex flex-row gap-1 h-min">
+          <div class="flex flex-row gap-1 h-min flex-wrap">
             <p v-for="(language, index) in media.spoken_languages" :key="index">
               {{ language.english_name }}{{ index < media.spoken_languages.length - 1 ? ', ' : '' }}
             </p>

@@ -41,7 +41,7 @@ const { allGenres } = storeToRefs(genresStore);
               (item as Movie).title || item.name
             }}</RouterLink>
           </TableCell>
-          <TableCell class="flex gap-1 flex-nowrap">
+          <TableCell class="flex gap-1">
             <Badge
               v-for="genreId in item.genre_ids.slice(0, 1)"
               :key="genreId"
