@@ -284,7 +284,7 @@ watch(
                 class="basis-1/10"
               >
                 <MediaCard
-                  @click="openDetailView(item.id, item.media_type as MediaType)"
+                  @click="openDetailView(item.id, item.media_type)"
                   :path="item.backdrop_path"
                   class="max-w-[200px]"
                 >

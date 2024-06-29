@@ -1,129 +1,137 @@
 <script setup lang="ts">
-// import { onMounted, ref, watch } from 'vue'
-// import { useRoute } from 'vue-router'
-// import type { Show } from '@/types/types'
-// import { normalizeSearchResults } from '@/utils/utils'
-// import { Card, CardContent, CardFooter } from '@/components/ui/card'
-// import { useRouter } from 'vue-router'
+import { tmdb } from '@/api/tmdb';
+import type { MediaType, QueryObject, SearchResults } from '@/types/types';
+import { onMounted, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
+import dayjs from 'dayjs';
+import { isError } from '@/utils/utils';
+import { useToast } from '@/components/ui/toast/use-toast';
+import MediaCard from '@/components/MediaCard.vue';
+import MovieRating from '@/components/MovieRating.vue';
+import {
+  Pagination,
+  PaginationEllipsis,
+  PaginationFirst,
+  PaginationLast,
+  PaginationList,
+  PaginationListItem,
+  PaginationNext,
+  PaginationPrev
+} from '@/components/ui/pagination';
+import Button from '@/components/ui/button/Button.vue';
 
-// const route = useRoute()
-// const router = useRouter()
-// const searchQuery = ref<string>('')
+const { toast } = useToast();
+const route = useRoute();
+const router = useRouter();
+const searchQuery = ref<string>(route.params.query as string);
 
-// const results = ref<Show[] | null>(null)
+const searchResults = ref<SearchResults | null>(null);
+const currentPage = ref<number>(1);
 
-// async function searchShows() {
-//   const query = route.params.query as string
-//   searchQuery.value = query
-//   const searchResults = await tvMaze.searchShows(query)
-//   const normalizedShows: Show[] = normalizeSearchResults(searchResults)
-//   results.value = normalizedShows
-// }
+watch(
+  () => currentPage.value,
+  () => {
+    searchMedia();
+  }
+);
 
-// onMounted(() => {
-//   // searchShows()
-// })
+watch(
+  () => route.params.query,
+  () => {
+    searchQuery.value = route.params.query as string;
+    searchMedia();
+  }
+);
 
-// // watch(
-// //   () => route.params.query,
-// //   () => searchShows()
-// // )
+function openDetailView(id: number, mediaType: MediaType) {
+  router.push({
+    name: 'view',
+    params: { id: id.toString(), type: mediaType }
+  });
+}
 
-// const openDetailPage = (id: number) => {
-//   router.push({ path: `/show/${id}` })
-// }
+async function searchMedia() {
+  const query: QueryObject = { query: searchQuery.value, page: currentPage.value };
+
+  try {
+    tmdb.searchMulti(query).then((results) => {
+      if (isError(results)) {
+        throw new Error(results.message);
+      }
+      searchResults.value = results as SearchResults;
+    });
+  } catch (error) {
+    toast({
+      title: 'An error occurred',
+      description: `${error}`,
+      variant: 'destructive'
+    });
+  }
+}
+
+onMounted(() => {
+  searchMedia();
+});
 </script>
 <template>
   <div></div>
-  <!-- <main class="bg-primary">
-    <div class="search-results">
-      <h5>Search results for "{{ searchQuery }}"</h5>
-      <div v-if="results" class="search-results__cards">
-        <Card
-          v-for="(show, index) in results"
-          :key="index"
-          class="dark search-results__card"
-          @click="openDetailPage(show.id)"
-        >
-          <CardContent class="search-results__card-content">
-            <img v-if="show.image" :src="show.image.original" alt="Show cover" />
-          </CardContent>
-          <CardFooter class="search-results__card-footer">
-            <h4>{{ show.name }}</h4>
-          </CardFooter>
-        </Card>
+  <main class="bg-primary">
+    <div class="flex flex-col p-16">
+      <h1 class="text-4xl text-white">Search Results for "{{ searchQuery }}"</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-10">
+        <template v-if="searchResults">
+          <MediaCard
+            v-for="result in searchResults.results"
+            :key="result.id"
+            :path="result.poster_path"
+            class="h-[400px] w-full"
+            @click="openDetailView(result.id, result.media_type)"
+          >
+            <template v-slot:card-footer>
+              <span class="text-slate-800 font-semibold h-[40px]">
+                {{ result.name || result.original_title }} ({{
+                  dayjs(result.first_air_date || result.release_date).year()
+                }})
+              </span>
+              <MovieRating v-if="result.vote_average" :rating="result.vote_average" />
+            </template>
+          </MediaCard>
+        </template>
       </div>
+      <Pagination
+        v-slot="{ page }"
+        v-model:page="currentPage"
+        :total="searchResults?.total_results"
+        :items-per-page="20"
+        :sibling-count="1"
+        show-edges
+        :default-page="1"
+        class="flex justify-center mt-10"
+      >
+        <PaginationList v-slot="{ items }" class="flex items-center gap-1">
+          <PaginationFirst />
+          <PaginationPrev />
+
+          <template v-for="(item, index) in items">
+            <PaginationListItem
+              v-if="item.type === 'page'"
+              :key="index"
+              :value="item.value"
+              as-child
+            >
+              <Button class="w-10 h-10 p-0" :variant="item.value === page ? 'default' : 'outline'">
+                {{ item.value }}
+              </Button>
+            </PaginationListItem>
+            <PaginationEllipsis v-else :key="item.type" :index="index" />
+          </template>
+
+          <PaginationNext />
+          <PaginationLast />
+        </PaginationList>
+      </Pagination>
     </div>
-  </main> -->
+  </main>
 </template>
-<style scoped>
-/*.back-button {
-  margin-top: 32px;
-  margin-bottom: 32px;
-}
-.search-results {
-  padding: 40px;
-  height: auto;
-}
-
-.search-results__cards {
-  padding-top: 40px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-}
-
-.search-results__card {
-  width: 100%;
-  max-width: 250px;
-  height: 380px;
-  margin-bottom: 3rem;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  transition-property: transform;
-  transition-duration: 0.5s;
-  transition-delay: 0s;
-}
-
-.search-results__card:hover {
-  cursor: pointer;
-  transform: scale(1.05);
-}
-
-.search-results__card-content {
-  padding: 0;
-  margin: 0;
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-}
-.search-results__card-content img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  aspect-ratio: 2/3;
-}
-
-.search-results__card-footer {
-  background-color: #020817;
-  padding: 8px 0px;
-  display: flex;
-  align-content: center;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-h4 {
-  color: #fff;
-  margin-left: auto;
-  margin-right: auto;
-  font-weight: 800;
-}
-
-@media screen and (max-width: 600px) {
-  .search-results__cards {
-    justify-content: center;
-  }
-}
-  */
-</style>
+<style scoped></style>

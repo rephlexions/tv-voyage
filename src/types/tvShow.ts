@@ -58,7 +58,6 @@ type TvShow = Media & {
   original_name: string;
   seasons: Season[];
   type: string;
-  media_type: 'tv';
   genre_ids: number[];
 };
 

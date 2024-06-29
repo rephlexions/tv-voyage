@@ -1,5 +1,10 @@
 import ApiClient from './apiClient';
-import type { HttpMethod, FetchOptions, JSONValue, QueryObject } from '@/types/types';
+import {
+  type HttpMethod,
+  type FetchOptions,
+  type JSONValue,
+  type QueryObject
+} from '@/types/types';
 import type { MediaType } from '@/types/types';
 
 const config = {
@@ -220,6 +225,23 @@ export default class TmdbApi extends ApiClient {
       const config = {
         endpoint: `${mediaType}/${id}/recommendations`,
         options: options
+      };
+      const response = await this.apiClient.fetch(config);
+      if (response instanceof Error) {
+        throw response;
+      }
+      return response;
+    } catch (error) {
+      return error as Error;
+    }
+  }
+
+  async searchMulti(query: QueryObject) {
+    try {
+      const config = {
+        endpoint: 'search/multi',
+        options: options,
+        queryParams: query
       };
       const response = await this.apiClient.fetch(config);
       if (response instanceof Error) {

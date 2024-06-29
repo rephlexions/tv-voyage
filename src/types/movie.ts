@@ -23,7 +23,6 @@ type Movie = Media & {
   runtime: number;
   title: string;
   video: boolean;
-  media_type: 'movie';
   genre_ids: number[];
   name: string;
   belongs_to_collection: BelongsToCollection;
