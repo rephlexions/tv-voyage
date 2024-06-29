@@ -52,10 +52,10 @@ watchOnce(emblaMainApi, (emblaMainApi) => {
       <CarouselContent>
         <CarouselItem v-for="(image, index) in images" :key="index">
           <div class="p-1 max-h-[600px]">
-            <Card class="p-0.5">
+            <Card class="border-0">
               <CardContent class="p-0">
                 <img
-                  class="rounded-lg rounded-b-none object-cover transition-all duration-300 ease-in-out w-full"
+                  class="rounded-lg rounded-b-none object-cover w-full"
                   :src="`https://image.tmdb.org/t/p/w780/${image.file_path}`"
                 />
               </CardContent>
@@ -74,10 +74,10 @@ watchOnce(emblaMainApi, (emblaMainApi) => {
           @click="onThumbClick(index)"
         >
           <div class="p-1" :class="index === selectedIndex ? '' : 'opacity-50'">
-            <Card class="p-0.5">
+            <Card class="border-0">
               <CardContent class="p-0">
                 <img
-                  class="rounded-lg rounded-b-none object-cover aspect-2/3 hover:brightness-75 transition-all duration-300 ease-in-out"
+                  class="object-cover aspect-2/3 hover:brightness-75 transition-all duration-300 ease-in-out"
                   :src="`https://image.tmdb.org/t/p/w780/${image.file_path}`"
                 />
               </CardContent>
