@@ -78,6 +78,11 @@ const directors = computed(() => {
   return credits.value.crew.filter((person) => person.job === 'Director');
 });
 
+const createdBy = computed(() => {
+  if (!media.value) return;
+  return (media.value as TvShow).created_by;
+});
+
 const mediaTitle = computed(() => {
   if (isMovie(media.value)) {
     return `${media.value.title} (${dayjs(media.value.release_date).format('YYYY')})`;
@@ -300,11 +305,20 @@ watch(
       <div v-if="media" class="basis-1/3">
         <h3 class="text-3xl font-semibold text-slate-100 p-4 pl-0">Details</h3>
         <Separator />
-        <div v-if="directors" class="flex gap-2 items-center">
+        <div v-if="directors?.length" class="flex gap-2 items-center">
           <h6 class="text-md font-semibold text-slate-200 p-4">Director</h6>
           <div class="flex flex-row gap-1 h-min">
             <p v-for="(director, index) in directors" :key="index">
               {{ director.name }}{{ index < directors.length - 1 ? ', ' : '' }}
+            </p>
+          </div>
+        </div>
+        <Separator />
+        <div v-if="createdBy?.length" class="flex gap-2 items-center">
+          <h6 class="text-md font-semibold text-slate-200 p-4">Created by</h6>
+          <div class="flex flex-row gap-1 h-min">
+            <p v-for="(item, index) in createdBy" :key="index">
+              {{ item.name }}{{ index < createdBy.length - 1 ? ', ' : '' }}
             </p>
           </div>
         </div>
