@@ -20,6 +20,7 @@ import {
   PaginationPrev
 } from '@/components/ui/pagination';
 import Button from '@/components/ui/button/Button.vue';
+import { Icon } from '@iconify/vue';
 
 const { toast } = useToast();
 const route = useRoute();
@@ -28,6 +29,7 @@ const searchQuery = ref<string>(route.params.query as string);
 
 const searchResults = ref<SearchResults | null>(null);
 const currentPage = ref<number>(1);
+const showBackButton = ref(false);
 
 watch(
   () => currentPage.value,
@@ -51,6 +53,10 @@ function openDetailView(id: number, mediaType: MediaType) {
   });
 }
 
+function goBack() {
+  router.go(-1);
+}
+
 async function searchMedia() {
   const query: QueryObject = { query: searchQuery.value, page: currentPage.value.toString() };
 
@@ -71,12 +77,17 @@ async function searchMedia() {
 }
 
 onMounted(() => {
+  if (route.meta.fromWithinApp) {
+    showBackButton.value = true;
+  }
   searchMedia();
 });
 </script>
 <template>
-  <div></div>
   <main class="bg-primary">
+    <Button v-if="showBackButton" @click="goBack" class="mx-16 mb-4 dark">
+      <Icon icon="akar-icons:arrow-left" />
+    </Button>
     <div class="flex flex-col p-16">
       <h1 class="text-4xl text-white">Search results for "{{ searchQuery }}"</h1>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-10">

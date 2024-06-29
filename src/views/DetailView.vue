@@ -104,7 +104,7 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
 }
 
 function goBack() {
-  console.log(route);
+  router.go(-1);
 }
 
 function getDetails() {
