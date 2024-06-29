@@ -272,33 +272,31 @@ watch(
             </AccordionItem>
           </Accordion>
         </div>
-        <div>
-          <MediaCarousel>
-            <template v-slot:carousel-title>
-              <h2 class="mb-4 text-3xl font-semibold text-slate-100">Recommendations</h2>
-            </template>
-            <template v-slot:carousel-item>
-              <CarouselItem
-                v-for="item in recommendations?.results.slice(0, 10)"
-                :key="item.id"
-                class="basis-1/10"
+        <MediaCarousel>
+          <template v-slot:carousel-title>
+            <h2 class="mb-4 text-3xl font-semibold text-slate-100">Recommendations</h2>
+          </template>
+          <template v-slot:carousel-item>
+            <CarouselItem
+              v-for="item in recommendations?.results.slice(0, 10)"
+              :key="item.id"
+              class="basis-1/10"
+            >
+              <MediaCard
+                @click="openDetailView(item.id, item.media_type)"
+                :path="item.backdrop_path"
+                class="max-w-[200px]"
               >
-                <MediaCard
-                  @click="openDetailView(item.id, item.media_type)"
-                  :path="item.backdrop_path"
-                  class="max-w-[200px]"
-                >
-                  <template v-slot:card-footer>
-                    <span class="text-slate-800 font-semibold h-[40px]">
-                      {{ item.name || item.title }}
-                    </span>
-                    <MovieRating v-if="item.vote_average" :rating="item.vote_average" />
-                  </template>
-                </MediaCard>
-              </CarouselItem>
-            </template>
-          </MediaCarousel>
-        </div>
+                <template v-slot:card-footer>
+                  <span class="text-slate-800 font-semibold h-[40px]">
+                    {{ item.name || item.title }}
+                  </span>
+                  <MovieRating v-if="item.vote_average" :rating="item.vote_average" />
+                </template>
+              </MediaCard>
+            </CarouselItem>
+          </template>
+        </MediaCarousel>
       </div>
       <div v-if="media" class="basis-1/3">
         <h3 class="text-3xl font-semibold text-slate-100 p-4 pl-0">Details</h3>

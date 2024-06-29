@@ -78,14 +78,14 @@ onMounted(() => {
   <div></div>
   <main class="bg-primary">
     <div class="flex flex-col p-16">
-      <h1 class="text-4xl text-white">Search Results for "{{ searchQuery }}"</h1>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-10">
+      <h1 class="text-4xl text-white">Search results for "{{ searchQuery }}"</h1>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-10">
         <template v-if="searchResults">
           <MediaCard
             v-for="result in searchResults.results"
             :key="result.id"
             :path="result.poster_path"
-            class="h-[400px] w-full"
+            class=""
             @click="openDetailView(result.id, result.media_type)"
           >
             <template v-slot:card-footer>

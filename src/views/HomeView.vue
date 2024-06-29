@@ -104,12 +104,11 @@ onMounted(() => {
           >
             <MediaCard @click="openDetailView(item.id, item.media_type)" :path="item.poster_path">
               <template v-slot:card-footer>
-                <div class="h-[65px]">
-                  <MovieRating :rating="item.vote_average" />
-                  <p class="text-slate-800">
-                    {{ item.title }} ({{ dayjs(item.release_date, 'YYYY MMMM DD').year() }})
-                  </p>
-                </div>
+                <span class="text-slate-800 font-semibold h-[40px]">
+                  {{ item.title }} ({{ dayjs(item.release_date, 'YYYY MMMM DD').year() }})
+                </span>
+
+                <MovieRating :rating="item.vote_average" />
               </template>
             </MediaCard>
           </CarouselItem>
