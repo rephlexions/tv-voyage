@@ -46,6 +46,8 @@ const showBackButton = ref(false);
 
 let mediaID = route.params.id as string;
 let mediaType: MediaType = route.params.type as MediaType;
+const dialogTrigger = ref<HTMLElement | null>(null);
+
 let media = ref<Movie | TvShow | null>(null);
 let videos = ref<VideoResults | null>(null);
 let credits = ref<CreditsResults | null>(null);
@@ -111,10 +113,29 @@ function goBack() {
   router.go(-1);
 }
 
+async function fetchVideos() {
+  if (!videos.value) {
+    try {
+      await tmdb.getVideos(mediaType, mediaID).then((results) => {
+        if (isError(results)) {
+          throw new Error(results.message);
+        }
+        videos.value = results as VideoResults;
+      });
+    } catch {
+      toast({
+        title: 'An error occurred',
+        description: 'Failed to fetch videos',
+        variant: 'destructive'
+      });
+    }
+  }
+  dialogTrigger.value?.click();
+}
+
 function getDetails() {
   Promise.allSettled([
     tmdb.getDetails(mediaType, mediaID),
-    tmdb.getVideos(mediaType, mediaID),
     tmdb.credits(mediaType, mediaID),
     tmdb.reviews(mediaType, mediaID),
     tmdb.recommendations(mediaType, mediaID),
@@ -132,18 +153,15 @@ function getDetails() {
                 media.value = mediaType === 'movie' ? (value as Movie) : (value as TvShow);
                 break;
               case 1:
-                videos.value = value as VideoResults;
-                break;
-              case 2:
                 credits.value = value as CreditsResults;
                 break;
-              case 3:
+              case 2:
                 reviews.value = value as ReviewResults;
                 break;
-              case 4:
+              case 3:
                 recommendations.value = value as RecommendationsResults;
                 break;
-              case 5:
+              case 4:
                 images.value = value as ImageResults;
                 break;
             }
@@ -217,19 +235,7 @@ watch(
           <Badge :variant="'secondary'" class="max-w-fit">
             <MovieRating v-if="media.vote_average" :rating="media.vote_average" />
           </Badge>
-          <Dialog>
-            <DialogTrigger as-child>
-              <Button class="max-w-fit" variant="secondary">View trailer</Button>
-            </DialogTrigger>
-            <DialogContent class="sm:max-w-[80vw] h-[80vh] p-8">
-              <iframe
-                class="w-full h-full"
-                :src="`https://www.youtube.com/embed/${trailer?.key}`"
-                frameborder="0"
-                allowfullscreen
-              ></iframe>
-            </DialogContent>
-          </Dialog>
+          <Button @click="fetchVideos" class="max-w-fit" variant="secondary">View trailer</Button>
           <h4 class="text-md italic text-slate-300">{{ media.tagline }}</h4>
           <p class="text-white text-sm max-w-lg overflow-scroll">{{ media.overview }}</p>
         </div>
@@ -385,5 +391,18 @@ watch(
       </div>
     </div>
   </main>
+  <Dialog>
+    <DialogTrigger as-child>
+      <div ref="dialogTrigger"></div>
+    </DialogTrigger>
+    <DialogContent class="sm:max-w-[80vw] h-[80vh] p-8">
+      <iframe
+        class="w-full h-full"
+        :src="`https://www.youtube.com/embed/${trailer?.key}`"
+        frameborder="0"
+        allowfullscreen
+      ></iframe>
+    </DialogContent>
+  </Dialog>
 </template>
 <style scoped></style>
