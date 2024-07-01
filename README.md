@@ -1,6 +1,6 @@
 # TV Voyage
 
-<img src="https://i.ibb.co/t25kyjT/Screenshot-2024-07-01-at-17-26-24-TV-Voyage.png" alt="Screenshot-2024-07-01-at-17-26-24-TV-Voyage" border="0">(App screenshot)
+<img src="https://i.ibb.co/t25kyjT/Screenshot-2024-07-01-at-17-26-24-TV-Voyage.png" alt="Screenshot-2024-07-01-at-17-26-24-TV-Voyage" border="0" width="1920px" height="720px" >
 
 ### [Live demo](https://tv-voyage.vercel.app/)
 
