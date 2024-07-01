@@ -24,8 +24,6 @@ Install:
 Run:
 `npm run dev`
 
-[![App screenshot](https://i.ibb.co/KsHRC4p/Screenshot-2024-07-01-at-17-26-24-TV-Voyage.png)]([https://www.digitalocean.com/products/app-platform](https://tv-voyage.vercel.app/))
+<img src="https://i.ibb.co/KsHRC4p/Screenshot-2024-07-01-at-17-26-24-TV-Voyage.png" width="50%" height="50%" />
 
-
-[![App screenshot](https://i.ibb.co/mqrh3Cg/Screenshot-2024-07-01-at-17-36-21-TV-Voyage.png)]([https://www.digitalocean.com/products/app-platform](https://tv-voyage.vercel.app/))
-
+<img src="https://i.ibb.co/cFK2jcV/Screenshot-2024-07-01-at-17-36-21-TV-Voyage.png" width="50%" height="50%"   />
