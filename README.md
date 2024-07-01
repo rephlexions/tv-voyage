@@ -1,6 +1,6 @@
 # TV Voyage
 
-[<img src="[http://www.google.com.au/images/nav_logo7.png](https://ibb.co/t25kyjT)">](App screenshot)
+<img src="https://i.ibb.co/t25kyjT/Screenshot-2024-07-01-at-17-26-24-TV-Voyage.png" alt="Screenshot-2024-07-01-at-17-26-24-TV-Voyage" border="0">(App screenshot)
 
 ### [Live demo](https://tv-voyage.vercel.app/)
 
