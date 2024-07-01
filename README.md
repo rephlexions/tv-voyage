@@ -1,6 +1,8 @@
 # TV Voyage
 
 [![App screenshot](https://i.ibb.co/KsHRC4p/Screenshot-2024-07-01-at-17-26-24-TV-Voyage.png)]([https://www.digitalocean.com/products/app-platform](https://tv-voyage.vercel.app/))
+[![App screenshot](https://i.ibb.co/mqrh3Cg/Screenshot-2024-07-01-at-17-36-21-TV-Voyage.png)]([https://www.digitalocean.com/products/app-platform](https://tv-voyage.vercel.app/))
+
 
 ### [Live demo](https://tv-voyage.vercel.app/)
 
