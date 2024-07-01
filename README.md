@@ -1,5 +1,7 @@
 # TV Voyage
 
+![App screenshot](https://ibb.co/t25kyjT)
+
 ### [Live demo](https://tv-voyage.vercel.app/)
 
 TV Voyage is a web app that allows that allows users to view a few lists of TV shows based on different genres.
