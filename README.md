@@ -1,6 +1,6 @@
 # TV Voyage
 
-![App screenshot](https://ibb.co/t25kyjT)
+[<img src="[http://www.google.com.au/images/nav_logo7.png](https://ibb.co/t25kyjT)">](App screenshot)
 
 ### [Live demo](https://tv-voyage.vercel.app/)
 
