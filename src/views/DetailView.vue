@@ -9,7 +9,8 @@ import type {
   RecommendationsResults,
   ReviewResults,
   VideoResults,
-  ImageResults
+  ImageResults,
+  JSONValue
 } from '@/types/types';
 import type { TvShow } from '@/types/tvShow';
 import { Icon } from '@iconify/vue';
@@ -109,6 +110,13 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
   });
 }
 
+function openPersonDetailView(id: number) {
+  router.push({
+    name: 'person',
+    params: { id: id.toString() }
+  });
+}
+
 function goBack() {
   router.go(-1);
 }
@@ -142,32 +150,42 @@ function getDetails() {
     tmdb.images(mediaType, mediaID)
   ])
     .then((results) => {
+      const handlers = [
+        (value: JSONValue) => {
+          media.value = mediaType === 'movie' ? (value as Movie) : (value as TvShow);
+        },
+        (value: JSONValue) => {
+          credits.value = value as CreditsResults;
+        },
+        (value: JSONValue) => {
+          reviews.value = value as ReviewResults;
+        },
+        (value: JSONValue) => {
+          recommendations.value = value as RecommendationsResults;
+        },
+        (value: JSONValue) => {
+          images.value = value as ImageResults;
+        }
+      ];
+
       results.forEach((result, index) => {
-        if (result.status === 'fulfilled') {
-          const value = result.value;
-          if (isError(value)) {
-            throw new Error(value.message);
-          } else {
-            switch (index) {
-              case 0:
-                media.value = mediaType === 'movie' ? (value as Movie) : (value as TvShow);
-                break;
-              case 1:
-                credits.value = value as CreditsResults;
-                break;
-              case 2:
-                reviews.value = value as ReviewResults;
-                break;
-              case 3:
-                recommendations.value = value as RecommendationsResults;
-                break;
-              case 4:
-                images.value = value as ImageResults;
-                break;
+        try {
+          if (result.status === 'fulfilled') {
+            const value = result.value;
+            if (isError(value)) {
+              throw new Error(value.message);
+            } else {
+              handlers[index](value);
             }
+          } else if (result.status === 'rejected') {
+            throw new Error(result.reason);
           }
-        } else if (result.status === 'rejected') {
-          throw new Error(result.reason);
+        } catch (error) {
+          toast({
+            title: 'An error occurred',
+            description: `${error}`,
+            variant: 'destructive'
+          });
         }
       });
     })
@@ -252,7 +270,11 @@ watch(
             :key="item.id"
             class="basis-1/10"
           >
-            <MediaCard :path="item.profile_path" class="max-w-[120px]">
+            <MediaCard
+              @click="openPersonDetailView(item.id)"
+              :path="item.profile_path"
+              class="max-w-[120px]"
+            >
               <template v-slot:card-footer>
                 <div class="h-[80px]">
                   <p class="text-slate-800 font-semibold">{{ item.name }}</p>

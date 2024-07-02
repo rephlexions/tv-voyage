@@ -3,7 +3,8 @@ type JSONObject = { [key: string]: JSONValue };
 type JSONArray = JSONValue[];
 type JSONValue = JSONArray | JSONObject | JSONPrimitive;
 
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+const httpMethods = ['GET', 'POST', 'PUT', 'DELETE'] as const;
+type HttpMethod = (typeof httpMethods)[number];
 
 interface FetchOptions extends RequestInit {
   method?: HttpMethod;
@@ -220,6 +221,23 @@ type SearchResults = {
   total_results: number;
 };
 
+type Person = {
+  adult: boolean;
+  also_known_as: string[];
+  biography: string;
+  birthday: string;
+  deathday: null | string;
+  gender: number; // You might want a dedicated enum for genders later
+  homepage: null | string; // Allows null or string value
+  id: number;
+  imdb_id: string;
+  known_for_department: string;
+  name: string;
+  place_of_birth: string;
+  popularity: number;
+  profile_path: string;
+};
+
 export type {
   JSONValue,
   FetchOptions,
@@ -245,5 +263,6 @@ export type {
   Image,
   ImageResults,
   SearchResult,
-  SearchResults
+  SearchResults,
+  Person
 };

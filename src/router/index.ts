@@ -1,3 +1,4 @@
+import path from 'path';
 import { createRouter, createWebHistory } from 'vue-router';
 
 function lazyLoad(view: string): () => Promise<string> {
@@ -19,6 +20,11 @@ const routes = [
     path: '/search/:query',
     name: 'search',
     component: lazyLoad('SearchView')
+  },
+  {
+    path: '/person/:id',
+    name: 'person',
+    component: lazyLoad('PersonView')
   }
 ];
 
