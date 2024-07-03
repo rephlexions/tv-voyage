@@ -1,3 +1,6 @@
+import type { Movie } from './movie';
+import type { TvShow } from './tvShow';
+
 type JSONPrimitive = string | number | boolean | null;
 type JSONObject = { [key: string]: JSONValue };
 type JSONArray = JSONValue[];
@@ -227,8 +230,8 @@ type Person = {
   biography: string;
   birthday: string;
   deathday: null | string;
-  gender: number; // You might want a dedicated enum for genders later
-  homepage: null | string; // Allows null or string value
+  gender: number;
+  homepage: null | string;
   id: number;
   imdb_id: string;
   known_for_department: string;
@@ -236,6 +239,18 @@ type Person = {
   place_of_birth: string;
   popularity: number;
   profile_path: string;
+};
+
+type MovieCreditsResults = {
+  id: number;
+  cast: Movie[];
+  crew: Movie[];
+};
+
+type TVCreditsResults = {
+  id: number;
+  cast: TvShow[];
+  crew: TvShow[];
 };
 
 export type {
@@ -264,5 +279,7 @@ export type {
   ImageResults,
   SearchResult,
   SearchResults,
-  Person
+  Person,
+  MovieCreditsResults,
+  TVCreditsResults
 };

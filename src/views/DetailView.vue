@@ -94,6 +94,15 @@ const mediaTitle = computed(() => {
   }
   return '';
 });
+const cast = computed(() => {
+  if (!credits?.value) return;
+  return credits?.value.cast.slice(0, 15);
+});
+
+const backdrops = computed(() => {
+  if (!images?.value) return;
+  return images?.value.backdrops.slice(0, 10);
+});
 
 function isMovie(value: any): value is Movie {
   return value && typeof value === 'object' && 'title' in value;
@@ -265,11 +274,7 @@ watch(
           <h2 class="mb-4 text-3xl font-semibold text-slate-100">Cast</h2>
         </template>
         <template v-slot:carousel-item>
-          <CarouselItem
-            v-for="item in credits?.cast.slice(0, 15)"
-            :key="item.id"
-            class="basis-1/10"
-          >
+          <CarouselItem v-for="item in cast" :key="item.id" class="basis-1/10">
             <MediaCard
               @click="openPersonDetailView(item.id)"
               :path="item.profile_path"
@@ -288,12 +293,12 @@ watch(
     </div>
     <div class="flex md:flex-row flex-col px-16 gap-16">
       <div class="basis-2/3 flex flex-col gap-16">
-        <ImageGallery v-if="images" :images="images?.backdrops.slice(0, 10)" />
+        <ImageGallery v-if="backdrops" :images="backdrops" />
         <div v-if="accordionList?.length">
           <h3 class="text-3xl font-semibold text-slate-100 p-4 pl-0">User Reviews</h3>
           <Accordion type="single" class="w-full" collapsible>
             <AccordionItem
-              v-for="item in accordionList?.slice(0, 6)"
+              v-for="item in accordionList?.slice(0, 5)"
               :key="item.value"
               :value="item.value"
             >
@@ -304,7 +309,7 @@ watch(
             </AccordionItem>
           </Accordion>
         </div>
-        <MediaCarousel>
+        <MediaCarousel class="w-[50%]">
           <template v-slot:carousel-title>
             <h2 class="mb-4 text-3xl font-semibold text-slate-100">Recommendations</h2>
           </template>
