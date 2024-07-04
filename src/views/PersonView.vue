@@ -20,10 +20,14 @@ import MediaCarousel from '@/components/MediaCarousel.vue';
 import CarouselItem from '@/components/ui/carousel/CarouselItem.vue';
 import MediaCard from '@/components/MediaCard.vue';
 import MovieRating from '@/components/MovieRating.vue';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from '@/components/ui/accordion';
 import { Separator } from '@/components/ui/separator';
 import { Gender } from '@/enums/enums';
-import type { Movie } from '@/types/movie';
-import type { TvShow } from '@/types/tvShow';
 
 const route = useRoute();
 const router = useRouter();
@@ -44,6 +48,33 @@ const topRatedCredits = computed(() => {
   }
   return null;
 });
+
+const actingCredits = computed(() => {
+  if (movieCredits.value && tvCredits.value) {
+    const credits = [...movieCredits.value.cast];
+    return credits;
+  }
+  return null;
+});
+
+const accordionItems = computed(() => {
+  return [
+    {
+      value: 'item-1',
+      title: 'Upcoming',
+      content: actingCredits.value?.filter((item) => item.release_date === '')
+    },
+    {
+      value: 'item-2',
+      title: 'Released',
+      content: actingCredits.value
+        ?.filter((item) => item.release_date.length)
+        .sort((a, b) => b.release_date.localeCompare(a.release_date))
+    }
+  ];
+});
+
+const defaultValue = 'item-2';
 
 function getDetails() {
   Promise.allSettled([
@@ -137,7 +168,7 @@ watch(
           <h3
             class="text-md font-semibold tracking-tight text-white transition-colors md:text-2xl mb-4"
           >
-            Personal info
+            Personal details
           </h3>
           <h4 class="text-md font-bold text-white">Known for</h4>
           <p>{{ person.known_for_department }}</p>
@@ -198,6 +229,36 @@ watch(
             </CarouselItem>
           </template>
         </MediaCarousel>
+        <h3
+          class="text-md font-semibold tracking-tight text-white transition-colors first:mt-0 md:text-2xl mt-7"
+        >
+          Acting
+        </h3>
+        <Accordion type="single" class="w-full h-full" collapsible :default-value="defaultValue">
+          <AccordionItem v-for="item in accordionItems" :key="item.value" :value="item.value">
+            <AccordionTrigger>{{ item.title }}</AccordionTrigger>
+            <AccordionContent>
+              <div class="flex flex-wrap gap-4">
+                <MediaCard
+                  v-for="media in item.content"
+                  :key="media.id"
+                  @click="openDetailView(media.id, media.media_type)"
+                  :path="media.poster_path"
+                  class="max-w-[220px]"
+                >
+                  <template v-slot:card-footer>
+                    <div>
+                      <span class="text-slate-800 font-semibold h-[40px]">
+                        {{ media.name }}
+                      </span>
+                      <MovieRating :rating="media.vote_average" />
+                    </div>
+                  </template>
+                </MediaCard>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
     </div>
   </main>
