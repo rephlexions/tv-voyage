@@ -173,18 +173,17 @@ function getDetails() {
       results.forEach((result, index) => {
         try {
           if (result.status === 'fulfilled') {
-            const value = result.value;
-            if (isError(value)) {
-              throw new Error(value.message);
+            if (isError(result.value)) {
+              throw new Error(result.value.message);
             } else {
-              handlers[index](value);
+              handlers[index](result.value);
             }
           } else if (result.status === 'rejected') {
             throw new Error(result.reason);
           }
         } catch (error) {
           toast({
-            title: 'An error occurred',
+            title: 'A server error occurred',
             description: `${error}`,
             variant: 'destructive'
           });
@@ -193,7 +192,7 @@ function getDetails() {
     })
     .catch((error) => {
       toast({
-        title: 'An error occurred',
+        title: 'A network error occurred',
         description: `${error}`,
         variant: 'destructive'
       });

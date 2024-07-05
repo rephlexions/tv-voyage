@@ -25,7 +25,7 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
 <template>
   <main class="bg-primary text-primary-foreground">
     <HeroCarousel :movies="heroMedia"></HeroCarousel>
-    <div class="p-16">
+    <div class="p-16 ml-auto mr-auto max-w-min">
       <MediaCarousel>
         <template v-slot:carousel-title>
           <h2 class="mb-4 text-3xl font-semibold text-slate-100">Top rated movies</h2>
