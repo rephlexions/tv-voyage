@@ -254,11 +254,15 @@ watch(
                       :src="`https://image.tmdb.org/t/p/w780/${media.poster_path}`"
                     />
                   </div>
-                  <div>
+                  <div class="flex flex-col justify-between p-4">
                     <h4 class="text-md font-bold text-white">{{ media.title }}</h4>
-                    <p class="text-sm text-white">{{ media.character }}</p>
+                    <p class="text-sm to-slate-400">{{ media.character }}</p>
                     <p class="text-sm text-white">
-                      {{ dayjs(media.release_date).format('MMMM D, YYYY') }}
+                      {{
+                        dayjs(media.release_date).isValid()
+                          ? dayjs(media.release_date).format('MMMM D, YYYY')
+                          : '-'
+                      }}
                     </p>
                   </div>
                 </div>
