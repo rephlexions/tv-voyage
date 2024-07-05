@@ -50,6 +50,7 @@ type TvShow = {
   episode_run_time: number[];
   first_air_date: string;
   genres: Genre[];
+  genre_ids: number[];
   homepage: string;
   id: number;
   in_production: boolean;
@@ -76,6 +77,7 @@ type TvShow = {
   type: string;
   vote_average: number;
   vote_count: number;
+  media_type?: 'tv';
 };
 
 type TvShowResults = {

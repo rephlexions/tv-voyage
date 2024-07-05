@@ -222,8 +222,8 @@ watch(
                 class="max-w-[220px]"
               >
                 <template v-slot:card-footer>
-                  <div>
-                    <span class="text-slate-800 font-semibold h-[40px]">
+                  <div class="h-[60px] flex flex-col justify-around">
+                    <span class="text-slate-800 font-semibold">
                       {{ item.title }} ({{ dayjs(item.release_date, 'YYYY MMMM DD').year() }})
                     </span>
                     <MovieRating :rating="item.vote_average" />
@@ -248,15 +248,23 @@ watch(
                 class="flex flex-col flex-wrap gap-4 mb-4"
               >
                 <div class="flex flex-row flex-nowrap gap-1">
-                  <div class="min-w-[80px] w-[80px]">
+                  <div
+                    @click="openDetailView(media.id, 'movie')"
+                    class="min-w-[80px] w-[80px] hover:cursor-pointer hover:brightness-75 transition-all duration-300 ease-in-out"
+                  >
                     <img
                       class="object-cover aspect-2/3 rounded-lg"
                       :src="`https://image.tmdb.org/t/p/w780/${media.poster_path}`"
                     />
                   </div>
-                  <div>
-                    <h4 class="text-md font-bold text-white">{{ media.title }}</h4>
-                    <p class="text-sm text-white">{{ media.character }}</p>
+                  <div class="flex flex-col justify-between p-4">
+                    <h4
+                      @click="openDetailView(media.id, 'movie')"
+                      class="text-md font-bold text-white hover:cursor-pointer hover:underline"
+                    >
+                      {{ media.title }}
+                    </h4>
+                    <p class="text-sm to-slate-400">{{ media.character }}</p>
                     <p class="text-sm text-white">
                       {{ dayjs(media.release_date).format('MMMM D, YYYY') }}
                     </p>

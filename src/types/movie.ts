@@ -19,6 +19,7 @@ type Movie = {
   belongs_to_collection: BelongsToCollection;
   budget: number;
   genres: Genre[];
+  genre_ids: number[];
   homepage: string;
   id: number;
   imdb_id: string;

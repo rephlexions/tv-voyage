@@ -13,6 +13,7 @@ import { useGenresStore } from '@/store/genres';
 import type { TvShow } from '@/types/tvShow';
 import type { Movie } from '@/types/movie';
 import MovieRating from './MovieRating.vue';
+import { isMovie, isTVShow } from '@/utils/utils';
 
 interface MediaTableProps {
   media: Movie[] | TvShow[];
@@ -37,9 +38,16 @@ const { allGenres } = storeToRefs(genresStore);
       <TableBody>
         <TableRow v-for="item in media" :key="item.id">
           <TableCell class="font-bold w-min text-nowrap cursor-pointer hover:underline">
-            <RouterLink :to="{ name: 'view', params: { id: item.id, type: item.media_type } }">{{
-              (item as Movie).title || item.name
-            }}</RouterLink>
+            <RouterLink
+              v-if="isMovie(item)"
+              :to="{ name: 'view', params: { id: item.id, type: 'movie' } }"
+              >{{ item.title }}</RouterLink
+            >
+            <RouterLink
+              v-else-if="isTVShow(item)"
+              :to="{ name: 'view', params: { id: item.id, type: 'tv' } }"
+              >{{ item.name }}</RouterLink
+            >
           </TableCell>
           <TableCell class="flex gap-1">
             <Badge

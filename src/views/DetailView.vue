@@ -37,6 +37,7 @@ import {
 } from '@/components/ui/accordion';
 import Separator from '@/components/ui/separator/Separator.vue';
 import { useRouter } from 'vue-router';
+import { isMovie, isTVShow } from '@/utils/utils';
 
 const route = useRoute();
 const router = useRouter();
@@ -103,14 +104,6 @@ const backdrops = computed(() => {
   if (!images?.value) return;
   return images?.value.backdrops.slice(0, 10);
 });
-
-function isMovie(value: any): value is Movie {
-  return value && typeof value === 'object' && 'title' in value;
-}
-
-function isTVShow(value: any): value is TvShow {
-  return value && typeof value === 'object' && 'name' in value;
-}
 
 function openDetailView(id: number, mediaType: MediaType = 'movie') {
   router.push({
