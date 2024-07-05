@@ -62,13 +62,15 @@ const accordionItems = computed(() => {
     {
       value: 'item-1',
       title: 'Upcoming',
-      content: actingCredits.value?.filter((item) => item.release_date === '')
+      content: actingCredits.value?.filter(
+        (item) => item.release_date === '' || dayjs(item.release_date).isAfter(dayjs())
+      )
     },
     {
       value: 'item-2',
       title: 'Released',
       content: actingCredits.value
-        ?.filter((item) => item.release_date.length)
+        ?.filter((item) => dayjs(item.release_date).isBefore(dayjs()))
         .sort((a, b) => b.release_date.localeCompare(a.release_date))
     }
   ];
