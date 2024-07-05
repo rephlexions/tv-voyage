@@ -20,6 +20,7 @@ type Movie = {
   budget: number;
   genre_ids: number[];
   genres: Genre[];
+  genre_ids: number[];
   homepage: string;
   id: number;
   imdb_id: string;

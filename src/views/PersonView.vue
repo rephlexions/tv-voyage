@@ -19,6 +19,7 @@ import { useRouter } from 'vue-router';
 import MediaCarousel from '@/components/MediaCarousel.vue';
 import CarouselItem from '@/components/ui/carousel/CarouselItem.vue';
 import MediaCard from '@/components/MediaCard.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import MovieRating from '@/components/MovieRating.vue';
 import {
   Accordion,
@@ -26,7 +27,6 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion';
-import MediaTable from '@/components/MediaTable.vue';
 import { Separator } from '@/components/ui/separator';
 import { Gender } from '@/enums/enums';
 import type { Movie } from '@/types/movie';
@@ -36,6 +36,7 @@ const router = useRouter();
 const { toast } = useToast();
 const showBackButton = ref(false);
 let personID = route.params.id as string;
+const defaultAccordionValue = 'item-2';
 
 let person = ref<Person | null>(null);
 let movieCredits = ref<MovieCreditsResults | null>(null);
@@ -78,8 +79,6 @@ const accordionItems = computed(() => {
   ];
 });
 
-const defaultValue = 'item-2';
-
 function getDetails() {
   Promise.allSettled([
     tmdb.personDetail(personID),
@@ -102,18 +101,17 @@ function getDetails() {
       results.forEach((result, index) => {
         try {
           if (result.status === 'fulfilled') {
-            const value = result.value;
-            if (isError(value)) {
-              throw new Error(value.message);
+            if (isError(result.value)) {
+              throw new Error(result.value.message);
             } else {
-              handlers[index](value);
+              handlers[index](result.value);
             }
           } else if (result.status === 'rejected') {
             throw new Error(result.reason);
           }
         } catch (error) {
           toast({
-            title: 'An error occurred',
+            title: 'A server error occurred',
             description: `${error}`,
             variant: 'destructive'
           });
@@ -122,7 +120,7 @@ function getDetails() {
     })
     .catch((error) => {
       toast({
-        title: 'An error occurred',
+        title: 'A network error occurred',
         description: `${error}`,
         variant: 'destructive'
       });
@@ -194,7 +192,7 @@ watch(
         </div>
       </div>
 
-      <div class="flex flex-col">
+      <div class="flex flex-col max-w-7xl">
         <div class="mb-4">
           <h1
             class="text-xl font-bold tracking-tight text-white transition-colors first:mt-0 md:text-3xl"
@@ -223,7 +221,7 @@ watch(
               >
                 <template v-slot:card-footer>
                   <div class="h-[60px] flex flex-col justify-around">
-                    <span class="text-slate-800 font-semibold h-[40px]">
+                    <span class="text-slate-800 font-semibold">
                       {{ item.title }} ({{ dayjs(item.release_date, 'YYYY MMMM DD').year() }})
                     </span>
                     <MovieRating :rating="item.vote_average" />
@@ -238,36 +236,47 @@ watch(
         >
           Acting
         </h3>
-        <Accordion type="single" class="w-full h-full" collapsible :default-value="defaultValue">
+        <Accordion
+          type="single"
+          class="w-full h-full"
+          collapsible
+          :default-value="defaultAccordionValue"
+        >
           <AccordionItem v-for="item in accordionItems" :key="item.value" :value="item.value">
             <AccordionTrigger class="text-md font-semibold">{{ item.title }}</AccordionTrigger>
             <AccordionContent v-if="item.content">
-              <div
-                v-for="(media, index) in item.content"
-                :key="media.id"
-                class="flex flex-col flex-wrap gap-4 mb-4"
-              >
-                <div class="flex flex-row flex-nowrap gap-1">
-                  <div class="min-w-[80px] w-[80px]">
-                    <img
-                      class="object-cover aspect-2/3 rounded-lg"
-                      :src="`https://image.tmdb.org/t/p/w780/${media.poster_path}`"
-                    />
+              <ScrollArea class="h-[600px] rounded-md p-4">
+                <div
+                  v-for="(media, index) in item.content"
+                  :key="media.id"
+                  class="flex flex-col flex-wrap gap-4 mb-4"
+                >
+                  <div class="flex flex-row flex-nowrap gap-1">
+                    <div
+                      @click="openDetailView(media.id, 'movie')"
+                      class="min-w-[80px] w-[80px] hover:cursor-pointer hover:brightness-75 transition-all duration-300 ease-in-out"
+                    >
+                      <img
+                        class="object-cover aspect-2/3 rounded-lg"
+                        :src="`https://image.tmdb.org/t/p/w780/${media.poster_path}`"
+                      />
+                    </div>
+                    <div class="flex flex-col justify-between p-4">
+                      <h4
+                        @click="openDetailView(media.id, 'movie')"
+                        class="text-md font-bold text-white hover:cursor-pointer hover:underline"
+                      >
+                        {{ media.title }}
+                      </h4>
+                      <p class="text-sm to-slate-400">{{ media.character }}</p>
+                      <p class="text-sm text-white">
+                        {{ dayjs(media.release_date).format('MMMM D, YYYY') }}
+                      </p>
+                    </div>
                   </div>
-                  <div class="flex flex-col justify-between p-4">
-                    <h4 class="text-md font-bold text-white">{{ media.title }}</h4>
-                    <p class="text-sm to-slate-400">{{ media.character }}</p>
-                    <p class="text-sm text-white">
-                      {{
-                        dayjs(media.release_date).isValid()
-                          ? dayjs(media.release_date).format('MMMM D, YYYY')
-                          : '-'
-                      }}
-                    </p>
-                  </div>
+                  <Separator v-if="item.content?.length && index < item.content?.length - 1" />
                 </div>
-                <Separator v-if="item.content?.length && index < item.content?.length - 1" />
-              </div>
+              </ScrollArea>
             </AccordionContent>
           </AccordionItem>
         </Accordion>

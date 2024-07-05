@@ -127,7 +127,7 @@ export default class TmdbApi extends ApiClient {
   async trending(mediaType: MediaType, query?: QueryObject): Promise<JSONValue | Error> {
     try {
       const config = {
-        endpoint: `trending/${mediaType}/week`,
+        endpoint: `trending/${mediaType}/week?language=en-US`,
         options: options,
         queryParams: query
       };
