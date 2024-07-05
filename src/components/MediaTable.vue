@@ -25,7 +25,7 @@ const { allGenres } = storeToRefs(genresStore);
 </script>
 <template>
   <div class="p-4 pl-0">
-    <h2 class="text-2xl font-bold">{{ label }}</h2>
+    <h2 v-if="label" class="text-2xl font-bold">{{ label }}</h2>
     <Table>
       <TableHeader>
         <TableRow>

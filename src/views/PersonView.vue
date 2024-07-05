@@ -26,8 +26,10 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion';
+import MediaTable from '@/components/MediaTable.vue';
 import { Separator } from '@/components/ui/separator';
 import { Gender } from '@/enums/enums';
+import type { Movie } from '@/types/movie';
 
 const route = useRoute();
 const router = useRouter();
@@ -50,8 +52,8 @@ const topRatedCredits = computed(() => {
 });
 
 const actingCredits = computed(() => {
-  if (movieCredits.value && tvCredits.value) {
-    const credits = [...movieCredits.value.cast];
+  if (movieCredits.value) {
+    const credits: Movie[] = [...movieCredits.value.cast];
     return credits;
   }
   return null;
@@ -232,31 +234,35 @@ watch(
           </template>
         </MediaCarousel>
         <h3
-          class="text-md font-semibold tracking-tight text-white transition-colors first:mt-0 md:text-2xl mt-7"
+          class="text-xl font-bold tracking-tight text-white transition-colors first:mt-0 md:text-2xl mt-7"
         >
           Acting
         </h3>
         <Accordion type="single" class="w-full h-full" collapsible :default-value="defaultValue">
           <AccordionItem v-for="item in accordionItems" :key="item.value" :value="item.value">
-            <AccordionTrigger>{{ item.title }}</AccordionTrigger>
-            <AccordionContent>
-              <div class="flex flex-wrap gap-4">
-                <MediaCard
-                  v-for="media in item.content"
-                  :key="media.id"
-                  @click="openDetailView(media.id, media.media_type)"
-                  :path="media.poster_path"
-                  class="max-w-[220px]"
-                >
-                  <template v-slot:card-footer>
-                    <div>
-                      <span class="text-slate-800 font-semibold h-[40px]">
-                        {{ media.name }}
-                      </span>
-                      <MovieRating :rating="media.vote_average" />
-                    </div>
-                  </template>
-                </MediaCard>
+            <AccordionTrigger class="text-md font-semibold">{{ item.title }}</AccordionTrigger>
+            <AccordionContent v-if="item.content">
+              <div
+                v-for="(media, index) in item.content"
+                :key="media.id"
+                class="flex flex-col flex-wrap gap-4 mb-4"
+              >
+                <div class="flex flex-row flex-nowrap gap-1">
+                  <div class="min-w-[80px] w-[80px]">
+                    <img
+                      class="object-cover aspect-2/3 rounded-lg"
+                      :src="`https://image.tmdb.org/t/p/w780/${media.poster_path}`"
+                    />
+                  </div>
+                  <div>
+                    <h4 class="text-md font-bold text-white">{{ media.title }}</h4>
+                    <p class="text-sm text-white">{{ media.character }}</p>
+                    <p class="text-sm text-white">
+                      {{ dayjs(media.release_date).format('MMMM D, YYYY') }}
+                    </p>
+                  </div>
+                </div>
+                <Separator v-if="item.content?.length && index < item.content?.length - 1" />
               </div>
             </AccordionContent>
           </AccordionItem>

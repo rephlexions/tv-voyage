@@ -1,4 +1,3 @@
-import path from 'path';
 import { createRouter, createWebHistory } from 'vue-router';
 
 function lazyLoad(view: string): () => Promise<string> {

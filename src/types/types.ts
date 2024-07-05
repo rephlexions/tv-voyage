@@ -57,27 +57,6 @@ type SpokenLanguage = {
   name: string;
 };
 
-type Media = {
-  adult: boolean;
-  backdrop_path: string;
-  genres: Genre[];
-  homepage: string;
-  id: number;
-  origin_country: string[];
-  original_language: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  production_companies: ProductionCompany[];
-  production_countries: ProductionCountry[];
-  spoken_languages: SpokenLanguage[];
-  status: string;
-  tagline: string;
-  vote_average: number;
-  vote_count: number;
-  media_type: MediaType;
-};
-
 type Video = {
   iso_639_1: string;
   iso_3166_1: string;
@@ -265,7 +244,6 @@ export type {
   ProductionCompany,
   ProductionCountry,
   SpokenLanguage,
-  Media,
   Video,
   VideoResults,
   CastMember,
