@@ -18,6 +18,7 @@ type Movie = {
   backdrop_path: string;
   belongs_to_collection: BelongsToCollection;
   budget: number;
+  genre_ids: number[];
   genres: Genre[];
   homepage: string;
   id: number;

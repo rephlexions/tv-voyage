@@ -1,4 +1,10 @@
-import type { Genre, ProductionCompany, ProductionCountry, SpokenLanguage } from './types';
+import type {
+  Genre,
+  MediaType,
+  ProductionCompany,
+  ProductionCountry,
+  SpokenLanguage
+} from './types';
 
 type CreatedBy = {
   id: number;
@@ -49,6 +55,7 @@ type TvShow = {
   created_by: CreatedBy[];
   episode_run_time: number[];
   first_air_date: string;
+  genre_ids: number[];
   genres: Genre[];
   homepage: string;
   id: number;
@@ -76,6 +83,7 @@ type TvShow = {
   type: string;
   vote_average: number;
   vote_count: number;
+  media_type?: MediaType;
 };
 
 type TvShowResults = {
