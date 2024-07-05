@@ -1,4 +1,5 @@
-import type { Media } from './types';
+import type { Genre, ProductionCompany, ProductionCountry, SpokenLanguage } from './types';
+
 type CreatedBy = {
   id: number;
   credit_id: string;
@@ -8,7 +9,7 @@ type CreatedBy = {
   profile_path: string | null;
 };
 
-type LastEpisodeToAir = {
+type Episode = {
   id: number;
   overview: string;
   name: string;
@@ -42,23 +43,39 @@ type Season = {
   vote_average: number;
 };
 
-type TvShow = Media & {
+type TvShow = {
+  adult: boolean;
+  backdrop_path: string;
   created_by: CreatedBy[];
   episode_run_time: number[];
   first_air_date: string;
+  genres: Genre[];
+  homepage: string;
+  id: number;
   in_production: boolean;
   languages: string[];
   last_air_date: string;
-  last_episode_to_air: LastEpisodeToAir;
+  last_episode_to_air: Episode;
   name: string;
   next_episode_to_air: null;
   networks: Network[];
   number_of_episodes: number;
   number_of_seasons: number;
+  origin_country: string[];
+  original_language: string;
   original_name: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  production_companies: ProductionCompany[];
+  production_countries: ProductionCountry[];
   seasons: Season[];
+  spoken_languages: SpokenLanguage[];
+  status: string;
+  tagline: string;
   type: string;
-  genre_ids: number[];
+  vote_average: number;
+  vote_count: number;
 };
 
 type TvShowResults = {

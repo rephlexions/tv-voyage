@@ -9,7 +9,8 @@ import type {
   RecommendationsResults,
   ReviewResults,
   VideoResults,
-  ImageResults
+  ImageResults,
+  JSONValue
 } from '@/types/types';
 import type { TvShow } from '@/types/tvShow';
 import { Icon } from '@iconify/vue';
@@ -93,6 +94,15 @@ const mediaTitle = computed(() => {
   }
   return '';
 });
+const cast = computed(() => {
+  if (!credits?.value) return;
+  return credits?.value.cast.slice(0, 15);
+});
+
+const backdrops = computed(() => {
+  if (!images?.value) return;
+  return images?.value.backdrops.slice(0, 10);
+});
 
 function isMovie(value: any): value is Movie {
   return value && typeof value === 'object' && 'title' in value;
@@ -106,6 +116,13 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
   router.push({
     name: 'view',
     params: { id: id.toString(), type: mediaType }
+  });
+}
+
+function openPersonDetailView(id: number) {
+  router.push({
+    name: 'person',
+    params: { id: id.toString() }
   });
 }
 
@@ -142,32 +159,42 @@ function getDetails() {
     tmdb.images(mediaType, mediaID)
   ])
     .then((results) => {
+      const handlers = [
+        (value: JSONValue) => {
+          media.value = mediaType === 'movie' ? (value as Movie) : (value as TvShow);
+        },
+        (value: JSONValue) => {
+          credits.value = value as CreditsResults;
+        },
+        (value: JSONValue) => {
+          reviews.value = value as ReviewResults;
+        },
+        (value: JSONValue) => {
+          recommendations.value = value as RecommendationsResults;
+        },
+        (value: JSONValue) => {
+          images.value = value as ImageResults;
+        }
+      ];
+
       results.forEach((result, index) => {
-        if (result.status === 'fulfilled') {
-          const value = result.value;
-          if (isError(value)) {
-            throw new Error(value.message);
-          } else {
-            switch (index) {
-              case 0:
-                media.value = mediaType === 'movie' ? (value as Movie) : (value as TvShow);
-                break;
-              case 1:
-                credits.value = value as CreditsResults;
-                break;
-              case 2:
-                reviews.value = value as ReviewResults;
-                break;
-              case 3:
-                recommendations.value = value as RecommendationsResults;
-                break;
-              case 4:
-                images.value = value as ImageResults;
-                break;
+        try {
+          if (result.status === 'fulfilled') {
+            const value = result.value;
+            if (isError(value)) {
+              throw new Error(value.message);
+            } else {
+              handlers[index](value);
             }
+          } else if (result.status === 'rejected') {
+            throw new Error(result.reason);
           }
-        } else if (result.status === 'rejected') {
-          throw new Error(result.reason);
+        } catch (error) {
+          toast({
+            title: 'An error occurred',
+            description: `${error}`,
+            variant: 'destructive'
+          });
         }
       });
     })
@@ -247,12 +274,12 @@ watch(
           <h2 class="mb-4 text-3xl font-semibold text-slate-100">Cast</h2>
         </template>
         <template v-slot:carousel-item>
-          <CarouselItem
-            v-for="item in credits?.cast.slice(0, 15)"
-            :key="item.id"
-            class="basis-1/10"
-          >
-            <MediaCard :path="item.profile_path" class="max-w-[120px]">
+          <CarouselItem v-for="item in cast" :key="item.id" class="basis-1/10">
+            <MediaCard
+              @click="openPersonDetailView(item.id)"
+              :path="item.profile_path"
+              class="max-w-[120px]"
+            >
               <template v-slot:card-footer>
                 <div class="h-[80px]">
                   <p class="text-slate-800 font-semibold">{{ item.name }}</p>
@@ -266,12 +293,12 @@ watch(
     </div>
     <div class="flex md:flex-row flex-col px-16 gap-16">
       <div class="basis-2/3 flex flex-col gap-16">
-        <ImageGallery v-if="images" :images="images?.backdrops.slice(0, 10)" />
+        <ImageGallery v-if="backdrops" :images="backdrops" />
         <div v-if="accordionList?.length">
           <h3 class="text-3xl font-semibold text-slate-100 p-4 pl-0">User Reviews</h3>
           <Accordion type="single" class="w-full" collapsible>
             <AccordionItem
-              v-for="item in accordionList?.slice(0, 6)"
+              v-for="item in accordionList?.slice(0, 5)"
               :key="item.value"
               :value="item.value"
             >
@@ -282,7 +309,7 @@ watch(
             </AccordionItem>
           </Accordion>
         </div>
-        <MediaCarousel>
+        <MediaCarousel class="w-[50%]">
           <template v-slot:carousel-title>
             <h2 class="mb-4 text-3xl font-semibold text-slate-100">Recommendations</h2>
           </template>

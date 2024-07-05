@@ -1,9 +1,13 @@
+import type { Movie } from './movie';
+import type { TvShow } from './tvShow';
+
 type JSONPrimitive = string | number | boolean | null;
 type JSONObject = { [key: string]: JSONValue };
 type JSONArray = JSONValue[];
 type JSONValue = JSONArray | JSONObject | JSONPrimitive;
 
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+const httpMethods = ['GET', 'POST', 'PUT', 'DELETE'] as const;
+type HttpMethod = (typeof httpMethods)[number];
 
 interface FetchOptions extends RequestInit {
   method?: HttpMethod;
@@ -51,27 +55,6 @@ type SpokenLanguage = {
   english_name: string;
   iso_639_1: string;
   name: string;
-};
-
-type Media = {
-  adult: boolean;
-  backdrop_path: string;
-  genres: Genre[];
-  homepage: string;
-  id: number;
-  origin_country: string[];
-  original_language: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  production_companies: ProductionCompany[];
-  production_countries: ProductionCountry[];
-  spoken_languages: SpokenLanguage[];
-  status: string;
-  tagline: string;
-  vote_average: number;
-  vote_count: number;
-  media_type: MediaType;
 };
 
 type Video = {
@@ -220,6 +203,35 @@ type SearchResults = {
   total_results: number;
 };
 
+type Person = {
+  adult: boolean;
+  also_known_as: string[];
+  biography: string;
+  birthday: string;
+  deathday: null | string;
+  gender: number;
+  homepage: null | string;
+  id: number;
+  imdb_id: string;
+  known_for_department: string;
+  name: string;
+  place_of_birth: string;
+  popularity: number;
+  profile_path: string;
+};
+
+type MovieCreditsResults = {
+  id: number;
+  cast: Movie[];
+  crew: Movie[];
+};
+
+type TVCreditsResults = {
+  id: number;
+  cast: TvShow[];
+  crew: TvShow[];
+};
+
 export type {
   JSONValue,
   FetchOptions,
@@ -232,7 +244,6 @@ export type {
   ProductionCompany,
   ProductionCountry,
   SpokenLanguage,
-  Media,
   Video,
   VideoResults,
   CastMember,
@@ -245,5 +256,8 @@ export type {
   Image,
   ImageResults,
   SearchResult,
-  SearchResults
+  SearchResults,
+  Person,
+  MovieCreditsResults,
+  TVCreditsResults
 };

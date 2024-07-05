@@ -40,19 +40,22 @@ export default class ApiClient {
         const query = new URLSearchParams(queryParams).toString();
         endpoint = `${endpoint}?${query}`;
       }
+
       const response: Awaited<Response> = await fetch(`${this.baseUrl}${endpoint}`, {
         ...this.options,
         ...options
       });
+
       if (!response.ok) {
         throw new ServerError(response.status, `Server response: ${response.status}`);
       }
+
       const data: JSONValue = await response.json();
       return data;
     } catch (error) {
       if (error instanceof ServerError) {
         throw error;
-      } else if (error instanceof TypeError) {
+      } else if (error instanceof NetworkError) {
         throw new NetworkError(`Network error: ${error.message}`);
       } else {
         throw new Error(`An unknown error occurred: ${error}`);
