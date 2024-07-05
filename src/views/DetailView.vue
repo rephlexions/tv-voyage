@@ -302,7 +302,7 @@ watch(
             </AccordionItem>
           </Accordion>
         </div>
-        <MediaCarousel class="w-[50%]">
+        <MediaCarousel v-if="recommendations?.results.length" class="w-[50%]">
           <template v-slot:carousel-title>
             <h2 class="mb-4 text-3xl font-semibold text-slate-100">Recommendations</h2>
           </template>

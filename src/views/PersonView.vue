@@ -222,7 +222,7 @@ watch(
                 class="max-w-[220px]"
               >
                 <template v-slot:card-footer>
-                  <div>
+                  <div class="h-[60px] flex flex-col justify-around">
                     <span class="text-slate-800 font-semibold h-[40px]">
                       {{ item.title }} ({{ dayjs(item.release_date, 'YYYY MMMM DD').year() }})
                     </span>
