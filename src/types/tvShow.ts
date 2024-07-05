@@ -57,7 +57,6 @@ type TvShow = {
   first_air_date: string;
   genre_ids: number[];
   genres: Genre[];
-  genre_ids: number[];
   homepage: string;
   id: number;
   in_production: boolean;

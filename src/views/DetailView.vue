@@ -317,7 +317,7 @@ watch(
                 class="max-w-[200px]"
               >
                 <template v-slot:card-footer>
-                  <span class="text-slate-800 font-semibold h-[40px]">
+                  <span class="text-slate-800 font-semibold h-[60px]">
                     {{ item.name || item.title }}
                   </span>
                   <MovieRating v-if="item.vote_average" :rating="item.vote_average" />
