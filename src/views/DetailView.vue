@@ -36,6 +36,7 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion';
 import Separator from '@/components/ui/separator/Separator.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { useRouter } from 'vue-router';
 import { isMovie, isTVShow } from '@/utils/utils';
 
@@ -273,7 +274,7 @@ watch(
               class="max-w-[120px]"
             >
               <template v-slot:card-footer>
-                <div class="h-[80px]">
+                <div class="h-[80px] flex flex-col justify-between">
                   <p class="text-slate-800 font-semibold">{{ item.name }}</p>
                   <p class="text-slate-500">{{ item.character }}</p>
                 </div>
@@ -296,7 +297,9 @@ watch(
             >
               <AccordionTrigger class="text-foreground">{{ item.title }} </AccordionTrigger>
               <AccordionContent>
-                <span v-html="item.content"></span>
+                <ScrollArea class="h-[400px] rounded-md p-4">
+                  <span v-html="item.content"></span>
+                </ScrollArea>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -317,10 +320,12 @@ watch(
                 class="max-w-[200px]"
               >
                 <template v-slot:card-footer>
-                  <span class="text-slate-800 font-semibold h-[60px]">
-                    {{ item.name || item.title }}
-                  </span>
-                  <MovieRating v-if="item.vote_average" :rating="item.vote_average" />
+                  <div class="h-[60px] flex flex-col justify-between">
+                    <span class="text-slate-800 font-semibold">
+                      {{ item.name || item.title }}
+                    </span>
+                    <MovieRating v-if="item.vote_average" :rating="item.vote_average" />
+                  </div>
                 </template>
               </MediaCard>
             </CarouselItem>

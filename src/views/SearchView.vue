@@ -57,7 +57,7 @@ function goBack() {
   router.go(-1);
 }
 
-async function searchMedia() {
+function searchMedia() {
   const query: QueryObject = { query: searchQuery.value, page: currentPage.value.toString() };
 
   try {
@@ -88,9 +88,9 @@ onMounted(() => {
     <Button v-if="showBackButton" @click="goBack" class="mx-16 mb-4 dark">
       <Icon icon="akar-icons:arrow-left" />
     </Button>
-    <div class="flex flex-col p-16">
+    <div class="flex flex-col px-16 pt-4 pb-16">
       <h1 class="text-4xl text-white">Search results for "{{ searchQuery }}"</h1>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-10">
+      <div class="flex flex-row flex-wrap gap-4 mt-10">
         <template v-if="searchResults">
           <MediaCard
             v-for="result in searchResults.results"
@@ -100,12 +100,15 @@ onMounted(() => {
             @click="openDetailView(result.id, result.media_type)"
           >
             <template v-slot:card-footer>
-              <span class="text-slate-800 font-semibold h-[40px]">
-                {{ result.name || result.original_title }} ({{
-                  dayjs(result.first_air_date || result.release_date).year()
-                }})
-              </span>
-              <MovieRating v-if="result.vote_average" :rating="result.vote_average" />
+              <div class="h-[60px] flex flex-col justify-between">
+                <span class="text-slate-800 font-semibold">
+                  {{ result.name || result.original_title }} ({{
+                    dayjs(result.first_air_date || result.release_date).year()
+                  }})
+                </span>
+                <MovieRating v-if="result.vote_average" :rating="result.vote_average" />
+                <span v-else class="text-slate-400">Upcoming</span>
+              </div>
             </template>
           </MediaCard>
         </template>

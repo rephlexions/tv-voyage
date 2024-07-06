@@ -12,8 +12,14 @@ defineProps<MediaCardProps>();
   >
     <CardContent class="w-full p-0">
       <img
+        v-if="path"
         class="max-h-[332px] rounded-lg rounded-b-none object-cover aspect-2/3"
         :src="`https://image.tmdb.org/t/p/w780/${path}`"
+      />
+      <img
+        v-else
+        class="max-h-[332px] rounded-lg rounded-b-none object-cover aspect-2/3"
+        src="../assets/no-poster.png"
       />
     </CardContent>
     <CardFooter class="flex flex-col gap-0.5 p-3 items-start text-sm">

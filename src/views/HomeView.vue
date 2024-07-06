@@ -38,11 +38,13 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
           >
             <MediaCard @click="openDetailView(item.id, item.media_type)" :path="item.poster_path">
               <template v-slot:card-footer>
-                <span class="text-slate-800 font-semibold h-[40px]">
-                  {{ item.title }} ({{ dayjs(item.release_date, 'YYYY MMMM DD').year() }})
-                </span>
+                <div class="h-[60px] flex flex-col justify-between">
+                  <span class="text-slate-800 font-semibold">
+                    {{ item.title }} ({{ dayjs(item.release_date, 'YYYY MMMM DD').year() }})
+                  </span>
 
-                <MovieRating :rating="item.vote_average" />
+                  <MovieRating :rating="item.vote_average" />
+                </div>
               </template>
             </MediaCard>
           </CarouselItem>

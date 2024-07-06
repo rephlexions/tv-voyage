@@ -187,7 +187,7 @@ watch(
           <h4 v-if="person.deathday" class="text-md font-bold text-white">Died</h4>
           <p v-if="person.deathday">{{ dayjs(person.deathday).format('MMMM D, YYYY') }}</p>
           <Separator />
-          <h4 class="text-md font-bold text-white">Also Known As</h4>
+          <h4 class="text-md font-bold text-white">Also known as</h4>
           <p v-for="(item, index) in person.also_known_as" :key="index">{{ item }}</p>
         </div>
       </div>
@@ -195,22 +195,26 @@ watch(
       <div class="flex flex-col max-w-7xl">
         <div class="mb-4">
           <h1
-            class="text-xl font-bold tracking-tight text-white transition-colors first:mt-0 md:text-3xl"
+            class="text-xl font-bold tracking-tight text-white transition-colors md:text-3xl mb-4"
           >
             {{ person.name }}
           </h1>
           <h3
-            class="text-md font-semibold tracking-tight text-white transition-colors first:mt-0 md:text-2xl mt-7"
+            class="text-md font-semibold tracking-tight text-white transition-colors md:text-2xl mb-1"
           >
             Biography
           </h3>
-          <p class="text-sm text-white mt-1 w-[80%]">
+          <p class="text-sm text-white mb-4 w-[80%]">
             {{ person.biography }}
           </p>
         </div>
         <MediaCarousel>
           <template v-slot:carousel-title>
-            <h2 class="mb-4 text-3xl font-semibold text-slate-100">Best known for</h2>
+            <h3
+              class="text-md font-semibold tracking-tight text-white transition-colors md:text-2xl mb-4"
+            >
+              Best known for
+            </h3>
           </template>
           <template v-slot:carousel-item>
             <CarouselItem v-for="item in topRatedCredits" :key="item.id" class="basis-1/10">
@@ -232,9 +236,9 @@ watch(
           </template>
         </MediaCarousel>
         <h3
-          class="text-xl font-bold tracking-tight text-white transition-colors first:mt-0 md:text-2xl mt-7"
+          class="text-xl font-bold tracking-tight text-white transition-colors first:mt-0 md:text-2xl mt-6"
         >
-          Acting
+          Credits
         </h3>
         <Accordion
           type="single"
