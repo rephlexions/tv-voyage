@@ -39,7 +39,6 @@ import Separator from '@/components/ui/separator/Separator.vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useRouter } from 'vue-router';
 import { isMovie, isTVShow } from '@/utils/utils';
-import path from 'path';
 
 const route = useRoute();
 const router = useRouter();
