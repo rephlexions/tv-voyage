@@ -42,10 +42,10 @@ let person = ref<Person | null>(null);
 let movieCredits = ref<MovieCreditsResults | null>(null);
 let tvCredits = ref<TVCreditsResults | null>(null);
 
-const topRatedCredits = computed(() => {
+const bestCredits = computed(() => {
   if (movieCredits.value && movieCredits.value.cast.length) {
     const credits = [...movieCredits.value.cast];
-    credits.sort((a, b) => b.vote_average - a.vote_average);
+    credits.sort((a, b) => b.popularity - a.popularity);
 
     return credits.slice(0, 10);
   }
@@ -164,6 +164,7 @@ watch(
           <img
             class="object-cover aspect-2/3 rounded-lg"
             :src="`https://image.tmdb.org/t/p/w780/${person.profile_path}`"
+            loading="lazy"
           />
         </div>
         <div class="flex flex-col gap-1">
@@ -204,9 +205,11 @@ watch(
           >
             Biography
           </h3>
-          <p class="text-sm text-white mb-4 w-[80%]">
-            {{ person.biography }}
-          </p>
+          <ScrollArea class="h-[300px] rounded-md">
+            <p class="text-sm text-white mb-4 w-[80%]">
+              {{ person.biography }}
+            </p>
+          </ScrollArea>
         </div>
         <MediaCarousel>
           <template v-slot:carousel-title>
@@ -217,12 +220,21 @@ watch(
             </h3>
           </template>
           <template v-slot:carousel-item>
-            <CarouselItem v-for="item in topRatedCredits" :key="item.id" class="basis-1/10">
-              <MediaCard
-                @click="openDetailView(item.id, item.media_type)"
-                :path="item.backdrop_path"
-                class="max-w-[220px]"
-              >
+            <CarouselItem v-for="item in bestCredits" :key="item.id" class="basis-1/10">
+              <MediaCard @click="openDetailView(item.id, item.media_type)" class="max-w-[220px]">
+                <template v-slot:card-content>
+                  <img
+                    v-if="item.backdrop_path"
+                    class="max-h-[332px] rounded-lg rounded-b-none object-cover aspect-2/3"
+                    :src="`https://image.tmdb.org/t/p/w780/${item.backdrop_path}`"
+                    loading="lazy"
+                  />
+                  <img
+                    v-else
+                    src="../assets/no-poster.png"
+                    class="h-[123px] max-h-[123px] w-[223px] object-cover aspect-2/3"
+                  />
+                </template>
                 <template v-slot:card-footer>
                   <div class="h-[60px] flex flex-col justify-around">
                     <span class="text-slate-800 font-semibold">
@@ -261,8 +273,18 @@ watch(
                       class="min-w-[80px] w-[80px] hover:cursor-pointer hover:brightness-75 transition-all duration-300 ease-in-out"
                     >
                       <img
+                        v-if="media.poster_path"
                         class="object-cover aspect-2/3 rounded-lg"
                         :src="`https://image.tmdb.org/t/p/w780/${media.poster_path}`"
+                        loading="lazy"
+                        alt="Movie poster"
+                      />
+                      <img
+                        v-else
+                        class="max-h-[332px] rounded-lg object-cover aspect-2/3"
+                        src="../assets/no-poster.png"
+                        loading="lazy"
+                        alt="No poster"
                       />
                     </div>
                     <div class="flex flex-col justify-between p-4">
@@ -273,7 +295,7 @@ watch(
                         {{ media.title }}
                       </h4>
                       <p class="text-sm to-slate-400">{{ media.character }}</p>
-                      <p class="text-sm text-white">
+                      <p v-if="media.release_date" class="text-sm text-white">
                         {{ dayjs(media.release_date).format('MMMM D, YYYY') }}
                       </p>
                     </div>

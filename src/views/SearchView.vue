@@ -95,10 +95,17 @@ onMounted(() => {
           <MediaCard
             v-for="result in searchResults.results"
             :key="result.id"
-            :path="result.poster_path"
-            class=""
             @click="openDetailView(result.id, result.media_type)"
           >
+            <template v-slot:card-content>
+              <img
+                v-if="result.poster_path"
+                class="max-h-[332px] rounded-lg rounded-b-none object-cover aspect-2/3"
+                :src="`https://image.tmdb.org/t/p/w780/${result.poster_path}`"
+                loading="lazy"
+              />
+              <img v-else src="../assets/no-poster.png" />
+            </template>
             <template v-slot:card-footer>
               <div class="h-[60px] flex flex-col justify-between">
                 <span class="text-slate-800 font-semibold">

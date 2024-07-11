@@ -39,6 +39,7 @@ import Separator from '@/components/ui/separator/Separator.vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useRouter } from 'vue-router';
 import { isMovie, isTVShow } from '@/utils/utils';
+import path from 'path';
 
 const route = useRoute();
 const router = useRouter();
@@ -230,6 +231,7 @@ watch(
           ', ' +
           `https://image.tmdb.org/t/p/w780${media.backdrop_path} 768w`
         "
+        loading="lazy"
         alt="Movie cover"
       />
       <div class="absolute left-24 right-24 top-8 flex h-3/4 gap-4 sm:top-16">
@@ -238,6 +240,7 @@ watch(
             <img
               class="h-full w-full rounded-lg object-cover"
               :src="`https://image.tmdb.org/t/p/w342/${media.poster_path}`"
+              loading="lazy"
             />
           </CardContent>
         </Card>
@@ -268,11 +271,16 @@ watch(
         </template>
         <template v-slot:carousel-item>
           <CarouselItem v-for="item in cast" :key="item.id" class="basis-1/10">
-            <MediaCard
-              @click="openPersonDetailView(item.id)"
-              :path="item.profile_path"
-              class="max-w-[120px]"
-            >
+            <MediaCard @click="openPersonDetailView(item.id)" class="max-w-[120px]">
+              <template v-slot:card-content>
+                <img
+                  v-if="item.profile_path"
+                  class="max-h-[332px] rounded-lg rounded-b-none object-cover aspect-2/3"
+                  :src="`https://image.tmdb.org/t/p/w780/${item.profile_path}`"
+                  loading="lazy"
+                />
+                <img v-else src="../assets/user-grey.svg" />
+              </template>
               <template v-slot:card-footer>
                 <div class="h-[80px] flex flex-col justify-between">
                   <p class="text-slate-800 font-semibold">{{ item.name }}</p>
@@ -319,6 +327,19 @@ watch(
                 :path="item.backdrop_path"
                 class="max-w-[200px]"
               >
+                <template v-slot:card-content>
+                  <img
+                    v-if="item.backdrop_path"
+                    class="max-h-[332px] rounded-lg rounded-b-none object-cover aspect-2/3"
+                    :src="`https://image.tmdb.org/t/p/w780/${item.backdrop_path}`"
+                    loading="lazy"
+                  />
+                  <img
+                    v-else
+                    src="../assets/no-poster.png"
+                    class="h-[112px] max-h-[112px] w-[200px] object-cover aspect-2/3 rounded-lg rounded-b-none"
+                  />
+                </template>
                 <template v-slot:card-footer>
                   <div class="h-[60px] flex flex-col justify-between">
                     <span class="text-slate-800 font-semibold">
@@ -334,7 +355,7 @@ watch(
       </div>
       <div v-if="media" class="basis-1/3">
         <h3 class="text-3xl font-semibold text-slate-100 p-4 pl-0">Details</h3>
-        <Separator />
+        <Separator v-if="directors?.length" />
         <div v-if="directors?.length" class="flex gap-2 items-center">
           <h6 class="text-md font-semibold text-slate-200 p-4">Director</h6>
           <div class="flex flex-row gap-1 h-min">
@@ -343,7 +364,7 @@ watch(
             </p>
           </div>
         </div>
-        <Separator />
+        <Separator v-if="createdBy?.length" />
         <div v-if="createdBy?.length" class="flex gap-2 items-center">
           <h6 class="text-md font-semibold text-slate-200 p-4">Created by</h6>
           <div class="flex flex-row gap-1 h-min">
@@ -386,12 +407,12 @@ watch(
             }}
           </div>
         </div>
-        <Separator />
+        <Separator v-if="isMovie(media)" />
         <div v-if="isMovie(media)" class="flex gap-2 items-center">
           <h6 class="text-md font-semibold text-slate-200 p-4">Runtime</h6>
           <div class="flex flex-row gap-1 h-min">{{ media.runtime.toFixed(0) }} mins</div>
         </div>
-        <Separator />
+        <Separator v-if="isMovie(media)" />
         <div v-if="isMovie(media)" class="flex gap-2 items-center">
           <h6 class="text-md font-semibold text-slate-200 p-4">Budget</h6>
           <div class="flex flex-row gap-1 h-min">

@@ -57,6 +57,7 @@ watchOnce(emblaMainApi, (emblaMainApi) => {
                 <img
                   class="rounded-lg rounded-b-none object-cover w-full"
                   :src="`https://image.tmdb.org/t/p/w1280/${image.file_path}`"
+                  loading="lazy"
                 />
               </CardContent>
             </Card>
@@ -79,6 +80,7 @@ watchOnce(emblaMainApi, (emblaMainApi) => {
                 <img
                   class="object-cover aspect-2/3 hover:brightness-75 transition-all duration-300 ease-in-out"
                   :src="`https://image.tmdb.org/t/p/w780/${image.file_path}`"
+                  loading="lazy"
                 />
               </CardContent>
             </Card>

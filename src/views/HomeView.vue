@@ -37,6 +37,13 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
             class="sm:basis-1/4 lg:basis-1/6"
           >
             <MediaCard @click="openDetailView(item.id, item.media_type)" :path="item.poster_path">
+              <template v-slot:card-content>
+                <img
+                  class="max-h-[332px] rounded-lg rounded-b-none object-cover aspect-2/3"
+                  :src="`https://image.tmdb.org/t/p/w780/${item.poster_path}`"
+                  loading="lazy"
+                />
+              </template>
               <template v-slot:card-footer>
                 <div class="h-[60px] flex flex-col justify-between">
                   <span class="text-slate-800 font-semibold">

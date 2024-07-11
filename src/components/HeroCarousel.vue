@@ -53,6 +53,7 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
             ', ' +
             `https://image.tmdb.org/t/p/w780/${item.backdrop_path} 768w`
           "
+          loading="lazy"
           alt="Movie cover"
         />
         <div class="absolute left-24 right-24 flex h-3/4 gap-4 sm:top-16 top-4">
@@ -64,6 +65,8 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
               <img
                 class="h-full w-full rounded-lg object-cover hover:brightness-75 transition-all duration-300 ease-in-out"
                 :src="`https://image.tmdb.org/t/p/w342/${item.poster_path}`"
+                loading="lazy"
+                alt="Movie cover"
               />
             </CardContent>
           </Card>
