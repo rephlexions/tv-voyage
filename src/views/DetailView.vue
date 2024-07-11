@@ -98,7 +98,7 @@ const mediaTitle = computed(() => {
 });
 const cast = computed(() => {
   if (!credits?.value) return;
-  return credits?.value.cast.slice(0, 15);
+  return credits?.value.cast.slice(0, 20);
 });
 
 const backdrops = computed(() => {
