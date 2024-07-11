@@ -200,16 +200,18 @@ watch(
           >
             {{ person.name }}
           </h1>
-          <h3
-            class="text-md font-semibold tracking-tight text-white transition-colors md:text-2xl mb-1"
-          >
-            Biography
-          </h3>
-          <ScrollArea class="h-[300px] rounded-md">
-            <p class="text-sm text-white mb-4 w-[80%]">
-              {{ person.biography }}
-            </p>
-          </ScrollArea>
+          <div v-if="person.biography">
+            <h3
+              class="text-md font-semibold tracking-tight text-white transition-colors md:text-2xl mb-1"
+            >
+              Biography
+            </h3>
+            <ScrollArea class="h-[200px] rounded-md">
+              <p class="text-sm text-white mb-4 w-[80%]">
+                {{ person.biography }}
+              </p>
+            </ScrollArea>
+          </div>
         </div>
         <MediaCarousel>
           <template v-slot:carousel-title>

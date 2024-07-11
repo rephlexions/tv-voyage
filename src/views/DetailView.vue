@@ -393,6 +393,20 @@ watch(
             {{ media.status }}
           </div>
         </div>
+        <Separator v-if="isTVShow(media)" />
+        <div v-if="isTVShow(media)" class="flex gap-2 items-center">
+          <h6 class="text-md font-semibold text-slate-200 p-4">Seasons</h6>
+          <div class="flex flex-row gap-1 h-min">
+            {{ media.number_of_seasons }}
+          </div>
+        </div>
+        <Separator v-if="isTVShow(media)" />
+        <div v-if="isTVShow(media)" class="flex gap-2 items-center">
+          <h6 class="text-md font-semibold text-slate-200 p-4">Seasons</h6>
+          <div class="flex flex-row gap-1 h-min">
+            {{ media.number_of_episodes }}
+          </div>
+        </div>
         <Separator />
         <div class="flex gap-2 items-center">
           <h6 class="text-md font-semibold text-slate-200 p-4">
