@@ -24,8 +24,10 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
 </script>
 <template>
   <main class="bg-primary text-primary-foreground">
-    <HeroCarousel :movies="heroMedia"></HeroCarousel>
-    <div class="p-16 ml-auto mr-auto max-w-min">
+    <section>
+      <HeroCarousel :movies="heroMedia"></HeroCarousel>
+    </section>
+    <section class="p-16 ml-auto mr-auto max-w-min">
       <MediaCarousel>
         <template v-slot:carousel-title>
           <h2 class="mb-4 text-3xl font-semibold text-slate-100">Top rated movies</h2>
@@ -57,19 +59,19 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
           </CarouselItem>
         </template>
       </MediaCarousel>
-      <div class="flex justify-between md:flex-row flex-col pt-16">
-        <MediaTable
-          v-if="trendingMovies"
-          :media="trendingMovies?.results.slice(0, 10)"
-          :label="'Trending movies this week'"
-        ></MediaTable>
-        <MediaTable
-          v-if="trendingTv"
-          :media="trendingTv.results.slice(0, 10)"
-          :label="'Trending TV shows this week'"
-        ></MediaTable>
-      </div>
-    </div>
+    </section>
+    <section class="flex justify-between md:flex-row flex-col p-16 gap-4">
+      <MediaTable
+        v-if="trendingMovies"
+        :media="trendingMovies?.results.slice(0, 10)"
+        :label="'Trending movies this week'"
+      ></MediaTable>
+      <MediaTable
+        v-if="trendingTv"
+        :media="trendingTv.results.slice(0, 10)"
+        :label="'Trending TV shows this week'"
+      ></MediaTable>
+    </section>
   </main>
 </template>
 <style scoped></style>
