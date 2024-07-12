@@ -34,7 +34,7 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
           <CarouselItem
             v-for="item in topRatedMovies"
             :key="item.id"
-            class="sm:basis-1/4 lg:basis-1/6"
+            class="basis-1/1 sm:basis-1/4 lg:basis-1/6"
           >
             <MediaCard @click="openDetailView(item.id, item.media_type)" :path="item.poster_path">
               <template v-slot:card-content>

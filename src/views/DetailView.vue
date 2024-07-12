@@ -234,7 +234,7 @@ watch(
         alt="Movie cover"
       />
       <div class="absolute left-24 right-24 top-8 flex h-3/4 gap-4 sm:top-16">
-        <Card class="w-auto md:max-w-[264px] aspect-2/3 h-auto min-h-[373px]">
+        <Card class="w-auto md:max-w-[264px] aspect-2/3 h-min min-h-[180px]">
           <CardContent class="w-full h-full p-0">
             <img
               class="h-full w-full rounded-lg object-cover"
@@ -249,7 +249,7 @@ watch(
           >
             {{ mediaTitle }}
           </h2>
-          <div class="flex gap-1 flex-row flex-nowrap">
+          <div class="flex gap-1 flex-row flex-wrap">
             <Badge v-for="(genre, index) in genres" :key="index" :variant="'secondary'">
               {{ genre }}
             </Badge>

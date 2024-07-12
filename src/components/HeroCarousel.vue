@@ -59,7 +59,7 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
         <div class="absolute left-24 right-24 flex h-3/4 gap-4 sm:top-16 top-4">
           <Card
             @click="openDetailView(item.id, item.media_type)"
-            class="aspect-2/3 min-h-[275px] w-auto hover:cursor-pointer md:max-w-[264px]"
+            class="aspect-2/3 hover:cursor-pointer md:max-w-[264px] h-min min-h-[180px]"
           >
             <CardContent class="w-full p-0">
               <img
@@ -76,8 +76,8 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
             >
               {{ item.title }} ({{ item.release_date?.split('-')[0] }})
             </h2>
-            <Badge variant="secondary" class="max-w-fit">
-              <MovieRating v-if="item.vote_average" :rating="item.vote_average" />
+            <Badge v-if="item.vote_average" variant="secondary" class="max-w-fit">
+              <MovieRating :rating="item.vote_average" />
             </Badge>
             <Button @click="openDetailView(item.id, item.media_type)" class="max-w-fit"
               >Find out more</Button
