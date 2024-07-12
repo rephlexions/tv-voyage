@@ -1,7 +1,13 @@
+<script setup lang="ts">
+import {
+  Carousel,
+  CarouselContent,
+  CarouselNext,
+  CarouselPrevious
+} from '@/components/ui/carousel';
+</script>
 <template>
-  <div class="flex gap-1">
-    <slot name="carousel-title"></slot>
-  </div>
+  <slot name="carousel-title"></slot>
   <Carousel
     class="w-full"
     :opts="{
@@ -16,14 +22,4 @@
     <CarouselNext />
   </Carousel>
 </template>
-
-<script setup lang="ts">
-import {
-  Carousel,
-  CarouselContent,
-  CarouselNext,
-  CarouselPrevious
-} from '@/components/ui/carousel';
-</script>
-
 <style scoped></style>

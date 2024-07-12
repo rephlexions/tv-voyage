@@ -158,7 +158,7 @@ watch(
     <Button v-if="showBackButton" @click="goBack" class="mb-4 dark">
       <Icon icon="akar-icons:arrow-left" />
     </Button>
-    <div v-if="person" class="flex flex-row gap-16">
+    <div v-if="person" class="flex flex-col md:flex-row gap-16">
       <div class="flex flex-col gap-4">
         <div class="min-w-[300px] w-[300px]">
           <img
@@ -193,7 +193,7 @@ watch(
         </div>
       </div>
 
-      <div class="flex flex-col max-w-7xl">
+      <div class="flex flex-col w-full">
         <div class="mb-4">
           <h1
             class="text-xl font-bold tracking-tight text-white transition-colors md:text-3xl mb-4"
@@ -207,7 +207,7 @@ watch(
               Biography
             </h3>
             <ScrollArea class="h-[200px] rounded-md">
-              <p class="text-sm text-white mb-4 w-[80%]">
+              <p class="text-sm text-white mb-4 w-full">
                 {{ person.biography }}
               </p>
             </ScrollArea>
@@ -222,7 +222,11 @@ watch(
             </h3>
           </template>
           <template v-slot:carousel-item>
-            <CarouselItem v-for="item in bestCredits" :key="item.id" class="basis-1/10">
+            <CarouselItem
+              v-for="item in bestCredits"
+              :key="item.id"
+              class="basis-1/2 sm:basis-1/3 md:basis-1/4 xl:basis-1/6"
+            >
               <MediaCard @click="openDetailView(item.id, item.media_type)" class="max-w-[220px]">
                 <template v-slot:card-content>
                   <img
