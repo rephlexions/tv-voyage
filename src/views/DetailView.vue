@@ -454,12 +454,13 @@ watch(
       <div ref="dialogTrigger"></div>
     </DialogTrigger>
     <DialogContent class="sm:max-w-[80vw] h-[80vh] p-8">
-      <iframe
-        class="w-full h-full"
-        :src="`https://www.youtube.com/embed/${trailer?.key}`"
-        frameborder="0"
-        allowfullscreen
-      ></iframe>
+      <lite-youtube
+        class="w-full h-full max-w-full"
+        :videoid="trailer?.key"
+        params="controls=1&autoplay=1&mute=0&rel=0"
+        width="100%"
+        height="100%"
+      ></lite-youtube>
     </DialogContent>
   </Dialog>
 </template>
