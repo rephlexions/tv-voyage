@@ -3,6 +3,8 @@ import type { FetchOptions, JSONValue, QueryObject } from '@/types/types';
 class NetworkError extends Error {
   constructor(message: string) {
     super(message);
+    Object.setPrototypeOf(this, new.target.prototype);
+
     this.name = 'network_error';
   }
 }
@@ -12,6 +14,8 @@ class ServerError extends Error {
 
   constructor(status: number, message: string) {
     super(message);
+    Object.setPrototypeOf(this, new.target.prototype);
+
     this.name = 'server_error';
     this.status = status;
   }
@@ -34,14 +38,14 @@ export default class ApiClient {
     endpoint: string;
     options?: FetchOptions;
     queryParams?: QueryObject;
-  }): Promise<JSONValue | Error> {
+  }): Promise<JSONValue> {
     try {
       if (queryParams) {
         const query = new URLSearchParams(queryParams).toString();
         endpoint = `${endpoint}?${query}`;
       }
 
-      const response: Awaited<Response> = await fetch(`${this.baseUrl}${endpoint}`, {
+      const response: Response = await fetch(`${this.baseUrl}${endpoint}`, {
         ...this.options,
         ...options
       });
@@ -50,12 +54,11 @@ export default class ApiClient {
         throw new ServerError(response.status, `Server response: ${response.status}`);
       }
 
-      const data: JSONValue = await response.json();
-      return data;
+      return (await response.json()) as JSONValue;
     } catch (error) {
       if (error instanceof ServerError) {
         throw error;
-      } else if (error instanceof NetworkError) {
+      } else if (error instanceof TypeError) {
         throw new NetworkError(`Network error: ${error.message}`);
       } else {
         throw new Error(`An unknown error occurred: ${error}`);
