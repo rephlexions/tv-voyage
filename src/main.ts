@@ -21,27 +21,26 @@ inject();
 
 const genresStore = useGenresStore();
 const mediaStore = useMediaStore();
-
 try {
-  const results = await Promise.allSettled([
-    genresStore.fetchMovieGenres(),
-    genresStore.fetchTvGenres(),
-    mediaStore.fetchNowPlaying(),
-    mediaStore.fetchTopRated(),
-    mediaStore.fetchUpcoming(),
-    mediaStore.fetchTrendingTv(),
-    mediaStore.fetchTrendingMovies()
-  ]);
+	const results = await Promise.allSettled([
+		genresStore.fetchMovieGenres(),
+		genresStore.fetchTvGenres(),
+		mediaStore.fetchNowPlaying(),
+		mediaStore.fetchTopRated(),
+		mediaStore.fetchUpcoming(),
+		mediaStore.fetchTrendingTv(),
+		mediaStore.fetchTrendingMovies(),
+	]);
 
-  results.forEach((result) => {
-    if (result.status === 'rejected') {
-      throw new Error(`${result.reason}`);
-    }
-  });
+	results.forEach((result) => {
+		if (result.status === 'rejected') {
+			throw new Error(`${result.reason}`);
+		}
+	});
 } catch (error) {
-  toast({
-    title: 'An error occurred',
-    description: `${error}`,
-    variant: 'destructive'
-  });
+	toast({
+		title: 'An error occurred',
+		description: `${error}`,
+		variant: 'destructive',
+	});
 }

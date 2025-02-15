@@ -5,10 +5,10 @@ import Footer from '@/components/Footer.vue';
 </script>
 
 <template>
-  <TopNav></TopNav>
-  <Toaster />
-  <RouterView></RouterView>
-  <Footer></Footer>
+	<TopNav></TopNav>
+	<Toaster />
+	<RouterView></RouterView>
+	<Footer></Footer>
 </template>
 
 <style scoped></style>
