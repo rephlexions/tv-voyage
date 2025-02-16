@@ -7,7 +7,7 @@ import Footer from '@/components/Footer.vue';
 <template>
 	<TopNav></TopNav>
 	<Toaster />
-	<RouterView></RouterView>
+	<RouterView class="max-w-[1920px]"></RouterView>
 	<Footer></Footer>
 </template>
 

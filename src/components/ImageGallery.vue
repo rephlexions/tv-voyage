@@ -36,7 +36,7 @@ watchOnce(emblaMainApi, (emblaMainApi) => {
 </script>
 
 <template>
-	<div class="w-full sm:w-auto">
+	<div class="w-full sm:w-auto max-h-min">
 		<Carousel
 			class="relative w-full"
 			@init-api="(val) => (emblaMainApi = val)"
@@ -67,11 +67,11 @@ watchOnce(emblaMainApi, (emblaMainApi) => {
 		</Carousel>
 
 		<Carousel class="relative w-full" @init-api="(val) => (emblaThumbnailApi = val)">
-			<CarouselContent class="flex gap-1 ml-0">
+			<CarouselContent class="flex gap-1 ml-0 h-min">
 				<CarouselItem
 					v-for="(image, index) in images"
 					:key="index"
-					class="pl-0 basis-1/4 cursor-pointer"
+					class="pl-0 basis-1/4 cursor-pointer h-min"
 					@click="onThumbClick(index)"
 				>
 					<div class="p-1" :class="index === selectedIndex ? '' : 'opacity-50'">

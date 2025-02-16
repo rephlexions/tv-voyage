@@ -23,7 +23,7 @@ function openDetailView(id: number, mediaType: MediaType = 'movie') {
 }
 </script>
 <template>
-	<main class="bg-primary text-primary-foreground">
+	<main class="bg-primary text-primary-foreground ml-auto mr-auto">
 		<section>
 			<HeroCarousel :movies="heroMedia"></HeroCarousel>
 		</section>
