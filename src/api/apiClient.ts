@@ -21,6 +21,8 @@ class ServerError extends Error {
 	}
 }
 
+export { NetworkError, ServerError };
+
 export default class ApiClient {
 	private baseUrl: string;
 	private options: FetchOptions;
@@ -34,27 +36,42 @@ export default class ApiClient {
 		endpoint,
 		options,
 		queryParams,
+		timeout = 10000,
 	}: {
 		endpoint: string;
 		options?: FetchOptions;
 		queryParams?: QueryObject;
+		timeout?: number;
 	}): Promise<JSONValue> {
 		try {
+			let fullEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+
 			if (queryParams) {
 				const query = new URLSearchParams(queryParams).toString();
-				endpoint = `${endpoint}?${query}`;
+				fullEndpoint = `${fullEndpoint}?${query}`;
 			}
 
-			const response: Response = await fetch(`${this.baseUrl}${endpoint}`, {
+			const controller = new AbortController();
+			const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+			const response: Response = await fetch(`${this.baseUrl}${fullEndpoint}`, {
 				...this.options,
 				...options,
+				signal: controller.signal,
 			});
 
+			clearTimeout(timeoutId);
+
 			if (!response.ok) {
-				throw new ServerError(response.status, `Server response: ${response.status}`);
+				const errorText = await response.text();
+				throw new ServerError(response.status, `Server error ${response.status}: ${errorText}`);
 			}
 
-			return (await response.json()) as JSONValue;
+			try {
+				return (await response.json()) as JSONValue;
+			} catch (jsonError) {
+				throw new Error(`Invalid JSON response: ${jsonError}`);
+			}
 		} catch (error) {
 			if (error instanceof ServerError) {
 				throw error;
